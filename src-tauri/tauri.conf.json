@@ -12,21 +12,41 @@
   },
   "tauri": {
     "allowlist": {
-      "shell" :{
+      "shell": {
         "all": true,
         "execute": true,
         "open": true,
         "scope": [
           {
             "name": "flash-code",
-            "cmd": "avrdude -p atmega328p -D -Uflash:w:'main.hex' -v -v -F -c avrisp -P /dev/ttyACM0"
+            "cmd": "/usr/local/bin/avrdude",
+            "args": ["-p atmega32u4 -D -Uflash:w:'main.hex' -v -v -F -c avrisp -P /dev/ttyACM0"]
           },
           {
-            "name": "test",
-            "cmd": "pwd"
+            "name": "list-ports",
+            "cmd": "ls",
+            "args": false
+          },
+          {
+            "name": "pwd",
+            "cmd": "pwd",
+            "args": false
+          },
+          {
+            "name": "ls",
+            "cmd": "sh",
+            "args": ["-c", "chmod +x list_usb.sh && ./list_usb.sh"]
+          },
+          {
+            "name": "ioreg",
+            "cmd": "sh",
+            "args": ["-c", "ioreg -lp IOUSB -a > usb_devices.xml"]
           }
         ],
         "sidecar": true
+      },
+      "notification": {
+        "all": true
       }
     },
     "bundle": {
@@ -37,13 +57,7 @@
         "depends": []
       },
       "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "com.tauri.dev",
       "longDescription": "",
       "macOS": {

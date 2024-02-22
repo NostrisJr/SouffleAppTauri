@@ -6,6 +6,7 @@ import { Command } from "@tauri-apps/api/shell";
 import { InterfaceChart } from "../component/InterfaceChart";
 import { InterfaceItem } from "../component/InterfaceItem";
 import { useState } from "react";
+import { SelectPort } from "@/component/SelectPort";
 
 type recolorProp = {
   focused: number;
@@ -54,6 +55,9 @@ function Home() {
     Array.from({ length: nbInterfaces }, () => Array(8).fill(colorFill[0]))
   );
 
+  const [ports, setPorts] = useState<Array<string>>([""]);
+  const [selectedPort, setSelectedPort] = useState<string>("");
+
   function recolor({ focused, values }: recolorProp) {
     let nextColors: Array<Array<string>> = Array.from({ length: nbInterfaces }, () => Array(8).fill(colorFill[0]));
 
@@ -94,11 +98,27 @@ function Home() {
     return;
   }
 
-  async function sendFile() {
-    const command = new Command("test");
+  async function notif() {
+    const command = new Command("ls");
+    command.on("close", (data) => {
+      console.log(`command finished with code ${data.code} and signal ${data.signal}`);
+    });
+    command.on("error", (error) => {
+      alert(`command error: "${error}"`);
+    });
+    command.stdout.on("data", (line) => console.log(`command stdout: "${line}"`));
+    command.stderr.on("data", (line) => console.log(`command stderr: "${line}"`));
+
     const child = await command.spawn();
-    await child.write("message");
-    console.log("c'est fait");
+
+    console.log("pid:", child.pid);
+  }
+
+  async function getDevices() {
+    const output = await new Command("ls").execute();
+    const foundPorts = output.stdout.split("\n").map((str) => str.substring(9));
+    console.log(foundPorts);
+    setPorts(foundPorts);
   }
 
   return (
@@ -106,6 +126,17 @@ function Home() {
       <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10">
         <div className="col-span-3 justify-items-center">
           <div className="grid grid-cols-5 gap-5">
+            <div className="flex items-center justify-center col-span-5">
+              <div className="bg-s-white shadow-display-box w-full h-1 mx-4" />
+              <SelectPort
+                ports={ports}
+                selectedPort={selectedPort}
+                setSelectedPort={setSelectedPort}
+                className="bg-s-bg-dark text-lg text-s-white font-body focus:ring-0 border-none focus:border-none m-4"
+              />
+              <div className="bg-s-white shadow-display-box w-full h-1 mx-4" />
+            </div>
+
             {Array.from(Array(15).keys()).map((interfaceId) => (
               <InterfaceItem
                 key={interfaceId}
@@ -142,12 +173,18 @@ function Home() {
             <button
               className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
               onClick={() => {
-                sendFile();
-                console.log("clicked");
-                alert("hey !");
+                notif();
               }}
             >
               Envoyer
+            </button>
+            <button
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              onClick={() => {
+                getDevices();
+              }}
+            >
+              Get
             </button>
           </div>
         </div>
