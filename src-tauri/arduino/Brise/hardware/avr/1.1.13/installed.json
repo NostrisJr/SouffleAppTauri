@@ -1,0 +1,142 @@
+{
+  "packages": [
+    {
+      "name": "SparkFun",
+      "maintainer": "SparkFun Electronics",
+      "websiteUrl": "https://SparkFun.com",
+      "Url": "https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json",
+      "email": "TechSupport@SparkFun.com",
+      "platforms": [
+        {
+          "name": "SparkFun AVR Boards",
+          "architecture": "avr",
+          "version": "1.1.13",
+          "deprecated": false,
+          "category": "Contributed",
+          "url": "https://github.com/sparkfun/Arduino_Boards/raw/master/IDE_Board_Manager/sparkfunboards.1.1.13.tar.bz2",
+          "archiveFileName": "sparkfunboards.1.1.13.tar.bz2",
+          "checksum": "SHA-256:D7AF391CAFC5E16830CAC7C13484EF62765DD7A36AABA5F25020CE3C39617115",
+          "size": "1257480",
+          "boards": [
+            {
+              "name": "RedBoard"
+            },
+            {
+              "name": "MaKey MaKey"
+            },
+            {
+              "name": "Pro Micro"
+            },
+            {
+              "name": "Fio v3"
+            },
+            {
+              "name": "Qduino Mini"
+            },
+            {
+              "name": "Digital Sandbox"
+            },
+            {
+              "name": "Mega Pro"
+            },
+            {
+              "name": "RedBot"
+            },
+            {
+              "name": "Serial 7-segment Display"
+            },
+            {
+              "name": "ATmega128RFA1 Dev Board"
+            },
+            {
+              "name": "LilyPad USB Plus"
+            },
+            {
+              "name": "SerLCD"
+            }
+          ],
+          "help": {
+            "online": "https://forums.sparkfun.com"
+          },
+          "toolsDependencies": [],
+          "discoveryDependencies": [],
+          "monitorDependencies": []
+        }
+      ],
+      "tools": [
+        {
+          "name": "arm-none-eabi-gcc",
+          "version": "8-2018-q4-major",
+          "systems": [
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://static.sparkfun.com/large/gcc-arm-none-eabi-8-2018-q4-major-mac.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-8-2018-q4-major-mac.tar.bz2",
+              "size": "111430151",
+              "checksum": "SHA-256:0b528ed24db9f0fa39e5efdae9bcfc56bf9e07555cb267c70ff3fee84ec98460"
+            },
+            {
+              "host": "i386-apple-darwin11",
+              "url": "https://static.sparkfun.com/large/gcc-arm-none-eabi-8-2018-q4-major-mac.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-8-2018-q4-major-mac.tar.bz2",
+              "size": "111430151",
+              "checksum": "SHA-256:0b528ed24db9f0fa39e5efdae9bcfc56bf9e07555cb267c70ff3fee84ec98460"
+            },
+            {
+              "host": "i686-linux-gnu",
+              "url": "https://static.sparkfun.com/large/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2",
+              "size": "107253352",
+              "checksum": "SHA-256:fb31fbdfe08406ece43eef5df623c0b2deb8b53e405e2c878300f7a1f303ee52"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://static.sparkfun.com/large/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2",
+              "archiveFileName": "gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2",
+              "size": "107253352",
+              "checksum": "SHA-256:fb31fbdfe08406ece43eef5df623c0b2deb8b53e405e2c878300f7a1f303ee52"
+            },
+            {
+              "host": "i686-mingw32",
+              "url": "https://static.sparkfun.com/large/gcc-arm-none-eabi-8-2018-q4-major-win32-modified.zip",
+              "archiveFileName": "gcc-arm-none-eabi-8-2018-q4-major-win32-modified.zip",
+              "size": "135448870",
+              "checksum": "SHA-256:98f47ed254ce31942408028c3a4a75ad4ee9fe7f318daecafb8c101bc19a6e23"
+            }
+          ]
+        },
+        {
+          "name": "bossac",
+          "version": "1.4.0",
+          "systems": [
+            {
+              "host": "i686-mingw32",
+              "url": "https://github.com/sparkfun/Arduino_Boards/raw/master/sparkfun/samd-tools/bossac/bossac-1.4.0-win.zip",
+              "archiveFileName": "bossac-1.4.0-win.zip",
+              "size": "314705",
+              "checksum": "SHA-256:BCA6503F5DBB1F96693AFD0701A759ECFB3BE5B9FB3F9D901CA17853B224F4EB"
+            },
+            {
+              "host": "x86_64-pc-linux-gnu",
+              "url": "https://github.com/sparkfun/Arduino_Boards/raw/master/sparkfun/samd-tools/bossac/bossac-1.4.0-linux64.tar.bz2",
+              "archiveFileName": "bossac-1.4.0-linux64.tar.bz2",
+              "size": "225696",
+              "checksum": "SHA-256:BB8F398BF84C5F31880FE9A2C7AE0174592516CE4821B49744B426AA968ADA10"
+            },
+            {
+              "host": "x86_64-apple-darwin",
+              "url": "https://github.com/sparkfun/Arduino_Boards/raw/master/sparkfun/samd-tools/bossac/bossac-1.4.0-osx.tar.bz2",
+              "archiveFileName": "bossac-1.4.0-osx.tar.bz2",
+              "size": "74461",
+              "checksum": "SHA-256:D0F225846D7BC80A74324D783CDB35C42A7F85EAD73CC016C0CC767B0AA5E81C"
+            }
+          ]
+        }
+      ],
+      "help": {
+        "online": "https://learn.sparkfun.com/tutorials/installing-arduino-ide/board-add-ons-with-arduino-board-manager"
+      }
+    }
+  ],
+  "IsTrusted": false
+}

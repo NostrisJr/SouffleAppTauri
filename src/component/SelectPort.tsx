@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { DropDownMenu } from "./DropDownMenu";
 
 type selectPortProps = {
   ports: Array<string>;
@@ -19,7 +18,7 @@ function SelectPort({ ports, selectedPort, setSelectedPort, className }: selectP
 
   return (
     <select value={selectedValue} onChange={handleSelectChange} className={className}>
-      <option value="">Please select a port</option>
+      <option value="">Please select a device</option>
       {ports.map(
         (port, index) =>
           port !== "" && (

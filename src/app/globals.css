@@ -44,53 +44,12 @@
     0rem 0.5rem 0.5rem rgb(var(--s-pink-halo) / 1);
 }
 
-/* 
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  color: #ef2387;
-
-}
-
-input[type="range"]:focus {
-  outline: none;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-  background-color: rgb(var(--s-purple) / 1);
-  border-radius: 99999px;
-  height: 0.3rem;
-}
-
-input[type="range"]::-ms-fill-lower {
-  background: rgb(var(--s-pink) / 1);
-  content: '';
-  height: 0.3em;
-  pointer-events: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  padding: 0.2em;
-  margin-top: -0.9em; 
-  background:
-    linear-gradient(135deg, rgb(var(--s-bg-dark) / 1), rgb(var(--s-bg-light) / 1)) content-box,
-    linear-gradient(180deg, rgb(var(--s-bg-light) / 1), rgb(var(--s-bg-dark) / 1)) border-box;
-  border-radius: 3rem;
-  height: 2.2rem;
-  width: 2.2rem;
-} */
-
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
 select {
   appearance: none;
   -webkit-appearance: none;
-  text-align: center;
-  text-align-last:center;
+  text-align-last: center;
 }

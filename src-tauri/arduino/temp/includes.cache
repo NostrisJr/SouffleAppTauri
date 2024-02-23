@@ -1,0 +1,27 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/Users/theophiledonato/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/cores/arduino"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/Users/theophiledonato/Library/Arduino15/packages/arduino/hardware/avr/1.8.6/variants/leonardo"
+  },
+  {
+    "Sourcefile": "/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/arduino/temp/sketch/BriseArduino.ino.cpp",
+    "Include": "MIDIUSB.h",
+    "Includepath": "/Users/theophiledonato/Documents/Arduino/libraries/MIDIUSB/src"
+  },
+  {
+    "Sourcefile": "/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/arduino/temp/sketch/BriseArduino.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/Users/theophiledonato/Documents/Arduino/libraries/MIDIUSB/src/MIDIUSB.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]

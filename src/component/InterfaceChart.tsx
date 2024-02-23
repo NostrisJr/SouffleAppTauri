@@ -15,32 +15,45 @@ type chartProp = {
 };
 
 function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused, className }: chartProp) {
-  const realMax = 127 - max;
 
   const data = [];
 
   for (let x = 0; x < min; x += 1) {
     data.push({ x: x, y: min });
   }
-  for (let x = min; x <= realMax; x += 1) {
+  for (let x = min; x <= max; x += 1) {
     /*Let's work between 0 and 1*/
-    let newX = (x - min) / (realMax - min);
+    let newX = (x - min) / (max - min);
     let newY = Math.pow(newX, Math.exp(bend / 100));
 
-    data.push({ x: x, y: newY * (realMax - min) + min });
+    data.push({ x: x, y: newY * (max - min) + min });
   }
-  for (let x = realMax; x <= 127; x += 1) {
-    data.push({ x: x, y: realMax });
+  for (let x = max; x <= 127; x += 1) {
+    data.push({ x: x, y: max });
   }
 
   return (
     <div className={className}>
-      <div className="w-full noFadeIn">
-        <div className="bg-s-bg-light grid grid-cols-2 gap-5 font-body font-medium text-xl p-5 w-full">
+      <div className="flex h-full pt-20 pb-10 pr-4">
+        <InterfaceSlider
+          label="min"
+          index={3}
+          focused={focused}
+          values={values}
+          setValues={setValues}
+          min={0}
+          max={127}
+          step={1}
+          direction="normal"
+          orientation="vertical"
+        />
+      </div>
+      <div className="w-full">
+        <div className="bg-s-bg-light grid grid-cols-2 gap-4 font-body font-medium text-xl p-5 w-full">
           <div className=" col-span-1 flex items-center">
             <p className="text-s-bg-dark">Canal : </p>
             <InputNumber
-              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white"
+              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white mx-2"
               min={1}
               max={16}
               step={1}
@@ -53,7 +66,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
           <div className=" col-span-1 flex items-center">
             <p className="text-s-bg-dark">Mici CC : </p>
             <InputNumber
-              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white"
+              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white mx-2"
               min={1}
               max={127}
               step={1}
@@ -69,7 +82,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
             <ResponsiveContainer width="100%" height="100%" className="col-span-2 noFadeIn">
               <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }} className="noFadeIn">
                 <XAxis dataKey={"x"} domain={[0, 127]} ticks={[0, 127]} className="noFadeIn" />
-                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, realMax]} className="noFadeIn" />
+                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, max]} className="noFadeIn" />
                 <Line
                   type="monotone"
                   dataKey="y"
@@ -94,33 +107,23 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
             max={300}
             step={1}
             direction="normal"
+            orientation="horizontal"
           />
-
-          <div className="px-10 py-4">
-            <InterfaceSlider
-              label="min"
-              index={3}
-              focused={focused}
-              values={values}
-              setValues={setValues}
-              min={0}
-              max={127}
-              step={1}
-              direction="normal"
-            />
-            <InterfaceSlider
-              label="max"
-              index={4}
-              focused={focused}
-              values={values}
-              setValues={setValues}
-              min={0}
-              max={127}
-              step={1}
-              direction="inverted"
-            />
-          </div>
         </div>
+      </div>
+      <div className="flex h-full pt-20 pb-10 pl-4">
+        <InterfaceSlider
+          label="max"
+          index={4}
+          focused={focused}
+          values={values}
+          setValues={setValues}
+          min={0}
+          max={127}
+          step={1}
+          direction="inverted"
+          orientation="vertical"
+        />
       </div>
     </div>
   );

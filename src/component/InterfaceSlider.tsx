@@ -1,5 +1,5 @@
 import { Slider } from "@mui/material";
-import styled from "styled-components";
+import "./interfaceSlider.css";
 
 type InterfaceSliderProps = {
   label: string;
@@ -10,37 +10,9 @@ type InterfaceSliderProps = {
   min: number;
   max: number;
   step: number;
-  direction: "normal" | "inverted";
+  direction: "normal" | "inverted" | false | undefined;
+  orientation: "vertical" | "horizontal";
 };
-
-const InterfaceSliderStyled = styled(Slider)({
-    height: 2,
-    "& .MuiSlider-rail": {
-      color: "rgb(var(--s-purple) / 1)",
-      opacity: 1,
-    },
-    "& .MuiSlider-track": {
-      background: "rgb(var(--s-pink) / 1)",
-      border: "none",
-      opacity: 1,
-    },
-
-    "& .MuiSlider-thumb": {
-      height: 25,
-      width: 25,
-      backgroundColor: "rgb(var(--s-bg-dark) / 1)",
-      padding: "0.125em",
-      background:
-        "linear-gradient(135deg, rgb(var(--s-bg-dark) / 1), rgb(var(--s-bg-light) / 1)) content-box, linear-gradient(180deg, rgb(var(--s-bg-light) / 1), rgb(var(--s-bg-dark) / 1)) border-box",
-      border: "none",
-      "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
-        boxShadow: "none",
-      },
-      "&::before": {
-        display: "none",
-      },
-    },
-  });
 
 function InterfaceSlider({
   label,
@@ -52,20 +24,21 @@ function InterfaceSlider({
   max,
   step,
   direction,
+  orientation,
 }: InterfaceSliderProps) {
-  const handleSliderChange = (event:any, newValue:number) => {
+  const handleSliderChange = (event: any, newValue: number) => {
     //if min
     if (index === 3) {
-      const accessibleMax = 127 - values[focused][4];
-      if (newValue >= accessibleMax - 1) {
-        newValue = accessibleMax - 1;
+      const accessibleMax = values[focused][4]-1;
+      if (newValue >= accessibleMax) {
+        newValue = accessibleMax;
       }
     }
 
-    //if max Remember that max = 0 when "real max" = 127. Big brain time
+    //if max
     if (index === 4) {
-      if (newValue >= -values[focused][3] - 1 + 127) {
-        newValue = -values[focused][3] - 1 + 127;
+      if (newValue <= values[focused][3] + 1) {
+        newValue = values[focused][3] + 1;
       }
     }
 
@@ -82,7 +55,9 @@ function InterfaceSlider({
 
   const handleReset = () => {
     let resetValue = 0;
-
+    if (index === 4) {
+      resetValue = 127;
+    } 
     const nextValues = values.map((parameters, i) => {
       if (i === focused) {
         parameters[index] = resetValue;
@@ -95,8 +70,12 @@ function InterfaceSlider({
   };
 
   return (
-    <div className="bg-s-bg-light flex rounded-full h-4 px-3 my-4 items-center">
-      <InterfaceSliderStyled
+    <div
+      className={`bg-s-bg-light flex rounded-full ${
+        orientation === "vertical" ? "w-4 py-3 flex-col" : "h-4 px-3 flex-row"
+      } items-center`}
+    >
+      <Slider
         aria-label={label}
         value={values[focused][index]}
         min={min}
@@ -105,6 +84,13 @@ function InterfaceSlider({
         onChange={handleSliderChange}
         onDoubleClick={handleReset}
         track={direction}
+        orientation={orientation}
+        slotProps={{
+          rail: { className: direction === "normal" ? "rail" : "track" },
+          track: { className: direction === "normal" ? "track" : "rail" },
+          thumb: { className: "thumb" },
+          root: { className: orientation === "horizontal" ? "horizontalSlider" : "verticalSlider" },
+        }}
       />
     </div>
   );

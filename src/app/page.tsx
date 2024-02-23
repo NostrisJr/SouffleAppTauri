@@ -20,34 +20,30 @@ function Home() {
 
   /*index by interfaceId (PotId[1 to 7, -1 means unused ], MIDI CH, MIDI CC, min, max, bend)
   
-  please note that :
-    - for fader orientation purpuse, max is chosen as complementary to 127 
-    (ie 0 when "real" max is 127 // max = 127 - "real max")
-
-    - bend is an int in [-300, 300] but is used as a float between -3.00 and 3.00 in
-    following computation (thus to avoid approx when passed to arduino via parsing)
+  please note that bend is an int in [-300, 300] but is used as a float between -3.00 and 3.00 
+  in following computation (thus to avoid approx when passed to arduino via parsing)
   */
   const [values, setValues] = useState<Array<Array<number>>>(() =>
-    Array.from({ length: nbInterfaces }, () => [-1, 1, 1, 0, 0, 0])
+    Array.from({ length: nbInterfaces }, () => [-1, 1, 1, 0, 127, 0])
   );
 
   //based on Spitfire libraries
   const defalutValues = [
-    [1, 1, 7, 0, 0, 0], //plugin volume
-    [2, 1, 16, 0, 0, 0], //speed/tightness
-    [3, 1, 17, 0, 0, 0], // release
-    [4, 1, 19, 0, 0, 0], //reverb
-    [5, 1, 11, 0, 0, 0], //expression
-    [6, 1, 1, 0, 0, 0], //dynamics
-    [7, 1, 21, 0, 0, 0], // vibrato
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
-    [-1, 1, 0, 0, 0, 0],
+    [1, 1, 7, 0, 127, 0], //plugin volume
+    [2, 1, 16, 0, 127, 0], //speed/tightness
+    [3, 1, 17, 0, 127, 0], // release
+    [4, 1, 19, 0, 127, 0], //reverb
+    [5, 1, 11, 0, 127, 0], //expression
+    [6, 1, 1, 0, 127, 0], //dynamics
+    [7, 1, 21, 0, 127, 0], // vibrato
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
+    [-1, 1, 0, 0, 127, 0],
   ];
 
   // index by interfaceId then by potID, knowing that 0 stands for the outline
@@ -98,20 +94,8 @@ function Home() {
     return;
   }
 
-  async function notif() {
-    const command = new Command("ls");
-    command.on("close", (data) => {
-      console.log(`command finished with code ${data.code} and signal ${data.signal}`);
-    });
-    command.on("error", (error) => {
-      alert(`command error: "${error}"`);
-    });
-    command.stdout.on("data", (line) => console.log(`command stdout: "${line}"`));
-    command.stderr.on("data", (line) => console.log(`command stderr: "${line}"`));
+  function sendConfiguration() {
 
-    const child = await command.spawn();
-
-    console.log("pid:", child.pid);
   }
 
   async function getDevices() {
@@ -123,20 +107,9 @@ function Home() {
 
   return (
     <>
-      <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10">
+      <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10 h-screen">
         <div className="col-span-3 justify-items-center">
           <div className="grid grid-cols-5 gap-5">
-            <div className="flex items-center justify-center col-span-5">
-              <div className="bg-s-white shadow-display-box w-full h-1 mx-4" />
-              <SelectPort
-                ports={ports}
-                selectedPort={selectedPort}
-                setSelectedPort={setSelectedPort}
-                className="bg-s-bg-dark text-lg text-s-white font-body focus:ring-0 border-none focus:border-none m-4"
-              />
-              <div className="bg-s-white shadow-display-box w-full h-1 mx-4" />
-            </div>
-
             {Array.from(Array(15).keys()).map((interfaceId) => (
               <InterfaceItem
                 key={interfaceId}
@@ -150,11 +123,27 @@ function Home() {
               />
             ))}
           </div>
+          <div className="flex items-center justify-center gap-4 m-4">
+            <button
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              onClick={() => setValues(defalutValues)}
+            >
+              Default
+            </button>
+            <button
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              onClick={() => {
+                sendConfiguration();
+              }}
+            >
+              Send
+            </button>
+          </div>
         </div>
 
         <div className="col-span-2 flex flex-col w-full items-start">
           <InterfaceChart
-            className="flex justify-center w-full"
+            className="flex justify-center w-full mb-4"
             bend={values[focused][5]}
             min={values[focused][3]}
             max={values[focused][4]}
@@ -163,28 +152,22 @@ function Home() {
             setValues={setValues}
             focused={focused}
           />
-          <div className="items-center w-full justify-center flex gap-5 p-4">
-            <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
-              onClick={() => setValues(defalutValues)}
-            >
-              Defaut
-            </button>
-            <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
-              onClick={() => {
-                notif();
-              }}
-            >
-              Envoyer
-            </button>
+          <div className="bg-s-bg-light flex justify-center my-4 w-full">
+            <SelectPort
+              ports={ports}
+              selectedPort={selectedPort}
+              setSelectedPort={setSelectedPort}
+              className="bg-s-bg-light text-lg text-s-white font-body focus:ring-0 border-none focus:border-none m-2"
+            />
+          </div>
+          <div className="items-center w-full justify-center flex">
             <button
               className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
               onClick={() => {
                 getDevices();
               }}
             >
-              Get
+              Refresh Devices
             </button>
           </div>
         </div>
