@@ -28,20 +28,11 @@
             "args": false
           },
           {
-            "name": "pwd",
-            "cmd": "pwd",
-            "args": false
-          },
-          {
             "name": "ls",
             "cmd": "sh",
             "args": ["-c", "chmod +x list_usb.sh && ./list_usb.sh"]
           },
-          {
-            "name": "ioreg",
-            "cmd": "sh",
-            "args": ["-c", "ioreg -lp IOUSB -a > usb_devices.xml"]
-          }
+          { "name": "src-tauri/binaries/arduino-cli", "args": true, "sidecar": true }
         ],
         "sidecar": true
       },
@@ -56,7 +47,9 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [],
+      "externalBin": [
+        "src-tauri/binaries/arduino-cli"
+      ],
       "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "com.tauri.dev",
       "longDescription": "",
