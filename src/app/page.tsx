@@ -7,6 +7,7 @@ import { InterfaceChart } from "../component/InterfaceChart";
 import { InterfaceItem } from "../component/InterfaceItem";
 import { useState } from "react";
 import { SelectPort } from "@/component/SelectPort";
+import { resolveResource } from '@tauri-apps/api/path'
 
 type recolorProp = {
   focused: number;
@@ -14,6 +15,8 @@ type recolorProp = {
 };
 
 function Home() {
+  const [userArduinoCliPaths, setUserArduinoCliPaths] = useState()
+
   const nbInterfaces = 15;
   const colorFill: string[] = ["rgb(var(--s-bg-light)/1)", "rgb(var(--s-purple)/1)", "rgb(var(--s-pink)/1)"];
   const [focused, setFocused] = useState<number>(0);
@@ -94,8 +97,11 @@ function Home() {
     return;
   }
 
-  function sendConfiguration() {
-
+  async function sendConfiguration() {
+    
+    const command: Command = Command.sidecar("binaries/arduino-cli", ["board", "listall", "--config-file"]);
+    const output = await command.execute()
+    console.log(output.stdout)
   }
 
   async function getDevices() {
@@ -107,7 +113,7 @@ function Home() {
 
   return (
     <>
-      <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10 h-screen">
+      <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10">
         <div className="col-span-3 justify-items-center">
           <div className="grid grid-cols-5 gap-5">
             {Array.from(Array(15).keys()).map((interfaceId) => (

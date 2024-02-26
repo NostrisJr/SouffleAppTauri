@@ -12,10 +12,14 @@
   },
   "tauri": {
     "allowlist": {
+      "path": {
+        "all": true
+      },
       "shell": {
         "all": true,
         "execute": true,
         "open": true,
+        "sidecar": true,
         "scope": [
           {
             "name": "flash-code",
@@ -32,12 +36,14 @@
             "cmd": "sh",
             "args": ["-c", "chmod +x list_usb.sh && ./list_usb.sh"]
           },
-          { "name": "bin/arduino-cli", "args": true, "sidecar": true }
-        ],
-        "sidecar": true
+          { "name": "binaries/arduino-cli", "args": true, "sidecar": true }
+        ]
       },
       "notification": {
         "all": true
+      },
+      "fs": {
+        "scope": ["$RESOURCE/*"]
       }
     },
     "bundle": {
@@ -48,7 +54,7 @@
         "depends": []
       },
       "externalBin": [
-        "bin/arduino-cli"
+        "binaries/arduino-cli"
       ],
       "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "com.tauri.dev",
@@ -60,7 +66,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": ["ressources/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {
