@@ -22,11 +22,6 @@
         "sidecar": true,
         "scope": [
           {
-            "name": "flash-code",
-            "cmd": "/usr/local/bin/avrdude",
-            "args": ["-p atmega32u4 -D -Uflash:w:'main.hex' -v -v -F -c avrisp -P /dev/ttyACM0"]
-          },
-          {
             "name": "list-ports",
             "cmd": "ls",
             "args": false
@@ -44,6 +39,14 @@
       },
       "fs": {
         "scope": ["$RESOURCE/*"]
+      },
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
       }
     },
     "bundle": {

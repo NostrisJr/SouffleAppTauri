@@ -7,7 +7,6 @@ import { InterfaceChart } from "../component/InterfaceChart";
 import { InterfaceItem } from "../component/InterfaceItem";
 import { useState } from "react";
 import { SelectPort } from "@/component/SelectPort";
-import { resolveResource } from '@tauri-apps/api/path'
 
 type recolorProp = {
   focused: number;
@@ -15,7 +14,7 @@ type recolorProp = {
 };
 
 function Home() {
-  const [userArduinoCliPaths, setUserArduinoCliPaths] = useState()
+  const [disabled, setDisabled] = useState(false);
 
   const nbInterfaces = 15;
   const colorFill: string[] = ["rgb(var(--s-bg-light)/1)", "rgb(var(--s-purple)/1)", "rgb(var(--s-pink)/1)"];
@@ -98,10 +97,49 @@ function Home() {
   }
 
   async function sendConfiguration() {
-    
-    const command: Command = Command.sidecar("binaries/arduino-cli", ["board", "listall", "--config-file"]);
-    const output = await command.execute()
-    console.log(output.stdout)
+    async function compileAndSend() {
+      const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+      const pathSketch = await pathModule.resolveResource("ressources/Arduino/sketch_mar31b");
+      const pathConfig = await pathModule.resolveResource("ressources/Arduino15/arduino-cli.yaml");
+
+      const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
+        "compile",
+        "--fqbn",
+        "arduino:avr:leonardo",
+        pathSketch,
+        "--config-file",
+        pathConfig,
+      ]);
+      const compileOutput = await commandCompile.execute();
+      if (compileOutput.code !== 0) {
+        alert("An error has occurred while compiling");
+      }
+
+      const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
+        "upload",
+        "-p",
+        "/dev/tty." + selectedPort,
+        "--fqbn",
+        "arduino:avr:leonardo",
+        pathSketch,
+        "--config-file",
+        pathConfig,
+      ]);
+
+      commandUpload.execute().then((output) => {
+        if (output.code === 0) {
+          alert("Code uploaded ! \n Have a good time making music");
+        } else {
+          alert(
+            "An error occured while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
+          );
+        }
+        setDisabled(false)
+      });
+    }
+
+    setDisabled(true);
+    compileAndSend()
   }
 
   async function getDevices() {
@@ -131,8 +169,9 @@ function Home() {
           </div>
           <div className="flex items-center justify-center gap-4 m-4">
             <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:hover:none"
               onClick={() => setValues(defalutValues)}
+              disabled={disabled}
             >
               Default
             </button>

@@ -1,0 +1,188 @@
+[
+
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.usbmodem9",
+  
+        "label": "/dev/cu.usbmodem9",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port (USB)",
+  
+        "properties": {
+  
+          "pid": "0x9206",
+  
+          "serialNumber": "MIDI",
+  
+          "vid": "0x1B4F"
+  
+        },
+  
+        "hardware_id": "MIDI"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.BLTH",
+  
+        "label": "/dev/cu.BLTH",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.MIDDLETON",
+  
+        "label": "/dev/cu.MIDDLETON",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.PowerbeatsdeThophile",
+  
+        "label": "/dev/cu.PowerbeatsdeThophile",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.usbmodemMIDI1",
+  
+        "label": "/dev/cu.usbmodemMIDI1",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port (USB)",
+  
+        "properties": {
+  
+          "pid": "0x9206",
+  
+          "serialNumber": "MIDI",
+  
+          "vid": "0x1B4F"
+  
+        },
+  
+        "hardware_id": "MIDI"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.Bluetooth-Incoming-Port",
+  
+        "label": "/dev/cu.Bluetooth-Incoming-Port",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.UEBOOM2deAnselme",
+  
+        "label": "/dev/cu.UEBOOM2deAnselme",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.PowerbeatsProdeJean-Lau",
+  
+        "label": "/dev/cu.PowerbeatsProdeJean-Lau",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.BoseL1Pro",
+  
+        "label": "/dev/cu.BoseL1Pro",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    },
+  
+    {
+  
+      "port": {
+  
+        "address": "/dev/cu.BoseAma",
+  
+        "label": "/dev/cu.BoseAma",
+  
+        "protocol": "serial",
+  
+        "protocol_label": "Serial Port"
+  
+      }
+  
+    }
+  
+  ]
+  
