@@ -12,9 +12,10 @@ type chartProp = {
   setValues: React.Dispatch<React.SetStateAction<number[][]>>;
   focused: number;
   className: string;
+  disabled: boolean;
 };
 
-function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused, className }: chartProp) {
+function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused, className, disabled }: chartProp) {
 
   const data = [];
 
@@ -46,6 +47,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
           step={1}
           direction="normal"
           orientation="vertical"
+          disabled={disabled}
         />
       </div>
       <div className="w-full">
@@ -80,9 +82,9 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
           <div className="bg-s-pink h-[.1em] col-span-2 noFadeIn" />
           <div className="bg-s-bg-dark p-2 col-span-2 w-full aspect-[10/8] noFadeIn">
             <ResponsiveContainer width="100%" height="100%" className="col-span-2 noFadeIn">
-              <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }} className="noFadeIn">
-                <XAxis dataKey={"x"} domain={[0, 127]} ticks={[0, 127]} className="noFadeIn" />
-                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, max]} className="noFadeIn" />
+              <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <XAxis dataKey={"x"} domain={[0, 127]} ticks={[0, 127]}/>
+                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, max]}/>
                 <Line
                   type="monotone"
                   dataKey="y"
@@ -108,6 +110,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
             step={1}
             direction="normal"
             orientation="horizontal"
+            disabled={disabled}
           />
         </div>
       </div>
@@ -123,6 +126,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
           step={1}
           direction="inverted"
           orientation="vertical"
+          disabled={disabled}
         />
       </div>
     </div>

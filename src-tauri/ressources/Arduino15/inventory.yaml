@@ -1,15 +1,3 @@
-build_cache:
-    compilation_count_since_last_purge: 6
-cache:
-    builder-api:
-        v3/boards/byvid/pid/0x1b4f/0x9206:
-            data: "null"
-            ts: 2024-02-26T15:25:18.46464+01:00
-        v3/boards/byvid/pid/0x2341/0x8036:
-            data: '[{"name":"Arduino Leonardo","fqbn":"arduino:avr:leonardo"}]'
-            ts: 2024-02-26T13:27:46.051191+01:00
 installation:
-    id: 918597d0-82ea-4523-8b77-cb6543390b7b
-    secret: 39bd3c81-7628-474f-8361-649ec8a8d939
-updater:
-    last_check_time: 2024-02-26T13:20:46.730236+01:00
+    id: 9a1bf792-0dbc-453c-b316-09e2ce36b076
+    secret: 9dcff77c-5a09-4cb3-b957-3de3f0d2c6f8

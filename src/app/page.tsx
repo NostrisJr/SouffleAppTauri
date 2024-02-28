@@ -3,10 +3,12 @@
 import React from "react";
 import { Command } from "@tauri-apps/api/shell";
 
-import { InterfaceChart } from "../component/InterfaceChart";
-import { InterfaceItem } from "../component/InterfaceItem";
+import { InterfaceChart } from "@/component/InterfaceChart";
+import { InterfaceItem } from "@/component/InterfaceItem";
 import { useState } from "react";
 import { SelectPort } from "@/component/SelectPort";
+import { createPreset, readFile } from "@/component/makeArduinoCode";
+import { SelectPreset } from "@/component/SelectPreset";
 
 type recolorProp = {
   focused: number;
@@ -28,6 +30,8 @@ function Home() {
   const [values, setValues] = useState<Array<Array<number>>>(() =>
     Array.from({ length: nbInterfaces }, () => [-1, 1, 1, 0, 127, 0])
   );
+
+  const [selectedPreset, setSelectedPreset] = useState("no preset selected...");
 
   //based on Spitfire libraries
   const defalutValues = [
@@ -53,8 +57,8 @@ function Home() {
     Array.from({ length: nbInterfaces }, () => Array(8).fill(colorFill[0]))
   );
 
-  const [ports, setPorts] = useState<Array<string>>([""]);
-  const [selectedPort, setSelectedPort] = useState<string>("");
+  const [ports, setPorts] = useState<Array<Array<string>>>([[""]]);
+  const [selectedDevice, setSelectedDevice] = useState<Array<string>>(["", "", ""]);
 
   function recolor({ focused, values }: recolorProp) {
     let nextColors: Array<Array<string>> = Array.from({ length: nbInterfaces }, () => Array(8).fill(colorFill[0]));
@@ -97,61 +101,92 @@ function Home() {
   }
 
   async function sendConfiguration() {
-    async function compileAndSend() {
-      const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
-      const pathSketch = await pathModule.resolveResource("ressources/Arduino/sketch_mar31b");
-      const pathConfig = await pathModule.resolveResource("ressources/Arduino15/arduino-cli.yaml");
+    setDisabled(true);
 
-      const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
-        "compile",
-        "--fqbn",
-        "arduino:avr:leonardo",
-        pathSketch,
-        "--config-file",
-        pathConfig,
-      ]);
-      const compileOutput = await commandCompile.execute();
-      if (compileOutput.code !== 0) {
-        alert("An error has occurred while compiling");
-      }
+    const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const pathSketch = await pathModule.resolveResource("resources/Arduino/default");
+    const pathConfig = await pathModule.resolveResource("resources/Arduino15/arduino-cli.yaml");
 
-      const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
-        "upload",
-        "-p",
-        "/dev/tty." + selectedPort,
-        "--fqbn",
-        "arduino:avr:leonardo",
-        pathSketch,
-        "--config-file",
-        pathConfig,
-      ]);
-
-      commandUpload.execute().then((output) => {
-        if (output.code === 0) {
-          alert("Code uploaded ! \n Have a good time making music");
-        } else {
-          alert(
-            "An error occured while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
-          );
-        }
-        setDisabled(false)
-      });
+    const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
+      "compile",
+      "--fqbn",
+      "arduino:avr:leonardo",
+      pathSketch,
+      "--config-file",
+      pathConfig,
+      "-v",
+    ]);
+    const compileOutput = await commandCompile.execute();
+    if (compileOutput.code !== 0) {
+      alert("An error has occurred while compiling");
+      console.log(compileOutput.stdout);
+      console.error(compileOutput.stderr);
     }
 
-    setDisabled(true);
-    compileAndSend()
+    const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
+      "upload",
+      "-p",
+      selectedDevice[0],
+      "--fqbn",
+      "arduino:avr:leonardo",
+      pathSketch,
+      "--config-file",
+      pathConfig,
+      "-v",
+    ]);
+
+    commandUpload.execute().then((output) => {
+      if (output.code === 0) {
+        alert("Code uploaded ! \n Have a good time making music");
+      } else {
+        alert(
+          "An error occured while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
+        );
+        console.log(compileOutput.stdout);
+        console.error(compileOutput.stderr);
+      }
+      setDisabled(false);
+    });
   }
 
   async function getDevices() {
-    const output = await new Command("ls").execute();
-    const foundPorts = output.stdout.split("\n").map((str) => str.substring(9));
-    console.log(foundPorts);
-    setPorts(foundPorts);
+    const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const pathConfig = await pathModule.resolveResource("ressources/Arduino15/arduino-cli.yaml");
+
+    const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
+      "board",
+      "list",
+      "--config-file",
+      pathConfig,
+    ]);
+
+    const compileOutput = await commandCompile.execute();
+    const foundPorts = compileOutput.stdout
+      .split("\n")
+      .map((str: string) => str.split(/\s+/))
+      .filter((list: string[]) => !list.every((element) => element === ""));
+
+    const matchedPorts = foundPorts.filter((list) => list[4] === "(USB)").map((list) => [list[0], list[5], list[6]]);
+
+    console.log(matchedPorts);
+    setPorts(matchedPorts);
   }
 
   return (
-    <>
-      <div className="bg-s-bg-dark grid grid-cols-5 gap-5 p-10">
+    <div className="relative z-0 w-full h-screen items-center justify-around bg-s-bg-dark flex flex-col">
+      <div
+        className={`${disabled === false ? "hidden" : "flex flex-col"} bg-s-bg-light absolute h-1/3 w-1/2 z-10 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+      >
+        <p>Saving preset on your controller...</p>
+        <p>Please do not disconnect it !</p>
+      </div>
+      <div className="p-4 w-full bg-s-bg-light flex justify-around items-center">
+        <div className="flex gap-4">
+          <SelectPreset selectedPreset={selectedPreset} setSelectedPreset={setSelectedPreset}/>
+        </div>
+        <button className="text-s-purple font-body text-lg">Presets</button>
+      </div>
+      <div className="grid grid-cols-5 gap-5 p-10">
         <div className="col-span-3 justify-items-center">
           <div className="grid grid-cols-5 gap-5">
             {Array.from(Array(15).keys()).map((interfaceId) => (
@@ -169,19 +204,36 @@ function Home() {
           </div>
           <div className="flex items-center justify-center gap-4 m-4">
             <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:hover:none"
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
               onClick={() => setValues(defalutValues)}
               disabled={disabled}
             >
               Default
             </button>
             <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
+              onClick={() => createPreset({ values, name: "test" })}
+              disabled={disabled}
+            >
+              save
+            </button>
+            <button
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
               onClick={() => {
                 sendConfiguration();
               }}
+              disabled={disabled}
             >
               Send
+            </button>
+            <button
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
+              onClick={() => {
+                readFile();
+              }}
+              disabled={disabled}
+            >
+              Copy
             </button>
           </div>
         </div>
@@ -196,28 +248,31 @@ function Home() {
             values={values}
             setValues={setValues}
             focused={focused}
+            disabled={disabled}
           />
           <div className="bg-s-bg-light flex justify-center my-4 w-full">
             <SelectPort
               ports={ports}
-              selectedPort={selectedPort}
-              setSelectedPort={setSelectedPort}
-              className="bg-s-bg-light text-lg text-s-white font-body focus:ring-0 border-none focus:border-none m-2"
+              selectedDevice={selectedDevice}
+              setSelectedDevice={setSelectedDevice}
+              className="bg-s-bg-light text-lg text-s-white disabled:text-s-bg-dark font-body focus:ring-0 border-none focus:border-none m-2"
+              disabled={disabled}
             />
           </div>
           <div className="items-center w-full justify-center flex">
             <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none"
+              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
               onClick={() => {
                 getDevices();
               }}
+              disabled={disabled}
             >
               Refresh Devices
             </button>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

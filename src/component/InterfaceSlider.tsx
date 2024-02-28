@@ -12,6 +12,7 @@ type InterfaceSliderProps = {
   step: number;
   direction: "normal" | "inverted" | false | undefined;
   orientation: "vertical" | "horizontal";
+  disabled: boolean;
 };
 
 function InterfaceSlider({
@@ -25,6 +26,7 @@ function InterfaceSlider({
   step,
   direction,
   orientation,
+  disabled,
 }: InterfaceSliderProps) {
   const handleSliderChange = (event: any, newValue: number) => {
     //if min
@@ -81,16 +83,18 @@ function InterfaceSlider({
         min={min}
         max={max}
         step={step}
+        // @ts-ignore
         onChange={handleSliderChange}
         onDoubleClick={handleReset}
         track={direction}
         orientation={orientation}
         slotProps={{
-          rail: { className: direction === "normal" ? "rail" : "track" },
+          rail: { className: direction === "normal" ? "rail" : "track"},
           track: { className: direction === "normal" ? "track" : "rail" },
           thumb: { className: "thumb" },
           root: { className: orientation === "horizontal" ? "horizontalSlider" : "verticalSlider" },
         }}
+        disabled={disabled}
       />
     </div>
   );

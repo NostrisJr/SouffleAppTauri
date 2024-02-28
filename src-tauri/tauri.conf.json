@@ -22,14 +22,14 @@
         "sidecar": true,
         "scope": [
           {
-            "name": "list-ports",
+            "name": "list-presets",
             "cmd": "ls",
-            "args": false
+            "args": true
           },
           {
             "name": "ls",
-            "cmd": "sh",
-            "args": ["-c", "chmod +x list_usb.sh && ./list_usb.sh"]
+            "cmd": "ls",
+            "args": ["/dev/tty.usbmodem*"]
           },
           { "name": "binaries/arduino-cli", "args": true, "sidecar": true }
         ]
@@ -38,15 +38,11 @@
         "all": true
       },
       "fs": {
-        "scope": ["$RESOURCE/*"]
+        "all": true,
+        "scope": ["$RESOURCE/**","$DATA/**", "$APPDATA/**"]
       },
       "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
+        "all": true
       }
     },
     "bundle": {
@@ -60,7 +56,7 @@
         "binaries/arduino-cli"
       ],
       "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-      "identifier": "com.tauri.dev",
+      "identifier": "SouffleDesktop",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -69,7 +65,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["ressources/*"],
+      "resources": ["resources/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {

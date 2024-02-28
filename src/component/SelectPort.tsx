@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 
 type selectPortProps = {
-  ports: Array<string>;
-  selectedPort: string;
-  setSelectedPort: React.Dispatch<React.SetStateAction<string>>;
+  ports: Array<Array<string>>;
+  selectedDevice: Array<string>;
+  setSelectedDevice: React.Dispatch<React.SetStateAction<Array<string>>>;
   className: string;
+  disabled: boolean;
 };
 
-function SelectPort({ ports, selectedPort, setSelectedPort, className }: selectPortProps) {
-  const [selectedValue, setSelectedValue] = useState<string>(selectedPort);
+function SelectPort({ ports, selectedDevice, setSelectedDevice, className, disabled }: selectPortProps) {
+  const [selectedValue, setSelectedValue] = useState<Array<string>>(selectedDevice);
 
   function handleSelectChange(event: any) {
-    const newPort = event.target.value;
-    setSelectedValue(newPort);
-    setSelectedPort(newPort);
+    const newDevice = event.target.value.split(",");
+    console.log(newDevice)
+    setSelectedValue(newDevice);
+    setSelectedDevice(newDevice);
   }
 
   return (
-    <select value={selectedValue} onChange={handleSelectChange} className={className}>
+    <select value={selectedValue} onChange={handleSelectChange} className={className} disabled={disabled}>
       <option value="">Please select a device</option>
-      {ports.map(
-        (port, index) =>
-          port !== "" && (
-            <option key={index} value={port} className="text-center justify-center">
-              {port}
-            </option>
-          )
-      )}
+      {ports.map((port, index) => (
+        <option key={index} value={port} className="text-center justify-center">
+          {port[1]}
+        </option>
+      ))}
     </select>
   );
 }
