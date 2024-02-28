@@ -7,7 +7,7 @@ import { InterfaceChart } from "@/component/InterfaceChart";
 import { InterfaceItem } from "@/component/InterfaceItem";
 import { useState } from "react";
 import { SelectPort } from "@/component/SelectPort";
-import { createPreset, readFile } from "@/component/makeArduinoCode";
+import { createPreset, defaultValues } from "@/component/HandleData";
 import { SelectPreset } from "@/component/SelectPreset";
 
 type recolorProp = {
@@ -32,25 +32,6 @@ function Home() {
   );
 
   const [selectedPreset, setSelectedPreset] = useState("no preset selected...");
-
-  //based on Spitfire libraries
-  const defalutValues = [
-    [1, 1, 7, 0, 127, 0], //plugin volume
-    [2, 1, 16, 0, 127, 0], //speed/tightness
-    [3, 1, 17, 0, 127, 0], // release
-    [4, 1, 19, 0, 127, 0], //reverb
-    [5, 1, 11, 0, 127, 0], //expression
-    [6, 1, 1, 0, 127, 0], //dynamics
-    [7, 1, 21, 0, 127, 0], // vibrato
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-    [-1, 1, 0, 0, 127, 0],
-  ];
 
   // index by interfaceId then by potID, knowing that 0 stands for the outline
   const [colors, setColors] = useState<Array<Array<string>>>(() =>
@@ -151,7 +132,7 @@ function Home() {
 
   async function getDevices() {
     const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
-    const pathConfig = await pathModule.resolveResource("ressources/Arduino15/arduino-cli.yaml");
+    const pathConfig = await pathModule.resolveResource("resources/Arduino15/arduino-cli.yaml");
 
     const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
       "board",
@@ -205,7 +186,7 @@ function Home() {
           <div className="flex items-center justify-center gap-4 m-4">
             <button
               className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
-              onClick={() => setValues(defalutValues)}
+              onClick={() => setValues(defaultValues)}
               disabled={disabled}
             >
               Default
@@ -225,15 +206,6 @@ function Home() {
               disabled={disabled}
             >
               Send
-            </button>
-            <button
-              className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
-              onClick={() => {
-                readFile();
-              }}
-              disabled={disabled}
-            >
-              Copy
             </button>
           </div>
         </div>

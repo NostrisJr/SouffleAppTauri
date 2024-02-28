@@ -27,14 +27,12 @@ function SelectPreset({ selectedPreset, setSelectedPreset }: selectPresetProps) 
     const path = await import("@tauri-apps/api/path");
     
     const appDataPath = await path.appDataDir();
-    const cmdPath = `"${appDataPath}presets/"`
-    console.log(cmdPath)
-    const command = new Command("list-presets", [cmdPath])
+    const inventoryPath = `${appDataPath}presets/inventory.txt`
 
-    const output = await command.execute()
-    console.log(output.stdout)
-    console.log(output.stderr)
+    const presets = await fs.readTextFile(inventoryPath)
+    const presetsList = presets.split("\n")
 
+    setClicked(true)
   }
 
   function handleClick(label:string){
@@ -52,6 +50,10 @@ function SelectPreset({ selectedPreset, setSelectedPreset }: selectPresetProps) 
       >
         <PresetItem
           label="un preset"
+          onClick={()=>handleClick("un preset")}
+        />
+        <PresetItem
+          label="un autre"
           onClick={()=>handleClick("un preset")}
         />
       </div>
