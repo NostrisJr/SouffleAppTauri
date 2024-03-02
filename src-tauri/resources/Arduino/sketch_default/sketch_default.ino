@@ -1,27 +1,30 @@
+//This is the default code for Brise controller
 #include "MIDIUSB.h"
 
-//DO NOT REMOVE COMMENTARY - Next line is values
-const int values[][6] = {{1, 1, 7, 0, 127, 0},{2, 1, 16, 0, 127, 0},{3, 1, 17, 0, 127, 0},{4, 1, 19, 0, 127, 0},{5, 1, 11, 0, 127, 0},{6, 1, 1, 0, 127, 0},{7, 1, 21, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0},{-1, 1, 0, 0, 127, 0}};
+// DO NOT REMOVE COMMENTARY - Next line is values
+const int values[15][7] = {{1, 1, 7, 0, 127, 0, 0}, {2, 1, 16, 0, 127, 0, 0}, {3, 1, 17, 0, 127, 0, 0}, {4, 1, 19, 0, 127, 0, 0}, {5, 1, 11, 0, 127, 0, 0}, {6, 1, 1, 0, 127, 0, 0}, {7, 1, 21, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}};
 
-const int NPots = 7;
+const int NbInterfaces = 15;
 // POTENTIOMETERS
-const int potPin[NPots] = {A8, A7, A6, A0, A1, A2, A3};
-int potCState[NPots] = {0};
-int potPState[NPots] = {0};
+// first 0 is for pratical purpuse : you can reat pot values[X][0] on pin potPin[values[X][0]]...
+const int potPin[8] = {0, A8, A7, A6, A0, A1, A2, A3};
+
+int potCState[NbInterfaces] = {0};
+int potPState[NbInterfaces] = {0};
 int potVar = 0;
 
-int midiCState[NPots] = {0};
-int midiPState[NPots] = {0};
+int midiCState[NbInterfaces] = {0};
+int midiPState[NbInterfaces] = {0};
 
 const int TIMEOUT = 300;
 const int varThreshold = 10;
 boolean potMoving = true;
-unsigned long PTime[NPots] = {0};
-unsigned long timer[NPots] = {0};
+unsigned long PTime[NbInterfaces] = {0};
+unsigned long timer[NbInterfaces] = {0};
 
 // MIDI Assignments
-int midiCh[NPots] = {values[0][1], values[1][1], values[2][1], values[3][1], values[4][1], values[5][1], values[6][1]};
-int cc[NPots] = {values[0][0], values[1][0], values[2][0], values[3][0], values[4][0], values[5][0], values[6][0]};
+int midiChanel[NbInterfaces] = {values[0][1], values[1][1], values[2][1], values[3][1], values[4][1], values[5][1], values[6][1], values[7][1], values[8][1], values[9][1], values[10][1], values[11][1], values[12][1], values[13][1], values[14][1]};
+int midiCC[NbInterfaces] = {values[0][2], values[1][2], values[2][2], values[3][2], values[4][2], values[5][2], values[6][2], values[7][2], values[8][2], values[9][2], values[10][2], values[11][2], values[12][2], values[13][2], values[14][2]};
 
 void setup()
 {
@@ -35,41 +38,43 @@ void loop()
 void potentiometers()
 {
 
-  for (int i = 0; i < NPots; i++)
+  for (int i = 0; i < NbInterfaces; i++)
   {
-
-    potCState[i] = analogRead(potPin[i]);
-
-    midiCState[i] = map(potCState[i], 0, 1023, 127, 0); // map(value, fromLow, fromHigh, toLow, toHigh)
-
-    potVar = abs(potCState[i] - potPState[i]);
-
-    if (potVar > varThreshold)
+    if (values[i][0] != -1)
     {
-      PTime[i] = millis();
-    }
+      potCState[i] = analogRead(potPin[values[i][0]]);
 
-    timer[i] = millis() - PTime[i];
+      midiCState[i] = map(potCState[i], 0, 1023, 127, 0); // map(value, fromLow, fromHigh, toLow, toHigh)
 
-    if (timer[i] < TIMEOUT)
-    {
-      potMoving = true;
-    }
-    else
-    {
-      potMoving = false;
-    }
+      potVar = abs(potCState[i] - potPState[i]);
 
-    if (potMoving == true)
-    {
-      if (midiPState[i] != midiCState[i])
+      if (potVar > varThreshold)
       {
+        PTime[i] = millis();
+      }
 
-        controlChange(midiCh[i], cc[i], midiCState[i]);
-        MidiUSB.flush();
+      timer[i] = millis() - PTime[i];
 
-        potPState[i] = potCState[i];
-        midiPState[i] = midiCState[i];
+      if (timer[i] < TIMEOUT)
+      {
+        potMoving = true;
+      }
+      else
+      {
+        potMoving = false;
+      }
+
+      if (potMoving == true)
+      {
+        if (midiPState[i] != midiCState[i])
+        {
+
+          controlChange(midiChanel[i], midiCC[i], midiCState[i]);
+          MidiUSB.flush();
+
+          potPState[i] = potCState[i];
+          midiPState[i] = midiCState[i];
+        }
       }
     }
   }

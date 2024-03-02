@@ -7,10 +7,10 @@ settings:
 dependencies:
   '@emotion/react':
     specifier: ^11.11.3
-    version: 11.11.4(@types/react@18.2.60)(react@18.2.0)
+    version: 11.11.4(@types/react@18.2.61)(react@18.2.0)
   '@emotion/styled':
     specifier: ^11.11.0
-    version: 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.60)(react@18.2.0)
+    version: 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.61)(react@18.2.0)
   '@headlessui/react':
     specifier: ^1.7.18
     version: 1.7.18(react-dom@18.2.0)(react@18.2.0)
@@ -19,16 +19,10 @@ dependencies:
     version: 2.1.1(react@18.2.0)
   '@mui/material':
     specifier: ^5.15.10
-    version: 5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.60)(react-dom@18.2.0)(react@18.2.0)
-  '@tauri-apps/api':
-    specifier: ^1.5.3
-    version: 1.5.3
-  '@tauri-apps/cli':
-    specifier: ^1.5.10
-    version: 1.5.10
+    version: 5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
   next:
-    specifier: 14.1.1-canary.78
-    version: 14.1.1-canary.78(react-dom@18.2.0)(react@18.2.0)
+    specifier: 14.1.1-canary.82
+    version: 14.1.1-canary.82(react-dom@18.2.0)(react@18.2.0)
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -37,12 +31,18 @@ dependencies:
     version: 18.2.0(react@18.2.0)
 
 devDependencies:
+  '@tauri-apps/api':
+    specifier: ^1.5.3
+    version: 1.5.3
+  '@tauri-apps/cli':
+    specifier: ^1.5.10
+    version: 1.5.10
   '@types/node':
     specifier: ^20.11.19
-    version: 20.11.21
+    version: 20.11.24
   '@types/react':
     specifier: ^18.2.57
-    version: 18.2.60
+    version: 18.2.61
   '@types/react-dom':
     specifier: ^18.2.19
     version: 18.2.19
@@ -59,11 +59,11 @@ devDependencies:
     specifier: ^8.4.35
     version: 8.4.35
   prettier:
-    specifier: 3.2.5
-    version: 3.2.5
+    specifier: 2.8.8
+    version: 2.8.8
   recharts:
     specifier: ^2.12.1
-    version: 2.12.1(react-dom@18.2.0)(react@18.2.0)
+    version: 2.12.2(react-dom@18.2.0)(react@18.2.0)
   styled-components:
     specifier: ^6.1.8
     version: 6.1.8(react-dom@18.2.0)(react@18.2.0)
@@ -183,7 +183,7 @@ packages:
   /@emotion/memoize@0.8.1:
     resolution: {integrity: sha512-W2P2c/VRW1/1tLox0mVUalvnWXxavmv/Oum2aPsRcoDJuob75FC3Y8FbpfLwUegRcxINtGUMPq0tFCvYNTBXNA==}
 
-  /@emotion/react@11.11.4(@types/react@18.2.60)(react@18.2.0):
+  /@emotion/react@11.11.4(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-t8AjMlF0gHpvvxk5mAtCqR4vmxiGHCeJBaQO6gncUSdklELOgtwjerNY2yuJNfwnc6vi16U/+uMF+afIawJ9iw==}
     peerDependencies:
       '@types/react': '*'
@@ -199,7 +199,7 @@ packages:
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
       '@emotion/weak-memoize': 0.3.1
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
       hoist-non-react-statics: 3.3.2
       react: 18.2.0
     dev: false
@@ -218,7 +218,7 @@ packages:
     resolution: {integrity: sha512-0QBtGvaqtWi+nx6doRwDdBIzhNdZrXUppvTM4dtZZWEGTXL/XE/yJxLMGlDT1Gt+UHH5IX1n+jkXyytE/av7OA==}
     dev: false
 
-  /@emotion/styled@11.11.0(@emotion/react@11.11.4)(@types/react@18.2.60)(react@18.2.0):
+  /@emotion/styled@11.11.0(@emotion/react@11.11.4)(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-hM5Nnvu9P3midq5aaXj4I+lnSfNi7Pmd4EWk1fOZ3pxookaQTNew6bp4JaCBYM4HVFZF9g7UjJmsUmC2JlxOng==}
     peerDependencies:
       '@emotion/react': ^11.0.0-rc.0
@@ -231,11 +231,11 @@ packages:
       '@babel/runtime': 7.24.0
       '@emotion/babel-plugin': 11.11.0
       '@emotion/is-prop-valid': 1.2.2
-      '@emotion/react': 11.11.4(@types/react@18.2.60)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.61)(react@18.2.0)
       '@emotion/serialize': 1.1.3
       '@emotion/use-insertion-effect-with-fallbacks': 1.0.1(react@18.2.0)
       '@emotion/utils': 1.2.1
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
       react: 18.2.0
     dev: false
 
@@ -381,13 +381,13 @@ packages:
       wrap-ansi-cjs: /wrap-ansi@7.0.0
     dev: true
 
-  /@jridgewell/gen-mapping@0.3.4:
-    resolution: {integrity: sha512-Oud2QPM5dHviZNn4y/WhhYKSXksv+1xLEIsNrAbGcFzUN3ubqWRFT5gwPchNc5NuzILOU4tPBDTZ4VwhL8Y7cw==}
+  /@jridgewell/gen-mapping@0.3.5:
+    resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
     engines: {node: '>=6.0.0'}
     dependencies:
-      '@jridgewell/set-array': 1.1.2
+      '@jridgewell/set-array': 1.2.1
       '@jridgewell/sourcemap-codec': 1.4.15
-      '@jridgewell/trace-mapping': 0.3.23
+      '@jridgewell/trace-mapping': 0.3.24
     dev: true
 
   /@jridgewell/resolve-uri@3.1.2:
@@ -395,8 +395,8 @@ packages:
     engines: {node: '>=6.0.0'}
     dev: true
 
-  /@jridgewell/set-array@1.1.2:
-    resolution: {integrity: sha512-xnkseuNADM0gt2bs+BvhO0p78Mk762YnZdsuzFV018NoG1Sj1SCQvpSqa7XUaTam5vAGasABV9qXASMKnFMwMw==}
+  /@jridgewell/set-array@1.2.1:
+    resolution: {integrity: sha512-R8gLRTZeyp03ymzP/6Lil/28tGeGEzhx1q2k703KGWRAI1VdvPIXdG70VJc2pAMw3NA6JKL5hhFu1sJX0Mnn/A==}
     engines: {node: '>=6.0.0'}
     dev: true
 
@@ -404,14 +404,14 @@ packages:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
     dev: true
 
-  /@jridgewell/trace-mapping@0.3.23:
-    resolution: {integrity: sha512-9/4foRoUKp8s96tSkh8DlAAc5A0Ty8vLXld+l9gjKKY6ckwI8G15f0hskGmuLZu78ZlGa1vtsfOa+lnB4vG6Jg==}
+  /@jridgewell/trace-mapping@0.3.24:
+    resolution: {integrity: sha512-+VaWXDa6+l6MhflBvVXjIEAzb59nQ2JUK3bwRp2zRpPtU+8TFRy9Gg/5oIcNlkEL5PGlBFGfemUVvIgLnTzq7Q==}
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@mui/base@5.0.0-beta.37(@types/react@18.2.60)(react-dom@18.2.0)(react@18.2.0):
+  /@mui/base@5.0.0-beta.37(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-/o3anbb+DeCng8jNsd3704XtmmLDZju1Fo8R2o7ugrVtPQ/QpcqddwKNzKPZwa0J5T8YNW3ZVuHyQgbTnQLisQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -424,10 +424,10 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@floating-ui/react-dom': 2.0.8(react-dom@18.2.0)(react@18.2.0)
-      '@mui/types': 7.2.13(@types/react@18.2.60)
-      '@mui/utils': 5.15.11(@types/react@18.2.60)(react@18.2.0)
+      '@mui/types': 7.2.13(@types/react@18.2.61)
+      '@mui/utils': 5.15.11(@types/react@18.2.61)(react@18.2.0)
       '@popperjs/core': 2.11.8
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
       clsx: 2.1.0
       prop-types: 15.8.1
       react: 18.2.0
@@ -438,7 +438,7 @@ packages:
     resolution: {integrity: sha512-JVrJ9Jo4gyU707ujnRzmE8ABBWpXd6FwL9GYULmwZRtfPg89ggXs/S3MStQkpJ1JRWfdLL6S5syXmgQGq5EDAw==}
     dev: false
 
-  /@mui/material@5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.60)(react-dom@18.2.0)(react@18.2.0):
+  /@mui/material@5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-FA3eEuEZaDaxgN3CgfXezMWbCZ4VCeU/sv0F0/PK5n42qIgsPVD6q+j71qS7/62sp6wRFMHtDMpXRlN+tT/7NA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -456,14 +456,14 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.24.0
-      '@emotion/react': 11.11.4(@types/react@18.2.60)(react@18.2.0)
-      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.60)(react@18.2.0)
-      '@mui/base': 5.0.0-beta.37(@types/react@18.2.60)(react-dom@18.2.0)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.61)(react@18.2.0)
+      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.61)(react@18.2.0)
+      '@mui/base': 5.0.0-beta.37(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
       '@mui/core-downloads-tracker': 5.15.11
-      '@mui/system': 5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.60)(react@18.2.0)
-      '@mui/types': 7.2.13(@types/react@18.2.60)
-      '@mui/utils': 5.15.11(@types/react@18.2.60)(react@18.2.0)
-      '@types/react': 18.2.60
+      '@mui/system': 5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.61)(react@18.2.0)
+      '@mui/types': 7.2.13(@types/react@18.2.61)
+      '@mui/utils': 5.15.11(@types/react@18.2.61)(react@18.2.0)
+      '@types/react': 18.2.61
       '@types/react-transition-group': 4.4.10
       clsx: 2.1.0
       csstype: 3.1.3
@@ -474,7 +474,7 @@ packages:
       react-transition-group: 4.4.5(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /@mui/private-theming@5.15.11(@types/react@18.2.60)(react@18.2.0):
+  /@mui/private-theming@5.15.11(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-jY/696SnSxSzO1u86Thym7ky5T9CgfidU3NFJjguldqK4f3Z5S97amZ6nffg8gTD0HBjY9scB+4ekqDEUmxZOA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -485,8 +485,8 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.24.0
-      '@mui/utils': 5.15.11(@types/react@18.2.60)(react@18.2.0)
-      '@types/react': 18.2.60
+      '@mui/utils': 5.15.11(@types/react@18.2.61)(react@18.2.0)
+      '@types/react': 18.2.61
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
@@ -506,14 +506,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@emotion/cache': 11.11.0
-      '@emotion/react': 11.11.4(@types/react@18.2.60)(react@18.2.0)
-      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.60)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.61)(react@18.2.0)
+      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.61)(react@18.2.0)
       csstype: 3.1.3
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
 
-  /@mui/system@5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.60)(react@18.2.0):
+  /@mui/system@5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-9j35suLFq+MgJo5ktVSHPbkjDLRMBCV17NMBdEQurh6oWyGnLM4uhU4QGZZQ75o0vuhjJghOCA1jkO3+79wKsA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -530,20 +530,20 @@ packages:
         optional: true
     dependencies:
       '@babel/runtime': 7.24.0
-      '@emotion/react': 11.11.4(@types/react@18.2.60)(react@18.2.0)
-      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.60)(react@18.2.0)
-      '@mui/private-theming': 5.15.11(@types/react@18.2.60)(react@18.2.0)
+      '@emotion/react': 11.11.4(@types/react@18.2.61)(react@18.2.0)
+      '@emotion/styled': 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.61)(react@18.2.0)
+      '@mui/private-theming': 5.15.11(@types/react@18.2.61)(react@18.2.0)
       '@mui/styled-engine': 5.15.11(@emotion/react@11.11.4)(@emotion/styled@11.11.0)(react@18.2.0)
-      '@mui/types': 7.2.13(@types/react@18.2.60)
-      '@mui/utils': 5.15.11(@types/react@18.2.60)(react@18.2.0)
-      '@types/react': 18.2.60
+      '@mui/types': 7.2.13(@types/react@18.2.61)
+      '@mui/utils': 5.15.11(@types/react@18.2.61)(react@18.2.0)
+      '@types/react': 18.2.61
       clsx: 2.1.0
       csstype: 3.1.3
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
 
-  /@mui/types@7.2.13(@types/react@18.2.60):
+  /@mui/types@7.2.13(@types/react@18.2.61):
     resolution: {integrity: sha512-qP9OgacN62s+l8rdDhSFRe05HWtLLJ5TGclC9I1+tQngbssu0m2dmFZs+Px53AcOs9fD7TbYd4gc9AXzVqO/+g==}
     peerDependencies:
       '@types/react': ^17.0.0 || ^18.0.0
@@ -551,10 +551,10 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
     dev: false
 
-  /@mui/utils@5.15.11(@types/react@18.2.60)(react@18.2.0):
+  /@mui/utils@5.15.11(@types/react@18.2.61)(react@18.2.0):
     resolution: {integrity: sha512-D6bwqprUa9Stf8ft0dcMqWyWDKEo7D+6pB1k8WajbqlYIRA8J8Kw9Ra7PSZKKePGBGWO+/xxrX1U8HpG/aXQCw==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -566,14 +566,14 @@ packages:
     dependencies:
       '@babel/runtime': 7.24.0
       '@types/prop-types': 15.7.11
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
       prop-types: 15.8.1
       react: 18.2.0
       react-is: 18.2.0
     dev: false
 
-  /@next/env@14.1.1-canary.78:
-    resolution: {integrity: sha512-u8sHB6BIyCeT7NgXsfzaA91Ahn1PbE4KMirfJ1TCetC9beaSoGoGXQJCghIq1KDa/2J2hexh0LlKyvaKN30jwQ==}
+  /@next/env@14.1.1-canary.82:
+    resolution: {integrity: sha512-OK0KO4+lv4AjP8zpRIdS1YquDDFmilKnzqNv1NlR79+0co2KTV7pn0u6LSNVsiBrXww8q6aalhtZa9Tz5pj40Q==}
     dev: false
 
   /@next/eslint-plugin-next@14.1.0:
@@ -582,8 +582,8 @@ packages:
       glob: 10.3.10
     dev: true
 
-  /@next/swc-darwin-arm64@14.1.1-canary.78:
-    resolution: {integrity: sha512-fFL3hvwUiIF36Q6ScgIzlj26vugs7oo9bioLHu1zZ34hN0WigkDvU0Uw9UItJMZx40ZpZtrFO8G6gkALMqpr8g==}
+  /@next/swc-darwin-arm64@14.1.1-canary.82:
+    resolution: {integrity: sha512-S+HGDBC4tFw0akrApxVklCdZqGF/0cgM5FZM4Swp1Py4iMg17lAr1dnu2DI5tiVB20unw/OG0+eZqL2hQjIg6Q==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -591,8 +591,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-darwin-x64@14.1.1-canary.78:
-    resolution: {integrity: sha512-TPR0S109gmyhPSF2gUC3Tun2YftiO3GDkpd6xCow9FGQ1Og8a8m+tGQaJSaGK6Wu0CitNgHURHa6z8pDUat7Zg==}
+  /@next/swc-darwin-x64@14.1.1-canary.82:
+    resolution: {integrity: sha512-wel5hJsgj9AsfEmjhi+go/bjGU1q8XhMLSJFa1lBIg0pSthiBo2f65QZHbJ1JMp+myeyevQTZJwnY26Pqj72jA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -600,8 +600,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-gnu@14.1.1-canary.78:
-    resolution: {integrity: sha512-PdWEFgbUwNwl/Dyddgbny/Bt4XygZWkL8VH+16jS+VzyoMi5GeMNJEKOpJGRXwtNXdC/AqFOVdCuZltYI6LkhQ==}
+  /@next/swc-linux-arm64-gnu@14.1.1-canary.82:
+    resolution: {integrity: sha512-pY04ow2mRWe8L4yjRs4fu1SAUY+Yq3OJhBg5uKnBJJLTnBsRRpH/Cc1Px+pzwEdArTDkAa7A+T6ihzqbU/hOOQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -609,8 +609,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-musl@14.1.1-canary.78:
-    resolution: {integrity: sha512-9YtVEe+wCLYrEPMrc40BUal2FusexHtX5QF5eDzfoPkrKUWn/YfYHho/Hh08+FBYSBlZLEPN0Ygq5UTEqLZcLw==}
+  /@next/swc-linux-arm64-musl@14.1.1-canary.82:
+    resolution: {integrity: sha512-AEOMP4L9ks63RAPkdA/FC15AdXXR4c+KyvPgzzZZTSisx+YAgu9KUtA7EARTAb7H4AMcvoNeiCUX/jIU5mbnag==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -618,8 +618,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-gnu@14.1.1-canary.78:
-    resolution: {integrity: sha512-vN0CMLTjjNoijY8KwdDMnsqe0+Yzda9KjTurINrCEMi1khwkJ9/HB0bdht+/g+tUERJ6XgQKCTTv1D+y9QymVQ==}
+  /@next/swc-linux-x64-gnu@14.1.1-canary.82:
+    resolution: {integrity: sha512-345q+ubhbELBfBGPHRI4+Jxb8YLzjTGajnPMhLBYC3a+2yUP+R9Q+EWhurX5WOZLlzb69exGP35gv9e1JOiy1A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -627,8 +627,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-musl@14.1.1-canary.78:
-    resolution: {integrity: sha512-cjazHhYEZXczsGI4AGyUD3YNAGkZwkeXME+ef6I2NPZpJ9k36UZoy6e4jORUBN5p0WFNS1j675dYYlaoOS11UA==}
+  /@next/swc-linux-x64-musl@14.1.1-canary.82:
+    resolution: {integrity: sha512-ptrxuPJWPQUbirI1r5TEln69Zr+rOBEXKXrTpGbviXk2cIWyZvZbn678/hAsZUoy34Lhar20CY23iuYX0er8lQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -636,8 +636,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-arm64-msvc@14.1.1-canary.78:
-    resolution: {integrity: sha512-JBbsr14dbzcswx4yK+F3j/hT4fH4giBfs00r6Zq107LDEUzj3M0DOsEMUeycI7Q872jgAbC7WcyqmDy0DyeCuQ==}
+  /@next/swc-win32-arm64-msvc@14.1.1-canary.82:
+    resolution: {integrity: sha512-IorBFBQtuTbQajOUVZ7TFB/beQfxb/RwnJOX1wpdvPgVB6ESPB9q0HmZottCCEl/5WdOHCjS/e7cunRF9QdK+Q==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
@@ -645,8 +645,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-ia32-msvc@14.1.1-canary.78:
-    resolution: {integrity: sha512-El1gGCHDLuWN0L8uORobyB/VsnHsoQbCtOGRXF8rJwDUYLY9JnEapZgdH+tr6qjqG75jRcbmt4mP7dtbVHWa2Q==}
+  /@next/swc-win32-ia32-msvc@14.1.1-canary.82:
+    resolution: {integrity: sha512-6YW5MvIoK3CYy8O6W8G5qaXKXC8eLQ3m6D/9VhLDsSyNCNirbnxzJ7lvIG1gK+k8Jl14LKo28NXQFhE+EIzddg==}
     engines: {node: '>= 10'}
     cpu: [ia32]
     os: [win32]
@@ -654,8 +654,8 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-x64-msvc@14.1.1-canary.78:
-    resolution: {integrity: sha512-QP5013zZkklfByR/IFrY+i8NqGeO9wF2UZCVVsvZAhGbHu6l4F8rXw4McHAj7kIzxSSv0O8bmd6xA10r8jjvWA==}
+  /@next/swc-win32-x64-msvc@14.1.1-canary.82:
+    resolution: {integrity: sha512-oJsRbo8ywJCC6Xz5GW49r2mRnTcqWmHVUsi5U1ZTBY5JhRJw+ciLlP0YNb8PIrzaBwQE5vidloTcWxGHjd8A0w==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -757,7 +757,7 @@ packages:
   /@tauri-apps/api@1.5.3:
     resolution: {integrity: sha512-zxnDjHHKjOsrIzZm6nO5Xapb/BxqUq1tc7cGkFXsFkGTsSWgCPH1D8mm0XS9weJY2OaR73I3k3S+b7eSzJDfqA==}
     engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
-    dev: false
+    dev: true
 
   /@tauri-apps/cli-darwin-arm64@1.5.10:
     resolution: {integrity: sha512-8dqHaGFKFUEMv3CfEyRP0Ebq28X4Oz74bdi393nBZVqbZM8SN6JdB7kXNb3o3W1TMNSu0M71e6x06YvXSNWvXQ==}
@@ -765,7 +765,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-darwin-x64@1.5.10:
@@ -774,7 +774,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-linux-arm-gnueabihf@1.5.10:
@@ -783,7 +783,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-linux-arm64-gnu@1.5.10:
@@ -792,7 +792,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-linux-arm64-musl@1.5.10:
@@ -801,7 +801,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-linux-x64-gnu@1.5.10:
@@ -810,7 +810,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-linux-x64-musl@1.5.10:
@@ -819,7 +819,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-win32-arm64-msvc@1.5.10:
@@ -828,7 +828,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-win32-ia32-msvc@1.5.10:
@@ -837,7 +837,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli-win32-x64-msvc@1.5.10:
@@ -846,7 +846,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: false
+    dev: true
     optional: true
 
   /@tauri-apps/cli@1.5.10:
@@ -864,7 +864,7 @@ packages:
       '@tauri-apps/cli-win32-arm64-msvc': 1.5.10
       '@tauri-apps/cli-win32-ia32-msvc': 1.5.10
       '@tauri-apps/cli-win32-x64-msvc': 1.5.10
-    dev: false
+    dev: true
 
   /@tauri-apps/tauri-inliner@1.14.1:
     resolution: {integrity: sha512-IXlPbWXpKNz0dz1fplPAetBBzKA8kUaOvrrpyJ0jvxMihI9vKHaKP4GDyF89XCi0edXKv2MM+MWaaPVcmy12Bg==}
@@ -901,7 +901,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 20.11.21
+      '@types/node': 20.11.24
       '@types/responselike': 1.0.3
     dev: true
 
@@ -951,7 +951,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.11.21
+      '@types/node': 20.11.24
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -965,15 +965,15 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 20.11.21
+      '@types/node': 20.11.24
     dev: true
 
   /@types/minimatch@5.1.2:
     resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
     dev: true
 
-  /@types/node@20.11.21:
-    resolution: {integrity: sha512-/ySDLGscFPNasfqStUuWWPfL78jompfIoVzLJPVVAHBh6rpG68+pI2Gk+fNLeI8/f1yPYL4s46EleVIc20F1Ow==}
+  /@types/node@20.11.24:
+    resolution: {integrity: sha512-Kza43ewS3xoLgCEpQrsT+xRo/EJej1y0kVYGiLFE1NEODXGzTfwiC6tXTLMQskn1X4/Rjlh0MQUvx9W+L9long==}
     dependencies:
       undici-types: 5.26.5
     dev: true
@@ -992,17 +992,17 @@ packages:
   /@types/react-dom@18.2.19:
     resolution: {integrity: sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==}
     dependencies:
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
     dev: true
 
   /@types/react-transition-group@4.4.10:
     resolution: {integrity: sha512-hT/+s0VQs2ojCX823m60m5f0sL5idt9SO6Tj6Dg+rdphGPIeJbJ6CxvBYkgkGKrYeDjvIpKTR38UzmtHJOGW3Q==}
     dependencies:
-      '@types/react': 18.2.60
+      '@types/react': 18.2.61
     dev: false
 
-  /@types/react@18.2.60:
-    resolution: {integrity: sha512-dfiPj9+k20jJrLGOu9Nf6eqxm2EyJRrq2NvwOFsfbb7sFExZ9WELPs67UImHj3Ayxg8ruTtKtNnbjaF8olPq0A==}
+  /@types/react@18.2.61:
+    resolution: {integrity: sha512-NURTN0qNnJa7O/k4XUkEW2yfygA+NxS0V5h1+kp9jPwhzZy95q3ADoGMP0+JypMhrZBTTgjKAUlTctde1zzeQA==}
     dependencies:
       '@types/prop-types': 15.7.11
       '@types/scheduler': 0.16.8
@@ -1011,7 +1011,7 @@ packages:
   /@types/responselike@1.0.3:
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
     dependencies:
-      '@types/node': 20.11.21
+      '@types/node': 20.11.24
     dev: true
 
   /@types/scheduler@0.16.8:
@@ -1271,7 +1271,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       get-intrinsic: 1.2.4
       is-string: 1.0.7
     dev: true
@@ -1287,7 +1287,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-array-method-boxes-properly: 1.0.0
       is-string: 1.0.7
     dev: true
@@ -1298,7 +1298,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
       es-shim-unscopables: 1.0.2
     dev: true
@@ -1309,7 +1309,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-shim-unscopables: 1.0.2
     dev: true
 
@@ -1319,7 +1319,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-shim-unscopables: 1.0.2
     dev: true
 
@@ -1329,7 +1329,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-array-method-boxes-properly: 1.0.0
       is-string: 1.0.7
     dev: true
@@ -1339,7 +1339,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
       es-shim-unscopables: 1.0.2
     dev: true
@@ -1351,7 +1351,7 @@ packages:
       array-buffer-byte-length: 1.0.1
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
       get-intrinsic: 1.2.4
       is-array-buffer: 3.0.4
@@ -1578,7 +1578,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001591
-      electron-to-chromium: 1.4.685
+      electron-to-chromium: 1.4.689
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: true
@@ -2544,8 +2544,8 @@ packages:
       safer-buffer: 2.1.2
     dev: true
 
-  /electron-to-chromium@1.4.685:
-    resolution: {integrity: sha512-yDYeobbTEe4TNooEzOQO6xFqg9XnAkVy2Lod1C1B2it8u47JNLYvl9nLDWBamqUakWB8Jc1hhS1uHUNYTNQdfw==}
+  /electron-to-chromium@1.4.689:
+    resolution: {integrity: sha512-GatzRKnGPS1go29ep25reM94xxd1Wj8ritU0yRhCJ/tr1Bg8gKnm6R9O/yPOhGQBoLMZ9ezfrpghNaTw97C/PQ==}
     dev: true
 
   /emoji-regex@8.0.0:
@@ -2583,8 +2583,8 @@ packages:
     dependencies:
       is-arrayish: 0.2.1
 
-  /es-abstract@1.22.4:
-    resolution: {integrity: sha512-vZYJlk2u6qHYxBOTjAeg7qUxHdNfih64Uu2J8QqWgXZ2cri0ZpJAkzDUK/q593+mvKwlxyaxr6F1Q+3LKoQRgg==}
+  /es-abstract@1.22.5:
+    resolution: {integrity: sha512-oW69R+4q2wG+Hc3KZePPZxOiisRIqfKBVo/HLx94QcJeWGU/8sZhCvc829rd1kS366vlJbzBfXf9yWwf0+Ko7w==}
     engines: {node: '>= 0.4'}
     dependencies:
       array-buffer-byte-length: 1.0.1
@@ -2653,7 +2653,7 @@ packages:
       asynciterator.prototype: 1.0.0
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
       es-set-tostringtag: 2.0.3
       function-bind: 1.1.2
@@ -3361,7 +3361,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       functions-have-names: 1.2.3
     dev: true
 
@@ -3931,7 +3931,7 @@ packages:
     dependencies:
       es-errors: 1.3.0
       hasown: 2.0.1
-      side-channel: 1.0.5
+      side-channel: 1.0.6
     dev: true
 
   /internmap@2.0.3:
@@ -4814,8 +4814,8 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next@14.1.1-canary.78(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-jKq54bPT3VySeIn5mVZBJjiYwmFEOW04nM7/69YFZgunK5B0HtQD5vr1DMd+l+o/uj7Djt7HwAo9u0GHVRSjZQ==}
+  /next@14.1.1-canary.82(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-60ESrlfPEPrSgkjVB6Sn7giBFPD2IbGNc/ANhwoC6acbMNXSolZ7lPNEWDHZ+toUEHe93SgyEGmW3AYozjcOEw==}
     engines: {node: '>=18.17.0'}
     hasBin: true
     peerDependencies:
@@ -4829,7 +4829,7 @@ packages:
       sass:
         optional: true
     dependencies:
-      '@next/env': 14.1.1-canary.78
+      '@next/env': 14.1.1-canary.82
       '@swc/helpers': 0.5.5
       busboy: 1.6.0
       caniuse-lite: 1.0.30001591
@@ -4839,15 +4839,15 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
       styled-jsx: 5.1.1(react@18.2.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 14.1.1-canary.78
-      '@next/swc-darwin-x64': 14.1.1-canary.78
-      '@next/swc-linux-arm64-gnu': 14.1.1-canary.78
-      '@next/swc-linux-arm64-musl': 14.1.1-canary.78
-      '@next/swc-linux-x64-gnu': 14.1.1-canary.78
-      '@next/swc-linux-x64-musl': 14.1.1-canary.78
-      '@next/swc-win32-arm64-msvc': 14.1.1-canary.78
-      '@next/swc-win32-ia32-msvc': 14.1.1-canary.78
-      '@next/swc-win32-x64-msvc': 14.1.1-canary.78
+      '@next/swc-darwin-arm64': 14.1.1-canary.82
+      '@next/swc-darwin-x64': 14.1.1-canary.82
+      '@next/swc-linux-arm64-gnu': 14.1.1-canary.82
+      '@next/swc-linux-arm64-musl': 14.1.1-canary.82
+      '@next/swc-linux-x64-gnu': 14.1.1-canary.82
+      '@next/swc-linux-x64-musl': 14.1.1-canary.82
+      '@next/swc-win32-arm64-msvc': 14.1.1-canary.82
+      '@next/swc-win32-ia32-msvc': 14.1.1-canary.82
+      '@next/swc-win32-x64-msvc': 14.1.1-canary.82
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
@@ -4993,7 +4993,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /object.fromentries@2.0.7:
@@ -5002,7 +5002,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /object.getownpropertydescriptors@2.1.7:
@@ -5012,7 +5012,7 @@ packages:
       array.prototype.reduce: 1.0.6
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       safe-array-concat: 1.1.0
     dev: true
 
@@ -5022,7 +5022,7 @@ packages:
       array.prototype.filter: 1.0.3
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
     dev: true
 
@@ -5030,7 +5030,7 @@ packages:
     resolution: {integrity: sha512-fFI4VcYpRHvSLXxP7yiZOMAd331cPfd2p7PFDVbgUsYOfCT3tICVqXWngbjr4m49OvsBwUBQ6O2uQoJvy3RexA==}
     dependencies:
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /object.values@1.1.7:
@@ -5039,7 +5039,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /once@1.4.0:
@@ -5505,9 +5505,9 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /prettier@3.2.5:
-    resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
-    engines: {node: '>=14'}
+  /prettier@2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+    engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
 
@@ -5721,8 +5721,8 @@ packages:
       decimal.js-light: 2.5.1
     dev: true
 
-  /recharts@2.12.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-35vUCEBPf+pM+iVgSgVTn86faKya5pc4JO6cYJL63qOK2zDEyzDn20Tdj+CDI/3z+VcpKyQ8ZBQ9OiQ+vuAbjg==}
+  /recharts@2.12.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-9bpxjXSF5g81YsKkTSlaX7mM4b6oYI1mIYck6YkUcWuL3tomADccI51/6thY4LmvhYuRTwpfrOvE80Zc3oBRfQ==}
     engines: {node: '>=14'}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
@@ -5754,7 +5754,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       es-errors: 1.3.0
       get-intrinsic: 1.2.4
       globalthis: 1.0.3
@@ -6122,8 +6122,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /side-channel@1.0.5:
-    resolution: {integrity: sha512-QcgiIWV4WV7qWExbN5llt6frQB/lBven9pqliLXfGPB+K9ZYXxDozp0wLkHS24kWCm+6YXH/f0HhnObZnZOBnQ==}
+  /side-channel@1.0.6:
+    resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.7
@@ -6310,13 +6310,13 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       get-intrinsic: 1.2.4
       has-symbols: 1.0.3
       internal-slot: 1.0.7
       regexp.prototype.flags: 1.5.2
       set-function-name: 2.0.2
-      side-channel: 1.0.5
+      side-channel: 1.0.6
     dev: true
 
   /string.prototype.trim@1.2.8:
@@ -6325,7 +6325,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /string.prototype.trimend@1.0.7:
@@ -6333,7 +6333,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /string.prototype.trimstart@1.0.7:
@@ -6341,7 +6341,7 @@ packages:
     dependencies:
       call-bind: 1.0.7
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
     dev: true
 
   /string_decoder@1.1.1:
@@ -6480,7 +6480,7 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.4
+      '@jridgewell/gen-mapping': 0.3.5
       commander: 4.1.1
       glob: 10.3.10
       lines-and-columns: 1.2.4
@@ -7013,7 +7013,7 @@ packages:
     resolution: {integrity: sha512-g9JpC/3He3bm38zsLupWryXHoEcS22YHthuPQSJdMy6KNrzIRzWqcsHzD/WUnqe45whVou4VIsPew37DoXWNrA==}
     dependencies:
       define-properties: 1.2.1
-      es-abstract: 1.22.4
+      es-abstract: 1.22.5
       has-symbols: 1.0.3
       object.getownpropertydescriptors: 2.1.7
     dev: true

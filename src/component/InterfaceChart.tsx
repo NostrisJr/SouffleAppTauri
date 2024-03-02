@@ -53,9 +53,9 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
       <div className="w-full">
         <div className="bg-s-bg-light grid grid-cols-2 gap-4 font-body font-medium text-xl p-5 w-full">
           <div className=" col-span-1 flex items-center">
-            <p className="text-s-bg-dark">Canal : </p>
+            <p className="text-s-bg-dark">Canal :</p>
             <InputNumber
-              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white mx-2"
+              className="bg-s-bg-light w-20 h-8 border-none outline-none caret-s-white text-xl text-s-white mx-2 rounded-lg px-2"
               min={1}
               max={16}
               step={1}
@@ -68,7 +68,7 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
           <div className=" col-span-1 flex items-center">
             <p className="text-s-bg-dark">Mici CC : </p>
             <InputNumber
-              className="bg-s-bg-light w-20 h-8 border-none focus:ring-0 text-xl text-s-white mx-2"
+              className="bg-s-bg-light w-20 h-8 border-none outline-none caret-s-white text-xl text-s-white mx-2 rounded-lg px-2"
               min={1}
               max={127}
               step={1}
