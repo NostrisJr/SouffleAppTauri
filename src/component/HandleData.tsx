@@ -1,4 +1,4 @@
-import next from "next";
+import { logError, logMessage } from "./DebuggingMode";
 
 //also defined in Page.tsx
 const nbInterfaces = 15;
@@ -32,9 +32,9 @@ export async function checkDataDirectory() {
   if (!directoryExists) {
     try {
       await fs.createDir(appDataPath);
-      console.log("Data directory created successfully!")
+      logMessage("Data directory created successfully!")
     } catch (err) {
-      console.error("Error while creating Data directory : " + err)
+      logError("Error while creating Data directory : " + err)
     }
   }
 
@@ -44,9 +44,9 @@ export async function checkDataDirectory() {
   if (!presetsExists) {
     try {
       await fs.createDir(presetsPath);
-      console.log("Presets directory created successfully!");
+      logMessage("Presets directory created successfully!");
     } catch (err) {
-      console.error("Error while creating presets directory : " + err)
+      logError("Error while creating presets directory : " + err)
     }
   }
 
@@ -56,9 +56,9 @@ export async function checkDataDirectory() {
   if (!tmpExists) {
     try {
       await fs.createDir(tmpPath);
-      console.log("Tmp directory created successfully!");
+      logMessage("Tmp directory created successfully!");
     } catch (err) {
-      console.error("Error while creating tmp directory : " + err)
+      logError("Error while creating tmp directory : " + err)
     }
   }
 
@@ -68,9 +68,9 @@ export async function checkDataDirectory() {
   if (!presetsInventoryExists) {
     try {
       await fs.writeFile(presetsInventoryPath, "")
-      console.log("Presets inventory created successfully!");
+      logMessage("Presets inventory created successfully!");
     } catch (err) {
-      console.error("Error while creating presets inventory : " + err)
+      logError("Error while creating presets inventory : " + err)
     }
   }
 
@@ -80,9 +80,9 @@ export async function checkDataDirectory() {
   if (!defaultPresetExists) {
     try {
       await createPreset({ name: "Default", values: defaultValues, init: true })
-      console.log("Default preset created successfully!");
+      logMessage("Default preset created successfully!");
     } catch (err) {
-      console.error("Error while creating Default preset : " + err)
+      logError("Error while creating Default preset : " + err)
     }
   }
 
@@ -96,18 +96,18 @@ async function createPresetFolder(name: string) {
     const appDataPath = await path.appDataDir();
 
     const presetPath = `${appDataPath}presets/${name}`;
-    console.log(presetPath);
+    logMessage("preset path : " + presetPath);
     const presetExists = await fs.exists(presetPath);
     if (!presetExists) {
       await fs.createDir(presetPath);
-      console.log(name + " preset folder created successfully");
+      logMessage(name + " preset folder created successfully");
       return true
     } else {
-      console.error(name + "preset folder already exists");
+      logError(name + "preset folder already exists");
       return false
     }
   } catch (error) {
-    console.error("Error while creating " + name + "preset folder:", error);
+    logError("Error while creating " + name + "preset folder:" + error);
     return false
   }
 }
@@ -127,9 +127,9 @@ async function createValuesFile({ name, values }: FilesProps) {
     const filePath = `${appDataPath}presets/${name}/${name}.txt`;
 
     await fs.writeFile(filePath, values.toString());
-    console.log(name + "'s values file created successfully")
+    logMessage(name + "'s values file created successfully")
   } catch (err) {
-    console.error("Error creating values file for " + name + " preset, with values :\n " + values + "\nError : ", err);
+    logError("Error creating values file for " + name + " preset, with values :\n " + values + "\nError : " + err);
   }
 };
 
@@ -155,20 +155,20 @@ export async function readValuesFile(name: string) {
             if (!isNaN(value)) {
               potValues.push(value);
             } else {
-              console.error("Failed to parse value at index ${j}");
+              logError("Failed to parse value at index ${j}");
             }
           }
           valuesList.push(potValues);
         }
-        console.log(name + "'s values file read successfully")
+        logMessage(name + "'s values file read successfully")
         return valuesList;
       }
     } else {
-      console.error(name + "'s values file doesn't exist or invalid. Return default preset");
+      logError(name + "'s values file doesn't exist or invalid. Return default preset");
       return defaultValues;
     }
   } catch (err) {
-    console.error("Error while reading " + name + "'s values file : ", err);
+    logError("Error while reading " + name + "'s values file : " + err);
   }
   return defaultValues;
 };
@@ -188,9 +188,9 @@ async function createInoFile({ name, values }: FilesProps) {
     }
 
     await fs.writeTextFile(filePath, code);
-    console.log(name + "'s ino file created successfully")
+    logMessage(name + "'s ino file created successfully")
   } catch (err) {
-    console.error("Error creating ino file for " + name + " preset, with values :\n " + values + "\nError : ", err);
+    logError("Error creating ino file for " + name + " preset, with values :\n " + values + "\nError : " + err);
   }
 };
 
@@ -211,7 +211,7 @@ export async function createTempInoFile({ name, values }: tempInoProps) {
     const folderPath = `${appDataPath}tmp/sketch_${name}`;
 
     await fs.createDir(folderPath);
-    console.log(name + " preset folder created successfully");
+    logMessage(name + " preset folder created successfully");
 
     const filePath = `${appDataPath}tmp/sketch_${name}/sketch_${name}.ino`;
 
@@ -222,10 +222,10 @@ export async function createTempInoFile({ name, values }: tempInoProps) {
     }
 
     await fs.writeTextFile(filePath, code);
-    console.log("temporary ino file created successfully")
+    logMessage("temporary ino file created successfully")
 
   } catch (err) {
-    console.error("Error creating temporary ino file, with values :\n " + values + "\nError : ", err);
+    logError("Error creating temporary ino file, with values :\n " + values + "\nError : " + err);
   }
 };
 
@@ -239,10 +239,10 @@ export async function clearTmpFiles() {
 
     await fs.removeDir(pathTmpFolder, { recursive: true })
     await fs.createDir(pathTmpFolder)
-    console.log("Tmp folder cleaned sucessfully")
+    logMessage("Tmp folder cleaned sucessfully")
   } catch (err) {
     await checkDataDirectory();
-    console.error("An error occured while cleaning Tmp folder : " + err)
+    logError("An error occured while cleaning Tmp folder : " + err)
   }
 };
 
@@ -262,16 +262,14 @@ async function createCode(values: Array<Array<number>>) {
     splitedCode[index] = valuesList
 
     let newCode = ""
-    console.log(index)
-    console.log(splitedCode)
 
     for (let i = 0; i < splitedCode.length; i++) {
       newCode = newCode + splitedCode[i] + "\n"
     }
-    console.log(newCode)
+    logMessage("Code created successfully !")
     return (newCode)
   } catch (err) {
-    console.error("An error occured while creating arduino code from values : " + values)
+    logError("An error occured while creating arduino code from values : " + values)
     return (false)
   }
 }
@@ -305,11 +303,13 @@ export async function createPreset({ name, values, init }: FilesProps) {
     let inventory = await fs.readTextFile(presetsInventoryPath)
     inventory += `${finalName}\n`
     await fs.writeTextFile(presetsInventoryPath, inventory)
-    console.log("Preset " + name + " created sucessfully !")
+    logMessage("Preset " + name + " created sucessfully !")
     if (showCompletionMessage) {
       await dialog.message("Preset " + finalName + " created sucessfully !")
     }
-  } catch (err) { console.log("An error occured while creating preset " + name + " with values : " + values + "\nError : " + err) }
+  } catch (err) {
+    logError("An error occured while creating preset " + name + " with values : " + values + "\nError : " + err)
+  }
 }
 
 export async function deletePreset(name: string) {
@@ -331,9 +331,9 @@ export async function deletePreset(name: string) {
     await fs.writeTextFile(presetsInventoryPath, inventory);
 
     await dialog.message(name + " preset deleted successfully !")
-    console.log(name + " preset deleted successfully !")
+    logMessage(name + " preset deleted successfully !")
   } catch (err) {
-    console.log("An error occured : " + err)
+    logError("An error occured : " + err)
     await dialog.message("An error occured while deleting " + name + " preset...\n Error : " + err)
 
   }

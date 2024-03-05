@@ -1,10 +1,10 @@
 build_cache:
-    compilation_count_since_last_purge: 9
+    compilation_count_since_last_purge: 2
 cache:
     builder-api:
         v3/boards/byvid/pid/0x1b4f/0x9206:
             data: "null"
-            ts: 2024-02-27T17:48:36.860331+01:00
+            ts: 2024-03-05T19:26:57.347578+01:00
         v3/boards/byvid/pid/0x2341/0x8036:
             data: '[{"name":"Arduino Leonardo","fqbn":"arduino:avr:leonardo"}]'
             ts: 2024-02-26T13:27:46.051191+01:00

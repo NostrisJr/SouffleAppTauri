@@ -9,6 +9,7 @@ import { useState } from "react";
 import { SelectBoard } from "@/component/SelectBoard";
 import { checkDataDirectory, clearTmpFiles, createPreset, createTempInoFile, readValuesFile } from "@/component/HandleData";
 import { SelectPreset } from "@/component/SelectPreset";
+import { logError, logMessage } from "@/component/DebuggingMode";
 
 type recolorProp = {
   focused: number;
@@ -22,11 +23,13 @@ function Home() {
 
   const [disabledToSave, setDisabledToSave] = useState(false)
   const [disabledToSend, setDisabledToSend] = useState(false);
-
   const [saveDisabled, setSaveDisabled] = useState(true)
   const [explanationYouShallNotSave, setExplanationYouShallNotSave] = useState(false)
 
   let disabled = disabledToSave || disabledToSend
+
+  const [debuggingMode, setDebuggingMode] = useState(false)
+
 
   //********************** ************************//
   //*********** A few constants and def ***********//
@@ -129,15 +132,14 @@ function Home() {
   async function sendConfiguration() {
     setDisabledToSend(true);
 
-    const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog")
-    const appDataPath = await pathModule.appDataDir();
+    const appDataPath = await path.appDataDir();
     const pathTmpFolder = `${appDataPath}tmp/`
-    const pathConfig = await pathModule.resolveResource("resources/Arduino15/arduino-cli.yaml");
+    const pathConfig = await path.resolveResource("resources/Arduino15/arduino-cli.yaml");
 
     const tmpName = Date.now().toString()
     const pathTmpIno = `${pathTmpFolder}sketch_${tmpName}`
-    const pathTmpInoFile = `${pathTmpIno}/sketch_${tmpName}.ino`
 
     await createTempInoFile({ name: tmpName, values: values })
 
@@ -149,19 +151,29 @@ function Home() {
       "--config-file",
       pathConfig,
       "-v",
+      "--optimize-for-debug",
+      "-p",
+      selectedDevice[0],
+      "-u"
     ]);
     const compileOutput = await commandCompile.execute();
 
     if (compileOutput.code !== 0) {
       dialog.message("An error has occurred while compiling");
-      console.log(compileOutput.stdout);
-      console.error(compileOutput.stderr);
+      if (compileOutput.stdout.length >= 1) {
+        logMessage(compileOutput.stdout)
+      }
+      if (compileOutput.stderr.length >= 1) {
+        logError(compileOutput.stderr)
+      }
 
       setDisabledToSend(false)
       return
     }
+    dialog.message("Code uploaded ! \n Have a good time making music");
+    logMessage(compileOutput.stdout)
 
-    const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
+    /* const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
       "upload",
       "-p",
       selectedDevice[0],
@@ -180,12 +192,13 @@ function Home() {
         dialog.message(
           "An error occured while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
         );
-        console.log(compileOutput.stdout);
-        console.error(compileOutput.stderr);
+        logMessage(compileOutput.stdout);
+        logError(compileOutput.stderr);
       }
-      setDisabledToSend(false);
-    });
-    //await clearTmpFiles();
+    }); */
+    setDisabledToSend(false);
+
+    await clearTmpFiles();
   }
 
   async function getDevices() {
@@ -200,18 +213,75 @@ function Home() {
     ]);
 
     const compileOutput = await commandCompile.execute();
+
+    if (compileOutput.stdout.length >= 1) {
+      logMessage(compileOutput.stdout)
+    }
+    if (compileOutput.stderr.length >= 1) {
+      logError(compileOutput.stderr)
+    }
+
     const foundBoards = compileOutput.stdout
       .split("\n")
       .map((str: string) => str.split(/\s+/))
-      .filter((list: string[]) => !list.every((element) => element === ""));
+      .filter((list: string[]) => !list.every((element) => element === ""))
+      .slice(1);
 
-    const matchedBoards = foundBoards.filter((list) => list[4] === "(USB)").map((list) => [list[0], list[5], list[6]]);
+    let matchedBoards
+    if (debuggingMode === false) {
+      matchedBoards = foundBoards.filter((list) => list[4] === "(USB)").map((list) => [list[0], list[5], list[6]]);
+    } else {
+      matchedBoards = foundBoards.map((list) => [list[0], list[5], list[6]]);
+    }
 
     if (matchedBoards.length >= 1) {
       setBoards(matchedBoards);
     }
     else {
       setBoards([["", "No device found", ""]])
+    }
+  }
+
+  async function handleDebugMode() {
+    const window = await import("@tauri-apps/api/window")
+    if (debuggingMode === false) {
+      try {
+        const debuggingWindow = window.WebviewWindow.getByLabel('Debugging');
+        if (debuggingWindow !== null) {
+          logMessage('Debugging window already exists.');
+          return;
+        }
+
+        const webview = new window.WebviewWindow("Debugging", {
+          url: "debugging",
+          title: "Debugging"
+        });
+
+        await new Promise<void>((resolve, reject) => {
+          webview.once('tauri://created', () => {
+            console.log("Debugging window created");
+            resolve();
+          });
+          webview.once('tauri://error', (e) => {
+            logError("An error occurred during debugging window creation: " + e);
+            reject(e);
+          });
+        });
+
+        setDebuggingMode(true)
+      } catch (error) {
+        logError("Error while opening debugging window: " + error);
+      }
+    } else {
+      try {
+        const debuggingWindow = window.WebviewWindow.getByLabel('Debugging');
+        if (debuggingWindow !== null) {
+          debuggingWindow.close();
+        }
+        setDebuggingMode(false)
+      } catch (error) {
+        logError("Error while closing debugging window: " + error);
+      }
     }
   }
 
@@ -275,16 +345,16 @@ function Home() {
   //* Delete function is in SelectPreset Component
 
   return (
-    <div className="relative z-0 w-full h-full items-center justify-around bg-s-bg-dark flex flex-col">
+    <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">
 
       <div
-        className={`${disabledToSend === false ? "hidden" : "flex flex-col"} bg-s-bg-light absolute h-1/3 w-1/2 z-10 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+        className={`${disabledToSend === false ? "hidden" : "flex flex-col"} top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
         <p>Saving preset on your controller...</p>
         <p>Please do not disconnect it !</p>
       </div>
 
-      <div className={`${disabledToSave === false ? "hidden" : "flex flex-col"} bg-s-bg-light absolute h-1/3 w-1/2 z-10 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple gap-4 transition duration-500`}>
+      <div className={`${disabledToSave === false ? "hidden" : "flex flex-col"} top-1/3 bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple gap-4 transition duration-500`}>
         <div className="flex gap-4 items-center justify-center">
           <label className="font-display text-3xl">
             Save as
@@ -319,31 +389,43 @@ function Home() {
         </div>
       </div>
       <div className={`${disabled === false ? "hidden" : "block"} bg-s-bg-dark opacity-50 absolute z-[5] w-full h-full`} />
-
-      <div className="w-full bg-s-bg-light flex p-4 gap-4 items-baseline">
-        <SelectPreset
-          selectedPreset={selectedPreset}
-          setSelectedPreset={setSelectedPreset}
-          setValues={setValues}
-          disabled={disabled}
-        />
-        <SelectBoard
-          boards={boards}
-          selectedDevice={selectedDevice}
-          setSelectedDevice={setSelectedDevice}
-          disabled={disabled}
-        />
-        <button
-          className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark"
-          onClick={() => {
-            getDevices();
-          }}
-          disabled={disabled}
-        >
-          Refresh Devices
-        </button>
+      <div className="w-full bg-s-bg-light flex justify-between">
+        <div className="flex p-4 items-baseline">
+          <SelectPreset
+            selectedPreset={selectedPreset}
+            setSelectedPreset={setSelectedPreset}
+            setValues={setValues}
+            disabled={disabled}
+          />
+          <SelectBoard
+            boards={boards}
+            selectedDevice={selectedDevice}
+            setSelectedDevice={setSelectedDevice}
+            debuggingMode={debuggingMode}
+          />
+          <button
+            className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark"
+            onClick={() => {
+              getDevices();
+            }}
+            disabled={disabled}
+          >
+            Refresh Devices
+          </button>
+        </div>
+        <div className="items-center flex p-4">
+          <button
+            className={`px-6 py-2 transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none ${debuggingMode === false ? "text-s-purple enabled:hover:bg-s-purple hover:text-s-white" : "text-s-white enabled:bg-s-purple"}`}
+            onClick={() => {
+              handleDebugMode();
+            }}
+            disabled={disabled}
+          >
+            Debugging Mode
+          </button>
+        </div>
       </div>
-      <div className="grid grid-cols-5 gap-5 p-10">
+      <div className="grid grid-cols-5 gap-5 p-10 self-center">
         <div className="col-span-3 justify-items-center">
           <div className="grid grid-cols-5 gap-5">
             {Array.from(Array(15).keys()).map((interfaceId) => (

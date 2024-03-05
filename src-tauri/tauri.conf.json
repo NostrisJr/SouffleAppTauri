@@ -34,14 +34,14 @@
           { "name": "binaries/arduino-cli", "args": true, "sidecar": true }
         ]
       },
-      "notification": {
-        "all": true
-      },
       "fs": {
         "all": true,
-        "scope": ["$RESOURCE/**","$DATA/**", "$APPDATA/**"]
+        "scope": ["$RESOURCE/**", "$DATA/**", "$APPDATA/**"]
       },
       "dialog": {
+        "all": true
+      },
+      "window": {
         "all": true
       }
     },
@@ -52,10 +52,14 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [
-        "binaries/arduino-cli"
+      "externalBin": ["binaries/arduino-cli"],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
       ],
-      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
       "identifier": "SouffleDesktop",
       "longDescription": "",
       "macOS": {
