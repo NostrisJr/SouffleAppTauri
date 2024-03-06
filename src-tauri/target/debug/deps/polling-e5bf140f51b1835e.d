@@ -1,0 +1,10 @@
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libpolling-e5bf140f51b1835e.rmeta: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os/kqueue.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/kqueue.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libpolling-e5bf140f51b1835e.rlib: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os/kqueue.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/kqueue.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/polling-e5bf140f51b1835e.d: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os/kqueue.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/kqueue.rs
+
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/lib.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/os/kqueue.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/polling-2.8.0/src/kqueue.rs:

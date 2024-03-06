@@ -1,0 +1,10 @@
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libfdeflate-05eae0bfd0e2f3d0.rmeta: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/compress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/decompress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/tables.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libfdeflate-05eae0bfd0e2f3d0.rlib: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/compress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/decompress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/tables.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/fdeflate-05eae0bfd0e2f3d0.d: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/compress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/decompress.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/tables.rs
+
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/lib.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/compress.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/decompress.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fdeflate-0.3.4/src/tables.rs:

@@ -242,13 +242,13 @@ export async function clearTmpFiles() {
     logMessage("Tmp folder cleaned sucessfully")
   } catch (err) {
     await checkDataDirectory();
-    logError("An error occured while cleaning Tmp folder : " + err)
+    logError("An error occurred while cleaning Tmp folder : " + err)
   }
 };
 
 async function createCode(values: Array<Array<number>>) {
   const pathModule = await import("@tauri-apps/api/path");
-  const pathDefaultSketch = await pathModule.resolveResource("resources/Arduino/sketch_default/sketch_default.ino");
+  const pathDefaultSketch = await pathModule.resolveResource("Resources/Arduino/sketch_default/sketch_default.ino");
   const fs = await import("@tauri-apps/api/fs");
 
   try {
@@ -269,7 +269,7 @@ async function createCode(values: Array<Array<number>>) {
     logMessage("Code created successfully !")
     return (newCode)
   } catch (err) {
-    logError("An error occured while creating arduino code from values : " + values)
+    logError("An error occurred while creating arduino code from values : " + values)
     return (false)
   }
 }
@@ -308,7 +308,7 @@ export async function createPreset({ name, values, init }: FilesProps) {
       await dialog.message("Preset " + finalName + " created sucessfully !")
     }
   } catch (err) {
-    logError("An error occured while creating preset " + name + " with values : " + values + "\nError : " + err)
+    logError("An error occurred while creating preset " + name + " with values : " + values + "\nError : " + err)
   }
 }
 
@@ -333,8 +333,8 @@ export async function deletePreset(name: string) {
     await dialog.message(name + " preset deleted successfully !")
     logMessage(name + " preset deleted successfully !")
   } catch (err) {
-    logError("An error occured : " + err)
-    await dialog.message("An error occured while deleting " + name + " preset...\n Error : " + err)
+    logError("An error occurred : " + err)
+    await dialog.message("An error occurred while deleting " + name + " preset...\n Error : " + err)
 
   }
 }

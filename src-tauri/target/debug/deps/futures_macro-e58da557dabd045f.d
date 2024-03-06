@@ -1,0 +1,9 @@
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libfutures_macro-e58da557dabd045f.dylib: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/executor.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/join.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/select.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/stream_select.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/futures_macro-e58da557dabd045f.d: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/executor.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/join.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/select.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/stream_select.rs
+
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/lib.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/executor.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/join.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/select.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/futures-macro-0.3.30/src/stream_select.rs:

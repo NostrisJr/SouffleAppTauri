@@ -10,6 +10,7 @@ import { SelectBoard } from "@/component/SelectBoard";
 import { checkDataDirectory, clearTmpFiles, createPreset, createTempInoFile, readValuesFile } from "@/component/HandleData";
 import { SelectPreset } from "@/component/SelectPreset";
 import { logError, logMessage } from "@/component/DebuggingMode";
+import { checkResourcesDirectory } from "@/component/HandleResourcesDir";
 
 type recolorProp = {
   focused: number;
@@ -23,10 +24,11 @@ function Home() {
 
   const [disabledToSave, setDisabledToSave] = useState(false)
   const [disabledToSend, setDisabledToSend] = useState(false);
+  const [disabledToResetResourcesDir, setDisabledToResetResourcesDir] = useState(false);
   const [saveDisabled, setSaveDisabled] = useState(true)
   const [explanationYouShallNotSave, setExplanationYouShallNotSave] = useState(false)
 
-  let disabled = disabledToSave || disabledToSend
+  let disabled = disabledToSave || disabledToSend || disabledToResetResourcesDir
 
   const [debuggingMode, setDebuggingMode] = useState(false)
 
@@ -126,8 +128,8 @@ function Home() {
   //*********** Craft and send code ***********//
   //********************* *********************//
 
-  const [boards, setBoards] = useState<Array<Array<string>>>([["", "No device found yet...", ""]]);
-  const [selectedDevice, setSelectedDevice] = useState<Array<string>>(["", "Please select a device...", ""]);
+  const [boards, setBoards] = useState<Array<Array<string>>>([["No port found yet...", "No device found yet...", ""]]);
+  const [selectedDevice, setSelectedDevice] = useState<Array<string>>(["Please select a port...", "Please select a device...", ""]);
 
   async function sendConfiguration() {
     setDisabledToSend(true);
@@ -136,7 +138,7 @@ function Home() {
     const dialog = await import("@tauri-apps/api/dialog")
     const appDataPath = await path.appDataDir();
     const pathTmpFolder = `${appDataPath}tmp/`
-    const pathConfig = await path.resolveResource("resources/Arduino15/arduino-cli.yaml");
+    const pathConfig = await path.resolveResource("Resources/Arduino15/arduino-cli.yaml");
 
     const tmpName = Date.now().toString()
     const pathTmpIno = `${pathTmpFolder}sketch_${tmpName}`
@@ -190,7 +192,7 @@ function Home() {
         dialog.message("Code uploaded ! \n Have a good time making music");
       } else {
         dialog.message(
-          "An error occured while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
+          "An error occurred while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
         );
         logMessage(compileOutput.stdout);
         logError(compileOutput.stderr);
@@ -202,8 +204,8 @@ function Home() {
   }
 
   async function getDevices() {
-    const pathModule = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
-    const pathConfig = await pathModule.resolveResource("resources/Arduino15/arduino-cli.yaml");
+    const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const pathConfig = await path.resolveResource("Resources/Arduino15/arduino-cli.yaml");
 
     const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
       "board",
@@ -229,9 +231,9 @@ function Home() {
 
     let matchedBoards
     if (debuggingMode === false) {
-      matchedBoards = foundBoards.filter((list) => list[4] === "(USB)").map((list) => [list[0], list[5], list[6]]);
+      matchedBoards = foundBoards.filter((list: Array<string>) => list[4] === "(USB)").map((list: Array<string>) => [list[0], list[5], list[6]]);
     } else {
-      matchedBoards = foundBoards.map((list) => [list[0], list[5], list[6]]);
+      matchedBoards = foundBoards.map((list: Array<string>) => [list[0], list[5], list[6]]);
     }
 
     if (matchedBoards.length >= 1) {
@@ -244,6 +246,7 @@ function Home() {
 
   async function handleDebugMode() {
     const window = await import("@tauri-apps/api/window")
+
     if (debuggingMode === false) {
       try {
         const debuggingWindow = window.WebviewWindow.getByLabel('Debugging');
@@ -283,6 +286,10 @@ function Home() {
         logError("Error while closing debugging window: " + error);
       }
     }
+  }
+
+  async function resetResourcesDir() {
+    await checkResourcesDirectory(setDisabledToResetResourcesDir)
   }
 
   //********************** *********************//
@@ -344,8 +351,39 @@ function Home() {
 
   //* Delete function is in SelectPreset Component
 
+  //********************** *********************//
+  //************** Menu handling ***************//
+  //********************** *********************//
+
+  onMounted(() => {
+    appWindow.listen("new-content", () => {
+      console.log("new-content event emitted");
+      content.value = "";
+    });
+    appWindow.listen("open-file", async () => {
+      try {
+        const filePath = await open({
+          title: "Select a Text File",
+          filters: [{ name: "Text", extensions: ["txt"] }],
+        });
+        if (!filePath) return;
+        const fileContent = await readTextFile(filePath as string, {});
+        content.value = fileContent;
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  })
+
   return (
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">
+
+      <div
+        className={`${disabledToResetResourcesDir === false ? "hidden" : "flex flex-col"} top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+      >
+        <p>Setting Resources folder right...</p>
+        <p>It should not take more than a few minutes !</p>
+      </div>
 
       <div
         className={`${disabledToSend === false ? "hidden" : "flex flex-col"} top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
@@ -422,6 +460,15 @@ function Home() {
             disabled={disabled}
           >
             Debugging Mode
+          </button>
+          <button
+            className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
+            onClick={() => {
+              formateArduinoCliConfig();
+            }}
+            disabled={disabled}
+          >
+            Reset ResDir
           </button>
         </div>
       </div>

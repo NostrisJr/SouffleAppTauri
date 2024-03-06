@@ -1,23 +1,25 @@
-export async function logMessage(message: string) {
+import error from "next/error";
+
+export async function logMessage(content: string) {
     const window = await import("@tauri-apps/api/window")
 
     const debuggingWindow = window.WebviewWindow.getByLabel('Debugging');
     if (debuggingWindow){
-        debuggingWindow.emit("log",{message:`${message}`})
-        console.log(message+"(emmited successfully)")
+        debuggingWindow.emit("log",{type:"message", content:`${content}`})
+        console.log(content+"(emmited successfully)")
     } else{
-        console.log(message+"(debugging window not opened)")
+        console.log(content+"(debugging window not opened)")
     }
 }
 
-export async function logError(message: string) {
+export async function logError(content: any) {
     const window = await import("@tauri-apps/api/window")
 
     const debuggingWindow = window.WebviewWindow.getByLabel('Debugging');
     if (debuggingWindow){
-        debuggingWindow.emit("log",{error:`${message}`})
-        console.error(message+"(emmited successfully)")
+        debuggingWindow.emit("log",{type:"error", content:`${content}`})
+        console.error(content+"(emmited successfully)")
     } else{
-        console.error(message+"(debugging window not opened)")
+        console.error(content+"(debugging window not opened)")
     }
 }

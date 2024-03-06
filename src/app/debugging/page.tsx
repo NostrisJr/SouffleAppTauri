@@ -25,13 +25,12 @@ const Debugging = () => {
 
         try {
             await event.listen('log', (event) => {
-                // @ts-ignore
-                setLogs((prevLogs) => [...prevLogs, [Object.keys(event.payload)[0], event.payload.message]]);
-                console.log("added " + event)
+                // @ts-expect-error
+                setLogs(prevLogs => [...prevLogs, [event.payload.type, event.payload.content]]);
                 return;
             });
         } catch (error) {
-            console.error("Error listening to click event:", error);
+            console.error("Error listening to log event:", error);
         }
     };
 

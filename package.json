@@ -15,7 +15,8 @@
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@mui/material": "^5.15.10",
-    "next": "14.2.0-canary.0",
+    "js-yaml": "^4.1.0",
+    "next": "14.2.0-canary.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@tauri-apps/api": "^1.5.3",
     "@tauri-apps/cli": "^1.5.10",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.11.19",
     "@types/react": "^18.2.57",
     "@types/react-dom": "^18.2.19",
