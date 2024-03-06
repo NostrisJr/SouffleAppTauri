@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Command } from "@tauri-apps/api/shell";
 
 import { InterfaceChart } from "@/component/InterfaceChart";
@@ -137,8 +137,9 @@ function Home() {
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog")
     const appDataPath = await path.appDataDir();
-    const pathTmpFolder = `${appDataPath}tmp/`
-    const pathConfig = await path.resolveResource("Resources/Arduino15/arduino-cli.yaml");
+    const pathTmpFolder = `${appDataPath}tmp/`;
+    const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
+
 
     const tmpName = Date.now().toString()
     const pathTmpIno = `${pathTmpFolder}sketch_${tmpName}`
@@ -161,7 +162,8 @@ function Home() {
     const compileOutput = await commandCompile.execute();
 
     if (compileOutput.code !== 0) {
-      dialog.message("An error has occurred while compiling");
+      dialog.message("An error has occurred while compiling & uploading");
+
       if (compileOutput.stdout.length >= 1) {
         logMessage(compileOutput.stdout)
       }
@@ -175,29 +177,6 @@ function Home() {
     dialog.message("Code uploaded ! \n Have a good time making music");
     logMessage(compileOutput.stdout)
 
-    /* const commandUpload: Command = Command.sidecar("binaries/arduino-cli", [
-      "upload",
-      "-p",
-      selectedDevice[0],
-      "--fqbn",
-      "arduino:avr:leonardo",
-      pathTmpIno,
-      "--config-file",
-      pathConfig,
-      "-v",
-    ]);
-
-    commandUpload.execute().then((output) => {
-      if (output.code === 0) {
-        dialog.message("Code uploaded ! \n Have a good time making music");
-      } else {
-        dialog.message(
-          "An error occurred while uploading \n Please reconnect your controller and retry \n Or consult our documentation"
-        );
-        logMessage(compileOutput.stdout);
-        logError(compileOutput.stderr);
-      }
-    }); */
     setDisabledToSend(false);
 
     await clearTmpFiles();
@@ -205,7 +184,9 @@ function Home() {
 
   async function getDevices() {
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
-    const pathConfig = await path.resolveResource("Resources/Arduino15/arduino-cli.yaml");
+    const appDataPath = await path.appDataDir();
+    const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
+
 
     const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
       "board",
@@ -348,14 +329,32 @@ function Home() {
     setDisabledToSave(false)
     setExplanationYouShallNotSave(false)
   }
-
   //* Delete function is in SelectPreset Component
 
   //********************** *********************//
   //************** Menu handling ***************//
   //********************** *********************//
 
-  //incoming...
+  async function listenMenuEvents(){
+    const window = await import("@tauri-apps/api/window")
+
+    window.appWindow.listen("new-content", handleNewContent);
+    window.appWindow.listen("open-file", handleOpenFile);
+  }
+
+  const handleNewContent = () => {
+    console.log("Événement new-content émis");
+  };
+
+  const handleOpenFile = () => {
+    console.log("Événement new-content émis");
+  };
+
+  useEffect(() => {
+    listenMenuEvents()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">

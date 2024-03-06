@@ -38,9 +38,10 @@ function InterfaceItem({
   setFocused,
   recolor,
 }: InterfaceProp) {
-  
+
   useEffect(() => {
     recolor({ focused, values });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focused, values]);
 
   function handleOutlineClick(interfaceId: number) {
@@ -50,7 +51,11 @@ function InterfaceItem({
   function handlePotClick({ interfaceId, potId }: handlePotClickProp) {
     const nextValues = values.map((parameters, i) => {
       if (i === interfaceId) {
-        parameters[0] = potId;
+        if (parameters[0] !== potId) {
+          parameters[0] = potId;
+        } else {
+          parameters[0] = -1;
+        }
         return parameters;
       } else {
         return parameters;
