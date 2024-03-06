@@ -4,7 +4,8 @@
     "beforeBuildCommand": "pnpm run build",
     "beforeDevCommand": "pnpm run dev",
     "devPath": "http://localhost:3000",
-    "distDir": "../out"
+    "distDir": "../out",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "souffleapptauri",
@@ -22,28 +23,27 @@
         "sidecar": true,
         "scope": [
           {
-            "name": "flash-code",
-            "cmd": "/usr/local/bin/avrdude",
-            "args": ["-p atmega32u4 -D -Uflash:w:'main.hex' -v -v -F -c avrisp -P /dev/ttyACM0"]
-          },
-          {
-            "name": "list-ports",
+            "name": "list-presets",
             "cmd": "ls",
-            "args": false
+            "args": true
           },
           {
             "name": "ls",
-            "cmd": "sh",
-            "args": ["-c", "chmod +x list_usb.sh && ./list_usb.sh"]
+            "cmd": "ls",
+            "args": ["/dev/tty.usbmodem*"]
           },
           { "name": "binaries/arduino-cli", "args": true, "sidecar": true }
         ]
       },
-      "notification": {
+      "fs": {
+        "all": true,
+        "scope": ["$RESOURCE/**", "$DATA/**", "$APPDATA/**"]
+      },
+      "dialog": {
         "all": true
       },
-      "fs": {
-        "scope": ["$RESOURCE/*"]
+      "window": {
+        "all": true
       }
     },
     "bundle": {
@@ -53,11 +53,15 @@
       "deb": {
         "depends": []
       },
-      "externalBin": [
-        "binaries/arduino-cli"
+      "externalBin": ["binaries/arduino-cli"],
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
       ],
-      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-      "identifier": "com.tauri.dev",
+      "identifier": "SouffleDesktop",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -66,7 +70,7 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": ["ressources/*"],
+      "resources": ["resources/*"],
       "shortDescription": "",
       "targets": "all",
       "windows": {

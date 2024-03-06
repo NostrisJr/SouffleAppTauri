@@ -13,6 +13,24 @@
   }
 }
 
+body {
+  user-select: none;
+  cursor: default;
+  overflow: hidden;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  cursor: text;
+}
+
+.page {
+  overflow: hidden;
+}
+
 .dark-gradient {
   background: linear-gradient(135deg, rgb(var(--s-bg-light) / 1) 0%, rgb(var(--s-bg-dark) / 1) 100%);
 }
@@ -48,8 +66,16 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  text-align-last: center;
+::-webkit-scrollbar {
+  background: none;
+  width: .4em;
+}
+
+::-webkit-scrollbar-track {
+  background-color: none;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background-color: rgb(var(--s-purple) / 1);
 }
