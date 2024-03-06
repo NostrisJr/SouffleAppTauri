@@ -355,25 +355,7 @@ function Home() {
   //************** Menu handling ***************//
   //********************** *********************//
 
-  onMounted(() => {
-    appWindow.listen("new-content", () => {
-      console.log("new-content event emitted");
-      content.value = "";
-    });
-    appWindow.listen("open-file", async () => {
-      try {
-        const filePath = await open({
-          title: "Select a Text File",
-          filters: [{ name: "Text", extensions: ["txt"] }],
-        });
-        if (!filePath) return;
-        const fileContent = await readTextFile(filePath as string, {});
-        content.value = fileContent;
-      } catch (error) {
-        console.error(error);
-      }
-    });
-  })
+  //incoming...
 
   return (
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">
@@ -464,7 +446,7 @@ function Home() {
           <button
             className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
             onClick={() => {
-              formateArduinoCliConfig();
+              resetResourcesDir();
             }}
             disabled={disabled}
           >

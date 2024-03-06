@@ -1,8 +1,0 @@
-cache:
-    builder-api:
-        v3/boards/byvid/pid/0x2341/0x8036:
-            data: '[{"name":"Arduino Leonardo","fqbn":"arduino:avr:leonardo"}]'
-            ts: 2024-03-05T21:37:23.847959+01:00
-installation:
-    id: abbb9c6b-7754-48e5-b724-0e5aad35b391
-    secret: 3802d157-bf69-40d6-8fb2-790ef49b15be
