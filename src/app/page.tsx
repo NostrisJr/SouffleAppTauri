@@ -140,6 +140,7 @@ function Home() {
     const pathTmpFolder = `${appDataPath}tmp/`;
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
 
+
     const tmpName = Date.now().toString()
     const pathTmpIno = `${pathTmpFolder}sketch_${tmpName}`
 
@@ -162,6 +163,7 @@ function Home() {
 
     if (compileOutput.code !== 0) {
       dialog.message("An error has occurred while compiling & uploading");
+
       if (compileOutput.stdout.length >= 1) {
         logMessage(compileOutput.stdout)
       }
@@ -184,6 +186,7 @@ function Home() {
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const appDataPath = await path.appDataDir();
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
+
 
     const commandCompile: Command = Command.sidecar("binaries/arduino-cli", [
       "board",
@@ -326,13 +329,11 @@ function Home() {
     setDisabledToSave(false)
     setExplanationYouShallNotSave(false)
   }
-
   //* Delete function is in SelectPreset Component
 
   //********************** *********************//
   //************** Menu handling ***************//
   //********************** *********************//
-
 
   async function listenMenuEvents(){
     const window = await import("@tauri-apps/api/window")
@@ -353,6 +354,7 @@ function Home() {
     listenMenuEvents()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   return (
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">

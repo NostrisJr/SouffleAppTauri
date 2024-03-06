@@ -5,6 +5,7 @@ use fs_extra::dir::{copy, CopyOptions};
 use std::path::Path;
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 
+
 #[tauri::command]
 fn copy_directory(from: String, to: String) -> Result<(), String> {
     let from_path = Path::new(&from);
@@ -56,3 +57,4 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
+

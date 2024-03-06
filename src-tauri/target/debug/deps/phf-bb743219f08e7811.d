@@ -1,0 +1,11 @@
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libphf-bb743219f08e7811.rmeta: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_set.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/set.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/libphf-bb743219f08e7811.rlib: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_set.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/set.rs
+
+/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/deps/phf-bb743219f08e7811.d: /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/lib.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_map.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_set.rs /Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/set.rs
+
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/lib.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/map.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_map.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/ordered_set.rs:
+/Users/theophiledonato/.cargo/registry/src/index.crates.io-6f17d22bba15001f/phf-0.10.1/src/set.rs:
