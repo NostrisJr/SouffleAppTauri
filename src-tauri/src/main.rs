@@ -3,8 +3,7 @@
 
 use fs_extra::dir::{copy, CopyOptions};
 use std::path::Path;
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-
+use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 
 #[tauri::command]
 fn copy_directory(from: String, to: String) -> Result<(), String> {
@@ -23,18 +22,29 @@ fn copy_directory(from: String, to: String) -> Result<(), String> {
 }
 
 fn create_app_menu() -> Menu {
+    let authors = vec!["Theophile Donato".to_string()];
+    let about_metadata = AboutMetadata::new().authors(authors).version("1.0.0").comments("This is the desktop app for Souffle controlers programation.\n Find more on my website").website("https://www.thisdonato.com/");
     return Menu::new()
         .add_submenu(Submenu::new(
             "App",
-            Menu::new().add_native_item(MenuItem::Quit),
+            Menu::new()
+                .add_native_item(MenuItem::Quit)
+                .add_native_item(MenuItem::About(
+                    ("Souffle Desktop App").to_string(),
+                    about_metadata,
+                )),
         ))
         .add_submenu(Submenu::new(
             "File",
             Menu::new()
                 .add_item(CustomMenuItem::new("new".to_string(), "New").accelerator("CmdOrCtrl+N"))
-                .add_item(CustomMenuItem::new("open".to_string(), "Open").accelerator("CmdOrCtrl+O"))
+                .add_item(
+                    CustomMenuItem::new("open".to_string(), "Open").accelerator("CmdOrCtrl+O"),
+                )
                 .add_native_item(MenuItem::Separator)
-                .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S")),
+                .add_item(
+                    CustomMenuItem::new("save".to_string(), "Save").accelerator("CmdOrCtrl+S"),
+                ),
         ));
 }
 
@@ -57,4 +67,3 @@ fn main() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-

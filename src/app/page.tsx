@@ -7,7 +7,7 @@ import { InterfaceChart } from "@/component/InterfaceChart";
 import { InterfaceItem } from "@/component/InterfaceItem";
 import { useState } from "react";
 import { SelectBoard } from "@/component/SelectBoard";
-import { checkDataDirectory, clearTmpFiles, createPreset, createTempInoFile, readValuesFile } from "@/component/HandleData";
+import { checkDataDirectory, clearTmpFiles, createPreset, createTempInoFile } from "@/component/HandleData";
 import { SelectPreset } from "@/component/SelectPreset";
 import { logError, logMessage } from "@/component/DebuggingMode";
 import { checkResourcesDirectory } from "@/component/HandleResourcesDir";
