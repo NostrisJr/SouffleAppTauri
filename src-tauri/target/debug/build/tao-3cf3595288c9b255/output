@@ -15,6 +15,8 @@ exit status: 0
 cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS
 CRATE_CC_NO_DEFAULTS = None
 DEBUG = Some("true")
+running: "xcrun" "--show-sdk-platform-version" "--sdk" "macosx"
+exit status: 0
 cargo:rerun-if-env-changed=CFLAGS_x86_64-apple-darwin
 CFLAGS_x86_64-apple-darwin = None
 cargo:rerun-if-env-changed=CFLAGS_x86_64_apple_darwin
@@ -23,7 +25,7 @@ cargo:rerun-if-env-changed=HOST_CFLAGS
 HOST_CFLAGS = None
 cargo:rerun-if-env-changed=CFLAGS
 CFLAGS = None
-running: env -u IPHONEOS_DEPLOYMENT_TARGET "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-gdwarf-2" "-fno-omit-frame-pointer" "-m64" "--target=x86_64-apple-darwin" "-mmacosx-version-min=10.13" "-Wall" "-Wextra" "-o" "/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/build/tao-3cf3595288c9b255/out/df82fda822139c3e-carbon_hotkey_binding.o" "-c" "src/platform_impl/macos/carbon_hotkey/carbon_hotkey_binding.c"
+running: env -u IPHONEOS_DEPLOYMENT_TARGET "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-gdwarf-2" "-fno-omit-frame-pointer" "-m64" "--target=x86_64-apple-darwin" "-mmacosx-version-min=14.4" "-Wall" "-Wextra" "-o" "/Users/theophiledonato/Desktop/Startup/souffleapptauri/src-tauri/target/debug/build/tao-3cf3595288c9b255/out/df82fda822139c3e-carbon_hotkey_binding.o" "-c" "src/platform_impl/macos/carbon_hotkey/carbon_hotkey_binding.c"
 exit status: 0
 cargo:rerun-if-env-changed=AR_x86_64-apple-darwin
 AR_x86_64-apple-darwin = None
