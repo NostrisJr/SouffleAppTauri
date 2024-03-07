@@ -38,7 +38,6 @@ function InterfaceItem({
   setFocused,
   recolor,
 }: InterfaceProp) {
-
   useEffect(() => {
     recolor({ focused, values });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +53,9 @@ function InterfaceItem({
         if (parameters[0] !== potId) {
           parameters[0] = potId;
         } else {
-          parameters[0] = -1;
+          if (focused === i) {
+            parameters[0] = -1;
+          }
         }
         return parameters;
       } else {
@@ -80,7 +81,11 @@ function InterfaceItem({
         width="100%"
         height="100%"
       >
-        <InterfaceOutline interfaceId={interfaceId} colors={colors} handleOutlineClick={handleOutlineClick} />
+        <InterfaceOutline
+          interfaceId={interfaceId}
+          colors={colors}
+          handleOutlineClick={handleOutlineClick}
+        />
         <InterfaceKnob
           potId={1}
           interfaceId={interfaceId}
@@ -110,7 +115,11 @@ function InterfaceItem({
           handlePotClick={handlePotClick}
         />
 
-        <InterfaceFaders interfaceId={interfaceId} handlePotClick={handlePotClick} colors={colors} />
+        <InterfaceFaders
+          interfaceId={interfaceId}
+          handlePotClick={handlePotClick}
+          colors={colors}
+        />
       </svg>
     </div>
   );

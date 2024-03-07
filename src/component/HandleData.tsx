@@ -32,9 +32,9 @@ export async function checkDataDirectory() {
   if (!directoryExists) {
     try {
       await fs.createDir(appDataPath);
-      logMessage("Data directory created successfully!")
+      logMessage("Data directory created successfully!");
     } catch (err) {
-      logError("Error while creating Data directory : " + err)
+      logError("Error while creating Data directory : " + err);
     }
   }
 
@@ -46,7 +46,7 @@ export async function checkDataDirectory() {
       await fs.createDir(presetsPath);
       logMessage("Presets directory created successfully!");
     } catch (err) {
-      logError("Error while creating presets directory : " + err)
+      logError("Error while creating presets directory : " + err);
     }
   }
 
@@ -58,34 +58,37 @@ export async function checkDataDirectory() {
       await fs.createDir(tmpPath);
       logMessage("Tmp directory created successfully!");
     } catch (err) {
-      logError("Error while creating tmp directory : " + err)
+      logError("Error while creating tmp directory : " + err);
     }
   }
 
-  const presetsInventoryPath = `${appDataPath}/presets/inventory.txt`
+  const presetsInventoryPath = `${appDataPath}/presets/inventory.txt`;
   const presetsInventoryExists = await fs.exists(presetsInventoryPath);
 
   if (!presetsInventoryExists) {
     try {
-      await fs.writeFile(presetsInventoryPath, "")
+      await fs.writeFile(presetsInventoryPath, "");
       logMessage("Presets inventory created successfully!");
     } catch (err) {
-      logError("Error while creating presets inventory : " + err)
+      logError("Error while creating presets inventory : " + err);
     }
   }
 
-  const defaultPresetPath = `${appDataPath}/presets/default`
+  const defaultPresetPath = `${appDataPath}/presets/default`;
   const defaultPresetExists = await fs.exists(defaultPresetPath);
 
   if (!defaultPresetExists) {
     try {
-      await createPreset({ name: "Default", values: defaultValues, init: true })
+      await createPreset({
+        name: "Default",
+        values: defaultValues,
+        init: true,
+      });
       logMessage("Default preset created successfully!");
     } catch (err) {
-      logError("Error while creating Default preset : " + err)
+      logError("Error while creating Default preset : " + err);
     }
   }
-
 }
 
 async function createPresetFolder(name: string) {
@@ -101,14 +104,14 @@ async function createPresetFolder(name: string) {
     if (!presetExists) {
       await fs.createDir(presetPath);
       logMessage(name + " preset folder created successfully");
-      return true
+      return true;
     } else {
       logError(name + "preset folder already exists");
-      return false
+      return false;
     }
   } catch (error) {
     logError("Error while creating " + name + "preset folder:" + error);
-    return false
+    return false;
   }
 }
 
@@ -127,11 +130,18 @@ async function createValuesFile({ name, values }: FilesProps) {
     const filePath = `${appDataPath}presets/${name}/${name}.txt`;
 
     await fs.writeFile(filePath, values.toString());
-    logMessage(name + "'s values file created successfully")
+    logMessage(name + "'s values file created successfully");
   } catch (err) {
-    logError("Error creating values file for " + name + " preset, with values :\n " + values + "\nError : " + err);
+    logError(
+      "Error creating values file for " +
+        name +
+        " preset, with values :\n " +
+        values +
+        "\nError : " +
+        err
+    );
   }
-};
+}
 
 export async function readValuesFile(name: string) {
   const fs = await import("@tauri-apps/api/fs");
@@ -149,7 +159,7 @@ export async function readValuesFile(name: string) {
 
       if (valuesRawList.length === defaultValues.toString().split(",").length) {
         for (let i = 0; i < nbInterfaces; i++) {
-          let potValues = []
+          let potValues = [];
           for (let j = i * 7; j < i * 7 + 7; j++) {
             const value = parseInt(valuesRawList[j]);
             if (!isNaN(value)) {
@@ -160,18 +170,20 @@ export async function readValuesFile(name: string) {
           }
           valuesList.push(potValues);
         }
-        logMessage(name + "'s values file read successfully")
+        logMessage(name + "'s values file read successfully");
         return valuesList;
       }
     } else {
-      logError(name + "'s values file doesn't exist or invalid. Return default preset");
+      logError(
+        name + "'s values file doesn't exist or invalid. Return default preset"
+      );
       return defaultValues;
     }
   } catch (err) {
     logError("Error while reading " + name + "'s values file : " + err);
   }
   return defaultValues;
-};
+}
 
 async function createInoFile({ name, values }: FilesProps) {
   const fs = await import("@tauri-apps/api/fs");
@@ -184,20 +196,29 @@ async function createInoFile({ name, values }: FilesProps) {
     const code = await createCode(values);
 
     if (code === false) {
-      throw new Error('Arduino code invalid. Cannot create ino file (code = false)');
+      throw new Error(
+        "Arduino code invalid. Cannot create ino file (code = false)"
+      );
     }
 
     await fs.writeTextFile(filePath, code);
-    logMessage(name + "'s ino file created successfully")
+    logMessage(name + "'s ino file created successfully");
   } catch (err) {
-    logError("Error creating ino file for " + name + " preset, with values :\n " + values + "\nError : " + err);
+    logError(
+      "Error creating ino file for " +
+        name +
+        " preset, with values :\n " +
+        values +
+        "\nError : " +
+        err
+    );
   }
-};
+}
 
 type tempInoProps = {
   name: string;
   values: Array<Array<number>>;
-}
+};
 
 export async function createTempInoFile({ name, values }: tempInoProps) {
   const fs = await import("@tauri-apps/api/fs");
@@ -205,9 +226,7 @@ export async function createTempInoFile({ name, values }: tempInoProps) {
 
   const appDataPath = await path.appDataDir();
 
-
   try {
-
     const folderPath = `${appDataPath}tmp/sketch_${name}`;
 
     await fs.createDir(folderPath);
@@ -218,16 +237,22 @@ export async function createTempInoFile({ name, values }: tempInoProps) {
     const code = await createCode(values);
 
     if (code === false) {
-      throw new Error('Arduino code invalid. Cannot create ino file (code === false)');
+      throw new Error(
+        "Arduino code invalid. Cannot create ino file (code === false)"
+      );
     }
 
     await fs.writeTextFile(filePath, code);
-    logMessage("temporary ino file created successfully")
-
+    logMessage("temporary ino file created successfully");
   } catch (err) {
-    logError("Error creating temporary ino file, with values :\n " + values + "\nError : " + err);
+    logError(
+      "Error creating temporary ino file, with values :\n " +
+        values +
+        "\nError : " +
+        err
+    );
   }
-};
+}
 
 export async function clearTmpFiles() {
   const fs = await import("@tauri-apps/api/fs");
@@ -235,106 +260,127 @@ export async function clearTmpFiles() {
 
   try {
     const appDataPath = await path.appDataDir();
-    const pathTmpFolder = `${appDataPath}tmp/`
+    const pathTmpFolder = `${appDataPath}tmp/`;
 
-    await fs.removeDir(pathTmpFolder, { recursive: true })
-    await fs.createDir(pathTmpFolder)
-    logMessage("Tmp folder cleaned sucessfully")
+    await fs.removeDir(pathTmpFolder, { recursive: true });
+    await fs.createDir(pathTmpFolder);
+    logMessage("Tmp folder cleaned sucessfully");
   } catch (err) {
     await checkDataDirectory();
-    logError("An error occurred while cleaning Tmp folder : " + err)
+    logError("An error occurred while cleaning Tmp folder : " + err);
   }
-};
+}
 
 async function createCode(values: Array<Array<number>>) {
   const pathModule = await import("@tauri-apps/api/path");
-  const pathDefaultSketch = await pathModule.resolveResource("Resources/Arduino/sketch_default/sketch_default.ino");
+  const pathDefaultSketch = await pathModule.resolveResource(
+    "Resources/Arduino/sketch_default/sketch_default.ino"
+  );
   const fs = await import("@tauri-apps/api/fs");
 
   try {
-    const defaultCode = await fs.readTextFile(pathDefaultSketch)
-    let splitedCode = defaultCode.split("\n")
+    const defaultCode = await fs.readTextFile(pathDefaultSketch);
+    let splitedCode = defaultCode.split("\n");
 
     //Go see the default code to understand/debug this
-    const index = splitedCode.indexOf("// DO NOT REMOVE COMMENTARY - Next line is values") + 1;
+    const index =
+      splitedCode.indexOf("// DO NOT REMOVE COMMENTARY - Next line is values") +
+      1;
 
-    const valuesList = "const int values[15][7] = {" + values.map((item) => `{${item.join(", ")}}`).join(",") + "};";
-    splitedCode[index] = valuesList
+    const valuesList =
+      "const int values[15][7] = {" +
+      values.map((item) => `{${item.join(", ")}}`).join(",") +
+      "};";
+    splitedCode[index] = valuesList;
 
-    let newCode = ""
+    let newCode = "";
 
     for (let i = 0; i < splitedCode.length; i++) {
-      newCode = newCode + splitedCode[i] + "\n"
+      newCode = newCode + splitedCode[i] + "\n";
     }
-    logMessage("Code created successfully !")
-    return (newCode)
+    logMessage("Code created successfully !");
+    return newCode;
   } catch (err) {
-    logError("An error occurred while creating arduino code from values : " + values)
-    return (false)
+    logError(
+      "An error occurred while creating arduino code from values : " + values
+    );
+    return false;
   }
 }
 
 export async function createPreset({ name, values, init }: FilesProps) {
   const fs = await import("@tauri-apps/api/fs");
   const path = await import("@tauri-apps/api/path");
-  const dialog = await import("@tauri-apps/api/dialog")
+  const dialog = await import("@tauri-apps/api/dialog");
 
   //avoid to show a completion message when createPreset is called by checkDataDirectory's creation of Default preset
-  let showCompletionMessage = true
+  let showCompletionMessage = true;
   if (init === true) {
-    showCompletionMessage = false
+    showCompletionMessage = false;
   }
 
-  const finalName = name.charAt(0).toUpperCase() + name.slice(1)
+  const finalName = name.charAt(0).toUpperCase() + name.slice(1);
 
   try {
-
     //creates an infinite loop otherwise
     if (init !== true) {
-      await checkDataDirectory()
+      await checkDataDirectory();
     }
 
     await createPresetFolder(finalName);
     await createInoFile({ name: finalName, values });
     await createValuesFile({ name: finalName, values });
     const appDataPath = await path.appDataDir();
-    const presetsInventoryPath = `${appDataPath}/presets/inventory.txt`
+    const presetsInventoryPath = `${appDataPath}/presets/inventory.txt`;
 
-    let inventory = await fs.readTextFile(presetsInventoryPath)
-    inventory += `${finalName}\n`
-    await fs.writeTextFile(presetsInventoryPath, inventory)
-    logMessage("Preset " + name + " created sucessfully !")
+    let inventory = await fs.readTextFile(presetsInventoryPath);
+    inventory += `${finalName}\n`;
+    await fs.writeTextFile(presetsInventoryPath, inventory);
+    logMessage("Preset " + name + " created sucessfully !");
     if (showCompletionMessage) {
-      await dialog.message("Preset " + finalName + " created sucessfully !")
+      await dialog.message("Preset " + finalName + " created sucessfully !");
     }
   } catch (err) {
-    logError("An error occurred while creating preset " + name + " with values : " + values + "\nError : " + err)
+    logError(
+      "An error occurred while creating preset " +
+        name +
+        " with values : " +
+        values +
+        "\nError : " +
+        err
+    );
   }
 }
 
 export async function deletePreset(name: string) {
-  const dialog = await import("@tauri-apps/api/dialog")
+  const dialog = await import("@tauri-apps/api/dialog");
 
   try {
     const fs = await import("@tauri-apps/api/fs");
     const path = await import("@tauri-apps/api/path");
 
     const appDataPath = await path.appDataDir();
-    const presetDirectory = `${appDataPath}presets/${name}`
-    const presetsInventoryPath = `${appDataPath}presets/inventory.txt`
+    const presetDirectory = `${appDataPath}presets/${name}`;
+    const presetsInventoryPath = `${appDataPath}presets/inventory.txt`;
 
     await fs.removeDir(presetDirectory, { recursive: true });
 
     const inventoryRaw = await fs.readTextFile(presetsInventoryPath);
-    const inventory = inventoryRaw.split("\n").filter((presetName: string) => presetName.toLowerCase() !== name.toLowerCase()).join("\n")
+    const inventory = inventoryRaw
+      .split("\n")
+      .filter(
+        (presetName: string) => presetName.toLowerCase() !== name.toLowerCase()
+      )
+      .join("\n");
 
     await fs.writeTextFile(presetsInventoryPath, inventory);
 
-    await dialog.message(name + " preset deleted successfully !")
-    logMessage(name + " preset deleted successfully !")
+    await dialog.message(name + " preset deleted successfully !");
+    logMessage(name + " preset deleted successfully !");
   } catch (err) {
-    logError("An error occurred : " + err)
-    await dialog.message("An error occurred while deleting " + name + " preset...\n Error : " + err)
-
+    logError("An error occurred : " + err);
+    await dialog.message(
+      "An error occurred while deleting " + name + " preset...\n Error : " + err
+    );
   }
 }

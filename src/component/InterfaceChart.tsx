@@ -15,8 +15,17 @@ type chartProp = {
   disabled: boolean;
 };
 
-function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused, className, disabled }: chartProp) {
-
+function InterfaceChart({
+  bend,
+  min,
+  max,
+  colorFill,
+  values,
+  setValues,
+  focused,
+  className,
+  disabled,
+}: chartProp) {
   const data = [];
 
   for (let x = 0; x < min; x += 1) {
@@ -81,10 +90,17 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
 
           <div className="bg-s-pink h-[.1em] col-span-2 noFadeIn" />
           <div className="bg-s-bg-dark p-2 col-span-2 w-full aspect-[10/8] noFadeIn">
-            <ResponsiveContainer width="100%" height="100%" className="col-span-2 noFadeIn">
-              <LineChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <XAxis dataKey={"x"} domain={[0, 127]} ticks={[0, 127]}/>
-                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, max]}/>
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
+              className="col-span-2 noFadeIn"
+            >
+              <LineChart
+                data={data}
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                <XAxis dataKey={"x"} domain={[0, 127]} ticks={[0, 127]} />
+                <YAxis dataKey={"y"} domain={[0, 127]} ticks={[min, max]} />
                 <Line
                   type="monotone"
                   dataKey="y"
@@ -105,8 +121,8 @@ function InterfaceChart({ bend, min, max, colorFill, values, setValues, focused,
             focused={focused}
             values={values}
             setValues={setValues}
-            min={-300}
-            max={300}
+            min={-100}
+            max={100}
             step={1}
             direction="normal"
             orientation="horizontal"

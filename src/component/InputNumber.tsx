@@ -9,11 +9,19 @@ type inputNumberProp = {
   className: string;
 };
 
-function InputNumber({ className, min, max, step, index, values, setValues, focused }: inputNumberProp) {
-
+function InputNumber({
+  className,
+  min,
+  max,
+  step,
+  index,
+  values,
+  setValues,
+  focused,
+}: inputNumberProp) {
   const handleChange = (newParam: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = parseInt(newParam.target.value);
-    
+
     if (min > newValue || newValue > max || !Number.isInteger(newValue)) {
       newValue = 1;
     }

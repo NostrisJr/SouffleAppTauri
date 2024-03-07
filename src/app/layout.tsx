@@ -32,9 +32,16 @@ const overpass = Overpass({
   variable: "--overpass",
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="fr" className={`${fabulist_extended.variable} ${overpass.variable}`}>
+    <html
+      lang="fr"
+      className={`${fabulist_extended.variable} ${overpass.variable}`}
+    >
       <body>{children}</body>
     </html>
   );

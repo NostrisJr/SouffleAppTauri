@@ -31,7 +31,7 @@ function InterfaceSlider({
   const handleSliderChange = (event: any, newValue: number) => {
     //if min
     if (index === 3) {
-      const accessibleMax = values[focused][4]-1;
+      const accessibleMax = values[focused][4] - 1;
       if (newValue >= accessibleMax) {
         newValue = accessibleMax;
       }
@@ -59,7 +59,7 @@ function InterfaceSlider({
     let resetValue = 0;
     if (index === 4) {
       resetValue = 127;
-    } 
+    }
     const nextValues = values.map((parameters, i) => {
       if (i === focused) {
         parameters[index] = resetValue;
@@ -89,10 +89,15 @@ function InterfaceSlider({
         track={direction}
         orientation={orientation}
         slotProps={{
-          rail: { className: direction === "normal" ? "rail" : "track"},
+          rail: { className: direction === "normal" ? "rail" : "track" },
           track: { className: direction === "normal" ? "track" : "rail" },
           thumb: { className: "thumb" },
-          root: { className: orientation === "horizontal" ? "horizontalSlider" : "verticalSlider" },
+          root: {
+            className:
+              orientation === "horizontal"
+                ? "horizontalSlider"
+                : "verticalSlider",
+          },
         }}
         disabled={disabled}
       />

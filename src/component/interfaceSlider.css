@@ -1,42 +1,49 @@
-
 .rail {
-    background-color: rgb(var(--s-purple) / 1);
-    opacity: 1;
-    border: 1em;
-  }
-  
-  .track {
-    background-color: rgb(var(--s-pink) / 1);
-    opacity: 1;
-    border: 1em;
-  }
-  
-  .horizontalSlider {
-    height: .125em;
-  }
-  .verticalSlider {
-    width: .125em;
-  }
-  
-  .thumb {
-    height: 1.7em;
-    width: 1.7em;
-    background-color: rgb(var(--s-bg-dark) / 1);
-    padding: 0.125em;
-    background:
-      linear-gradient(135deg, rgb(var(--s-bg-dark) / 1), rgb(var(--s-bg-light) / 1)) content-box,
-      linear-gradient(180deg, rgb(var(--s-bg-light) / 1), rgb(var(--s-bg-dark) / 1)) border-box;
-    border: none;
-  }
-  
-  .thumb:focus,
-  .thumb:hover,
-  .thumb.Mui-active,
-  .thumb.Mui-focusVisible {
-    box-shadow: none;
-  }
-  
-  .thumb::before {
-    display: none;
-  }
-  
+  background-color: rgb(var(--s-purple) / 1);
+  opacity: 1;
+  border: 1em;
+}
+
+.track {
+  background-color: rgb(var(--s-pink) / 1);
+  opacity: 1;
+  border: 1em;
+}
+
+.horizontalSlider {
+  height: 0.125em;
+}
+.verticalSlider {
+  width: 0.125em;
+}
+
+.thumb {
+  height: 1.7em;
+  width: 1.7em;
+  background-color: rgb(var(--s-bg-dark) / 1);
+  padding: 0.125em;
+  background: linear-gradient(
+        135deg,
+        rgb(var(--s-bg-dark) / 1),
+        rgb(var(--s-bg-light) / 1)
+      )
+      content-box,
+    linear-gradient(
+        180deg,
+        rgb(var(--s-bg-light) / 1),
+        rgb(var(--s-bg-dark) / 1)
+      )
+      border-box;
+  border: none;
+}
+
+.thumb:focus,
+.thumb:hover,
+.thumb.Mui-active,
+.thumb.Mui-focusVisible {
+  box-shadow: none;
+}
+
+.thumb::before {
+  display: none;
+}

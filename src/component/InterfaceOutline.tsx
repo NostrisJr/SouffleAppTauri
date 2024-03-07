@@ -2,10 +2,13 @@ type outlineProp = {
   interfaceId: number;
   colors: Array<Array<string>>;
   handleOutlineClick: (id: number) => void;
-  }
+};
 
-function InterfaceOutline({ interfaceId, colors, handleOutlineClick }: outlineProp) {
-
+function InterfaceOutline({
+  interfaceId,
+  colors,
+  handleOutlineClick,
+}: outlineProp) {
   return (
     <g>
       <path

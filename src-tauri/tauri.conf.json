@@ -8,8 +8,8 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "souffleapptauri",
-    "version": "0.1.0"
+    "productName": "Souffle",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -22,25 +22,27 @@
         "open": true,
         "sidecar": true,
         "scope": [
-          {
-            "name": "list-presets",
-            "cmd": "ls",
-            "args": true
-          },
-          {
-            "name": "ls",
-            "cmd": "ls",
-            "args": ["/dev/tty.usbmodem*"]
-          },
           { "name": "binaries/arduino-cli", "args": true, "sidecar": true }
         ]
       },
       "fs": {
-        "all": true,
+        "copyFile": false,
+        "createDir": true,
+        "exists": true,
+        "readDir": false,
+        "readFile": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": false,
+        "writeFile": true,
         "scope": ["$RESOURCE/**", "$DATA/**", "$APPDATA/**"]
       },
       "dialog": {
-        "all": true
+        "message": true,
+        "ask": true,
+        "confirm": true,
+        "open": false,
+        "save": false
       },
       "window": {
         "all": true

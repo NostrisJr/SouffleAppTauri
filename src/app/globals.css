@@ -32,7 +32,11 @@ input {
 }
 
 .dark-gradient {
-  background: linear-gradient(135deg, rgb(var(--s-bg-light) / 1) 0%, rgb(var(--s-bg-dark) / 1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgb(var(--s-bg-light) / 1) 0%,
+    rgb(var(--s-bg-dark) / 1) 100%
+  );
 }
 
 .outline-display-header:hover {
@@ -57,8 +61,7 @@ input {
 }
 
 .halo {
-  box-shadow:
-    0rem 0.3rem 0.05rem rgb(var(--s-pink) / 1),
+  box-shadow: 0rem 0.3rem 0.05rem rgb(var(--s-pink) / 1),
     0rem 0.5rem 0.5rem rgb(var(--s-pink-halo) / 1);
 }
 
@@ -68,7 +71,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 ::-webkit-scrollbar {
   background: none;
-  width: .4em;
+  width: 0.4em;
 }
 
 ::-webkit-scrollbar-track {

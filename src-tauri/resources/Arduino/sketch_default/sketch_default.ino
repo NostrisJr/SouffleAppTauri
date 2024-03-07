@@ -7,7 +7,7 @@ const int values[15][7] = {{1, 1, 7, 0, 127, 0, 0}, {2, 1, 16, 0, 127, 0, 0}, {3
 const int NbInterfaces = 15;
 // POTENTIOMETERS
 // first 0 is for pratical purpuse : you can reat pot values[X][0] on pin potPin[values[X][0]]...
-const int potPin[8] = {0, A8, A7, A6, A0, A1, A2, A3};
+const int potPin[8] = {0, A3, A2, A1, A0, A8, A7, A6};
 
 int potCState[NbInterfaces] = {0};
 int potPState[NbInterfaces] = {0};
@@ -69,7 +69,7 @@ void potentiometers()
         if (midiPState[i] != midiCState[i])
         {
 
-          controlChange(midiChanel[i], midiCC[i], midiCState[i]);
+          controlChange(midiChanel[i], midiCC[i], calcValue(midiCState[i], values[i][3], values[i][4], values[i][5]));
           MidiUSB.flush();
 
           potPState[i] = potCState[i];
