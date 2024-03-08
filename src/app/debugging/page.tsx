@@ -10,9 +10,8 @@ type logItemProps = {
 function LogItem({ type, content }: logItemProps) {
   return (
     <li
-      className={`${
-        type === "message" ? "bg-s-bg-light" : "bg-s-purple"
-      } p-1 w-full text-base font-body text-s-white flex gap-2 select-text`}
+      className={`${type === "message" ? "bg-s-bg-light" : "bg-s-purple"
+        } p-1 w-full text-base font-body text-s-white flex gap-2 select-text`}
     >
       <p className="text-md uppercase whitespace-nowrap">{`${type} :`}</p>
       <p className="text-wrap overflow-hidden">{content}</p>
@@ -29,8 +28,7 @@ const Debugging = () => {
     const event = await import("@tauri-apps/api/event");
 
     try {
-      await event.listen("log", (event) => {
-        // @ts-expect-error
+      await event.listen("log", (event: { payload: { type: string; content: string } }) => {
         setLogs((prevLogs) => [
           ...prevLogs,
           [event.payload.type, event.payload.content],

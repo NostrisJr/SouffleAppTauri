@@ -382,21 +382,27 @@ function Home() {
   async function listenMenuEvents() {
     const window = await import("@tauri-apps/api/window");
 
-    window.appWindow.listen("save_preset", async () => await initSavePreset());
-    window.appWindow.listen(
-      "refresh_devices",
-      async () => await refreshDevices()
-    );
-    window.appWindow.listen("default_values", () => resetToDefaultValues());
-    window.appWindow.listen(
-      "send_values",
-      async () => await sendConfiguration()
-    );
-    window.appWindow.listen("debug_mode", async () => await handleDebugMode());
-    window.appWindow.listen("reset_resources", async () => {
-      await checkDataDirectory();
-      await resetResourcesDir();
-    });
+    if (!disabled) {
+      try {
+        window.appWindow.listen("save_preset", async () => await initSavePreset());
+        window.appWindow.listen(
+          "refresh_devices",
+          async () => await refreshDevices()
+        );
+        window.appWindow.listen("default_values", () => resetToDefaultValues());
+        window.appWindow.listen(
+          "send_values",
+          async () => await sendConfiguration()
+        );
+        window.appWindow.listen("debug_mode", async () => await handleDebugMode());
+        window.appWindow.listen("reset_resources", async () => {
+          await checkDataDirectory();
+          await resetResourcesDir();
+        });
+      } catch(err) {
+        logError("An error occurred while using menu functions : " + err)
+      }
+    }
   }
 
   useEffect(() => {
@@ -441,8 +447,8 @@ function Home() {
           />
           <span
             className={`${explanationYouShallNotSave === false
-                ? "opacity-0"
-                : "opacity-100 transition duration-400 delay-500"
+              ? "opacity-0"
+              : "opacity-100 transition duration-400 delay-500"
               } absolute top-6 text-s-pink font-body text-base`}
           >
             Name already took or invalid
@@ -496,8 +502,8 @@ function Home() {
         <div className="items-center flex p-4">
           <button
             className={`px-6 py-2 cursor-default transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none ${debuggingMode === false
-                ? "hidden text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
-                : "block text-s-white enabled:bg-s-purple"
+              ? "hidden text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
+              : "block text-s-white enabled:bg-s-purple"
               }`}
             disabled={disabled}
           >
