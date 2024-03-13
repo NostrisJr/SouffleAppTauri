@@ -61,6 +61,7 @@ function Home() {
     Array.from({ length: nbInterfaces }, () => [-1, 1, 1, 0, 127, 0, 0])
   );
 
+  //Caution : also defined in handle Data. Export caused unexpected bug
   const defaultValues = [
     [1, 1, 7, 0, 127, 0, 0], //plugin volume
     [2, 1, 16, 0, 127, 0, 0], //speed/tightness
@@ -200,7 +201,11 @@ function Home() {
 
     setDisabledToSend(false);
 
-    await clearTmpFiles();
+    if (debuggingMode === false) {
+      await clearTmpFiles();
+    } else {
+      logMessage("Cleaning temporary files skipped. Debug mode active");
+    }
   }
 
   async function refreshDevices() {
@@ -384,7 +389,10 @@ function Home() {
 
     if (!disabled) {
       try {
-        window.appWindow.listen("save_preset", async () => await initSavePreset());
+        window.appWindow.listen(
+          "save_preset",
+          async () => await initSavePreset()
+        );
         window.appWindow.listen(
           "refresh_devices",
           async () => await refreshDevices()
@@ -394,13 +402,16 @@ function Home() {
           "send_values",
           async () => await sendConfiguration()
         );
-        window.appWindow.listen("debug_mode", async () => await handleDebugMode());
+        window.appWindow.listen(
+          "debug_mode",
+          async () => await handleDebugMode()
+        );
         window.appWindow.listen("reset_resources", async () => {
           await checkDataDirectory();
           await resetResourcesDir();
         });
-      } catch(err) {
-        logError("An error occurred while using menu functions : " + err)
+      } catch (err) {
+        logError("An error occurred while using menu functions : " + err);
       }
     }
   }
@@ -416,24 +427,27 @@ function Home() {
   return (
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">
       <div
-        className={`${disabledToResetResourcesDir === false ? "hidden" : "flex flex-col"
-          } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+        className={`${
+          disabledToResetResourcesDir === false ? "hidden" : "flex flex-col"
+        } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
         <p>Setting Resources folder right...</p>
         <p>It should not take more than a few minutes !</p>
       </div>
 
       <div
-        className={`${disabledToSend === false ? "hidden" : "flex flex-col"
-          } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+        className={`${
+          disabledToSend === false ? "hidden" : "flex flex-col"
+        } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
         <p>Saving preset on your controller...</p>
         <p>Please do not disconnect it !</p>
       </div>
 
       <div
-        className={`${disabledToSave === false ? "hidden" : "flex flex-col"
-          } top-1/3 bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple gap-4 transition duration-500`}
+        className={`${
+          disabledToSave === false ? "hidden" : "flex flex-col"
+        } top-1/3 bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple gap-4 transition duration-500`}
       >
         <div className="flex gap-4 items-center justify-center">
           <label className="font-display text-3xl">Save as</label>
@@ -446,10 +460,11 @@ function Home() {
             value={namePresetSaved}
           />
           <span
-            className={`${explanationYouShallNotSave === false
-              ? "opacity-0"
-              : "opacity-100 transition duration-400 delay-500"
-              } absolute top-6 text-s-pink font-body text-base`}
+            className={`${
+              explanationYouShallNotSave === false
+                ? "opacity-0"
+                : "opacity-100 transition duration-400 delay-500"
+            } absolute top-6 text-s-pink font-body text-base`}
           >
             Name already took or invalid
           </span>
@@ -472,8 +487,9 @@ function Home() {
         </div>
       </div>
       <div
-        className={`${disabled === false ? "hidden" : "block"
-          } bg-s-bg-dark opacity-50 absolute z-[5] w-full h-full`}
+        className={`${
+          disabled === false ? "hidden" : "block"
+        } bg-s-bg-dark opacity-50 absolute z-[5] w-full h-full`}
       />
       <div className="w-full bg-s-bg-light flex justify-between">
         <div className="flex p-4 items-baseline">
@@ -501,10 +517,11 @@ function Home() {
         </div>
         <div className="items-center flex p-4">
           <button
-            className={`px-6 py-2 cursor-default transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none ${debuggingMode === false
-              ? "hidden text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
-              : "block text-s-white enabled:bg-s-purple"
-              }`}
+            className={`px-6 py-2 cursor-default transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none ${
+              debuggingMode === false
+                ? "hidden text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
+                : "block text-s-white enabled:bg-s-purple"
+            }`}
             disabled={disabled}
           >
             Debugging Mode
