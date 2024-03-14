@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Command } from "@tauri-apps/api/shell";
 
 import { InterfaceChart } from "@/component/InterfaceChart";
@@ -64,7 +64,7 @@ function Home() {
   //Caution : also defined in handle Data. Export caused unexpected bug
   const defaultValues = [
     [1, 1, 7, 0, 127, 0, 0], //plugin volume
-    [2, 1, 16, 0, 127, 0, 0], //speed/tightness
+    [2, 1, 18, 0, 127, 0, 0], //speed/tightness
     [3, 1, 17, 0, 127, 0, 0], // release
     [4, 1, 19, 0, 127, 0, 0], //reverb
     [5, 1, 11, 0, 127, 0, 0], //expression
