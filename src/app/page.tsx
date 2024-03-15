@@ -16,6 +16,7 @@ import {
 import { SelectPreset } from "@/component/SelectPreset";
 import { logError, logMessage } from "@/component/DebuggingMode";
 import { checkResourcesDirectory } from "@/component/HandleResourcesDir";
+import { DEFAULT_VALUES, NB_INTERFACES } from "@/component/Constants";
 
 type recolorProp = {
   focused: number;
@@ -29,22 +30,22 @@ function Home() {
 
   const [disabledToSave, setDisabledToSave] = useState(false);
   const [disabledToSend, setDisabledToSend] = useState(false);
-  const [disabledToResetResourcesDir, setDisabledToResetResourcesDir] =
-    useState(false);
+
   const [saveDisabled, setSaveDisabled] = useState(true);
   const [explanationYouShallNotSave, setExplanationYouShallNotSave] =
     useState(false);
 
-  let disabled =
-    disabledToSave || disabledToSend || disabledToResetResourcesDir;
+  const [disabledToResetResources, setDisabledToResetResources] =
+    useState(false);
+
+  let disabled = disabledToSave || disabledToSend || disabledToResetResources;
 
   const [debuggingMode, setDebuggingMode] = useState(false);
 
   //********************** ************************//
-  //*********** A few constants and def ***********//
+  //********** A few constants and defs ***********//
   //********************** ************************//
-
-  const nbInterfaces = 15; //also defined in HandleData
+  const nbInterfaces = NB_INTERFACES;
   const colorFill: string[] = [
     "rgb(var(--s-bg-light)/1)",
     "rgb(var(--s-purple)/1)",
@@ -61,24 +62,8 @@ function Home() {
     Array.from({ length: nbInterfaces }, () => [-1, 1, 1, 0, 127, 0, 0])
   );
 
-  //Caution : also defined in handle Data. Export caused unexpected bug
-  const defaultValues = [
-    [1, 1, 7, 0, 127, 0, 0], //plugin volume
-    [2, 1, 18, 0, 127, 0, 0], //speed/tightness
-    [3, 1, 17, 0, 127, 0, 0], // release
-    [4, 1, 19, 0, 127, 0, 0], //reverb
-    [5, 1, 11, 0, 127, 0, 0], //expression
-    [6, 1, 1, 0, 127, 0, 0], //dynamics
-    [7, 1, 21, 0, 127, 0, 0], // vibrato
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-    [-1, 1, 0, 0, 127, 0, 0],
-  ];
+  const defaultValues = DEFAULT_VALUES;
+
   //******************** ********************//
   //*********** Coloration stuff ***********//
   //******************** *******************//
@@ -148,6 +133,7 @@ function Home() {
   const [boards, setBoards] = useState<Array<Array<string>>>([
     ["No port found yet...", "No device found yet...", ""],
   ]);
+
   const [selectedDevice, setSelectedDevice] = useState<Array<string>>([
     "Please select a port...",
     "Please select a device...",
@@ -156,6 +142,12 @@ function Home() {
 
   async function sendConfiguration() {
     setDisabledToSend(true);
+
+    await checkDataDirectory();
+    await checkResourcesDirectory({
+      setDisabled: setDisabledToResetResources,
+      forceReset: false,
+    });
 
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog");
@@ -307,7 +299,10 @@ function Home() {
   }
 
   async function resetResourcesDir() {
-    await checkResourcesDirectory(setDisabledToResetResourcesDir);
+    await checkResourcesDirectory({
+      setDisabled: setDisabledToResetResources,
+      forceReset: true,
+    });
   }
 
   //********************** *********************//
@@ -428,8 +423,8 @@ function Home() {
     <div className="relative z-0 w-full h-screen items-center bg-s-bg-dark flex flex-col">
       <div
         className={`${
-          disabledToResetResourcesDir === false ? "hidden" : "flex flex-col"
-        } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-30 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+          disabledToResetResources === false ? "hidden" : "flex flex-col"
+        } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-50 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
         <p>Setting Resources folder right...</p>
         <p>It should not take more than a few minutes !</p>

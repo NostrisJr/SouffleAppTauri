@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export const NB_INTERFACES: number = 15;
 
 //based on Spitfire libraries

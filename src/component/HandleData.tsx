@@ -1,26 +1,11 @@
+import { SetStateAction } from "react";
+import { DEFAULT_VALUES, NB_INTERFACES } from "./Constants";
+
 import { logError, logMessage } from "./DebuggingMode";
+import { checkResourcesDirectory } from "./HandleResourcesDir";
 
-//also defined in Page.tsx
-const nbInterfaces = 15;
-
-//based on Spitfire libraries, also defined in page.tsx since import caused bugs
-const defaultValues = [
-  [1, 1, 7, 0, 127, 0, 0], //plugin volume
-  [2, 1, 18, 0, 127, 0, 0], //speed/tightness
-  [3, 1, 17, 0, 127, 0, 0], // release
-  [4, 1, 19, 0, 127, 0, 0], //reverb
-  [5, 1, 11, 0, 127, 0, 0], //expression
-  [6, 1, 1, 0, 127, 0, 0], //dynamics
-  [7, 1, 21, 0, 127, 0, 0], // vibrato
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-  [-1, 1, 0, 0, 127, 0, 0],
-];
+const nbInterfaces = NB_INTERFACES;
+const defaultValues = DEFAULT_VALUES;
 
 export async function checkDataDirectory() {
   const fs = await import("@tauri-apps/api/fs");
@@ -38,7 +23,7 @@ export async function checkDataDirectory() {
     }
   }
 
-  const presetsPath = `${appDataPath}/presets`;
+  const presetsPath = `${appDataPath}presets`;
   const presetsExists = await fs.exists(presetsPath);
 
   if (!presetsExists) {
@@ -62,7 +47,7 @@ export async function checkDataDirectory() {
     }
   }
 
-  const presetsInventoryPath = `${appDataPath}/presets/inventory.txt`;
+  const presetsInventoryPath = `${appDataPath}presets/inventory.txt`;
   const presetsInventoryExists = await fs.exists(presetsInventoryPath);
 
   if (!presetsInventoryExists) {
@@ -74,7 +59,7 @@ export async function checkDataDirectory() {
     }
   }
 
-  const defaultPresetPath = `${appDataPath}/presets/default`;
+  const defaultPresetPath = `${appDataPath}presets/default`;
   const defaultPresetExists = await fs.exists(defaultPresetPath);
 
   if (!defaultPresetExists) {
@@ -119,6 +104,7 @@ type FilesProps = {
   name: string;
   values: Array<Array<number>>;
   init?: boolean;
+  setDisabled?: React.Dispatch<SetStateAction<boolean>>;
 };
 
 async function createValuesFile({ name, values }: FilesProps) {
@@ -308,7 +294,12 @@ async function createCode(values: Array<Array<number>>) {
   }
 }
 
-export async function createPreset({ name, values, init }: FilesProps) {
+export async function createPreset({
+  name,
+  values,
+  init,
+  setDisabled,
+}: FilesProps) {
   const fs = await import("@tauri-apps/api/fs");
   const path = await import("@tauri-apps/api/path");
   const dialog = await import("@tauri-apps/api/dialog");

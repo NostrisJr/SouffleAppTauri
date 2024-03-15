@@ -1,6 +1,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import { Overpass } from "next/font/google";
+import { useState } from "react";
 
 export const metadata = {
   title: "Next.js",

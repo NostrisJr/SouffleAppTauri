@@ -1,5 +1,4 @@
 import { logError, logMessage } from "./DebuggingMode";
-import { checkDataDirectory } from "./HandleData";
 import yaml from "js-yaml";
 
 async function copyDir(fromPath: string, toPath: string) {
@@ -72,57 +71,72 @@ async function formateArduinoCliConfig() {
   }
 }
 
-//BE CAREFULL !! This function calls checkDataDirectory. Don't do anything silly with it (infinite loop...)
-//I decided to do so to prevent loosing the user's preset when it's needed to perform a Resources rebuilding
-export async function checkResourcesDirectory(
-  setDisabled: React.Dispatch<React.SetStateAction<boolean>>
-) {
+async function resetResourcesDir() {
+  const fs = await import("@tauri-apps/api/fs");
+  const path = await import("@tauri-apps/api/path");
+
+  const resourcesDirFromPath = await path.resolveResource("Resources");
+
+  const appDataPath = await path.appDataDir();
+  const resourcesAppDir = `${appDataPath}Resources`;
+
+  const resourcesAppDirExists = await fs.exists(resourcesAppDir);
+  // Clean previous Resources directory
+  if (resourcesAppDirExists) {
+    try {
+      await fs.removeDir(resourcesAppDir, { recursive: true });
+      logMessage("Resources Directory sucessfully removed from App Data");
+    } catch (err) {
+      logError(
+        "An error occurred while removing Resources Directory from App Data. Directory probably still incompletly removed : " +
+          err
+      );
+    }
+  } else {
+    logMessage("No remaining Resources Directory found... Begin copy");
+  }
+
+  // Copy new Resources Directory
+  try {
+    await copyDir(resourcesDirFromPath, resourcesAppDir);
+    logMessage("Resources directory was successfully copied");
+  } catch (err) {
+    logError("An error occurred while copying Resources directory : " + err);
+  }
+
+  // Add new Aruino-cli.yaml, with updated paths
+  try {
+    await formateArduinoCliConfig();
+    logMessage("Arduino-cli.yaml succesfully reseted !");
+  } catch (err) {
+    logError("An error occurred while reseting arduino-cli.config : " + err);
+  }
+}
+
+type checkResourcesDirectoryProps = {
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  forceReset: boolean;
+};
+
+export async function checkResourcesDirectory({
+  setDisabled,
+  forceReset,
+}: checkResourcesDirectoryProps) {
   const fs = await import("@tauri-apps/api/fs");
   const path = await import("@tauri-apps/api/path");
 
   try {
-    await checkDataDirectory();
-    setDisabled(true);
-    const resourcesDirFromPath = await path.resolveResource("Resources");
-
     const appDataPath = await path.appDataDir();
     const resourcesAppDir = `${appDataPath}Resources`;
 
     const resourcesAppDirExists = await fs.exists(resourcesAppDir);
 
-    // Clean previous Resources directory
-    if (resourcesAppDirExists) {
-      try {
-        await fs.removeDir(resourcesAppDir, { recursive: true });
-        logMessage("Resources Directory sucessfully removed from App Data");
-      } catch (err) {
-        logError(
-          "An error occurred while removing Resources Directory from App Data. Directory probably still incompletly removed : " +
-            err
-        );
-      }
-    } else {
-      logMessage("No remaining Resources Directory found... Begin copy");
+    if (forceReset || !resourcesAppDirExists) {
+      setDisabled(true);
+      await resetResourcesDir();
+      setDisabled(false);
     }
-
-    // Copy new Resources Directory
-    try {
-      await copyDir(resourcesDirFromPath, resourcesAppDir);
-      logMessage("Resources directory was successfully copied");
-    } catch (err) {
-      logError("An error occurred while copying Resources directory : " + err);
-    }
-
-    // Add new Aruino-cli.yaml, with updated paths
-    try {
-      await formateArduinoCliConfig();
-      logMessage("Arduino-cli.yaml succesfully reseted !");
-    } catch (err) {
-      logError("An error occurred while reseting arduino-cli.config : " + err);
-    }
-    // "Release lock" on UI
-    setDisabled(false);
   } catch (err) {
-    logError("An error occurred while reseting Resources directory : " + err);
+    logError("An error occurred while cheking Resources directory : " + err);
   }
 }
