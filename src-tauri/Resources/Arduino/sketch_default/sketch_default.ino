@@ -1,4 +1,5 @@
 //This is the default code for Brise controller
+//It is inspired by the code of the Nerd Musician (https://www.musiconerd.com/)
 #include "MIDIUSB.h"
 
 // DO NOT REMOVE COMMENTARY - Next line is values
@@ -44,7 +45,7 @@ void potentiometers()
     {
       potCState[i] = analogRead(potPin[values[i][0]]);
 
-      midiCState[i] = map(potCState[i], 0, 1023, 127, 0); // map(value, fromLow, fromHigh, toLow, toHigh)
+      midiCState[i] = map(potCState[i], 0, 1023, 127, 0); // map(value, fromLow, fromHigh, toLow, toHigh). Inverted because the pcb is wrongly designed...
 
       potVar = abs(potCState[i] - potPState[i]);
 
@@ -82,7 +83,9 @@ void potentiometers()
 
 void controlChange(byte channel, byte control, byte value)
 {
-  midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
+  const int real_channel = channel - 1; // MIDI channels are 1-16, but the library uses 0-15. 
+  //It comes from the fact that it's coded in hex... If you were to send smth on channel "16", it would send on channel 1
+  midiEventPacket_t event = {0x0B, 0xB0 | real_channel, control, value};
   MidiUSB.sendMIDI(event);
 }
 

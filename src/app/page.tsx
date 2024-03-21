@@ -140,6 +140,16 @@ function Home() {
     "",
   ]);
 
+  let sendDisabled =
+    disabledToSend ||
+    ((selectedDevice[0] === "Please select a port..." ||
+      selectedDevice[1] === "Please select a device..." ||
+      selectedDevice[0] === "No port found yet..." ||
+      selectedDevice[1] === "No device found yet..." ||
+      selectedDevice[0] === "No port found" ||
+      selectedDevice[1] === "No device found") &&
+      !debuggingMode);
+
   async function sendConfiguration() {
     setDisabledToSend(true);
 
@@ -148,6 +158,9 @@ function Home() {
       setDisabled: setDisabledToResetResources,
       forceReset: false,
     });
+
+    logMessage("Sending configuration to the controller...");
+    logMessage("Values to send : " + values);
 
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog");
@@ -193,7 +206,7 @@ function Home() {
 
     setDisabledToSend(false);
 
-    if (debuggingMode === false) {
+    if (!debuggingMode) {
       await clearTmpFiles();
     } else {
       logMessage("Cleaning temporary files skipped. Debug mode active");
@@ -201,6 +214,12 @@ function Home() {
   }
 
   async function refreshDevices() {
+    await checkDataDirectory();
+    await checkResourcesDirectory({
+      setDisabled: setDisabledToResetResources,
+      forceReset: false,
+    });
+
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const appDataPath = await path.appDataDir();
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
@@ -228,7 +247,7 @@ function Home() {
       .slice(1);
 
     let matchedBoards;
-    if (debuggingMode === false) {
+    if (!debuggingMode) {
       matchedBoards = foundBoards
         .filter((list: Array<string>) => list[4] === "(USB)")
         .map((list: Array<string>) => [list[0], list[5], list[6]]);
@@ -243,7 +262,7 @@ function Home() {
     if (matchedBoards.length >= 1) {
       setBoards(matchedBoards);
     } else {
-      setBoards([["", "No device found", ""]]);
+      setBoards([["No port found", "No device found", ""]]);
     }
   }
 
@@ -253,7 +272,7 @@ function Home() {
     try {
       const debuggingWindow = window.WebviewWindow.getByLabel("Debugging");
 
-      if (debuggingMode === false) {
+      if (!debuggingMode) {
         if (debuggingWindow !== null) {
           logMessage("Debugging window already exists.");
           return;
@@ -513,7 +532,7 @@ function Home() {
         <div className="items-center flex p-4">
           <button
             className={`px-6 py-2 cursor-default transition ease-in duration-150 font-display font-normal text-xl border-2 rounded-full disabled:text-s-bg-dark disabled:border-bg-s-dark disabled:border-s-bg-dark border-s-purple focus:outline-none ${
-              debuggingMode === false
+              !debuggingMode
                 ? "hidden text-s-purple enabled:hover:bg-s-purple hover:text-s-white"
                 : "block text-s-white enabled:bg-s-purple"
             }`}
@@ -571,7 +590,7 @@ function Home() {
             <button
               className="px-6 py-2 transition ease-in duration-150 font-display font-normal text-s-purple text-2xl rounded-full enabled:hover:bg-s-purple hover:text-s-white border-2 border-s-purple focus:outline-none disabled:text-s-bg-light disabled:border-bg-s-light disabled:border-s-bg-light"
               onClick={async () => await sendConfiguration()}
-              disabled={disabled}
+              disabled={sendDisabled}
             >
               Send
             </button>

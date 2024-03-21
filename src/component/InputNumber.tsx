@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 type inputNumberProp = {
   min: number;
   max: number;
@@ -22,10 +24,6 @@ function InputNumber({
   const handleChange = (newParam: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = parseInt(newParam.target.value);
 
-    if (min > newValue || newValue > max || !Number.isInteger(newValue)) {
-      newValue = 1;
-    }
-
     const nextValues = values.map((parameters, i) => {
       if (i === focused) {
         parameters[index] = newValue;
@@ -35,6 +33,29 @@ function InputNumber({
       }
     });
     setValues(nextValues);
+  };
+
+  const checkValue = (newParam: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = parseInt(newParam.target.value);
+
+    if (
+      newValue < min ||
+      newValue > max ||
+      !Number.isInteger(newValue) ||
+      isNaN(newValue)
+    ) {
+      newValue = 1;
+
+      const nextValues = values.map((parameters, i) => {
+        if (i === focused) {
+          parameters[index] = newValue;
+          return parameters;
+        } else {
+          return parameters;
+        }
+      });
+      setValues(nextValues);
+    }
   };
 
   return (
@@ -47,6 +68,7 @@ function InputNumber({
         step={step}
         value={values[focused][index]}
         onChange={handleChange}
+        onBlur={checkValue}
       />
     </>
   );

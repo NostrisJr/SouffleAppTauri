@@ -91,9 +91,11 @@
       {
         "fullscreen": false,
         "height": 1080,
+        "minHeight": 720,
         "resizable": true,
         "title": "Windmill",
-        "width": 1920
+        "width": 1920,
+        "minWidth": 1280
       }
     ]
   }
