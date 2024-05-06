@@ -10,3 +10,6 @@ https://doc.rust-lang.org/nightly/rustc/platform-support.html
 
 More on tauri binaries at 
 https://tauri.app/fr/v1/guides/building/sidecar/
+
+
+To build  the windows, linux and mac app, please proceed to a commit with "app-v*" in tag. 
