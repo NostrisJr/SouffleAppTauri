@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     branches:
-      - main # ou le nom de la branche que vous souhaitez utiliser pour déclencher la construction
+      - release # ou le nom de la branche que vous souhaitez utiliser pour déclencher la construction
 
 jobs:
   build-and-release:
