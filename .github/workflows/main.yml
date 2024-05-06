@@ -1,98 +1,37 @@
-name: "publish"
+name: Build and Release
 
 on:
   push:
     branches:
-      - release
+      - main # ou le nom de la branche que vous souhaitez utiliser pour déclencher la construction
 
 jobs:
-  create-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-20.04
-    outputs:
-      release_id: ${{ steps.create-release.outputs.result }}
-
+  build-and-release:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: setup node
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-      - name: get version
-        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
-      - name: create release
-        id: create-release
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: `app-v${process.env.PACKAGE_VERSION}`,
-              name: `Desktop App v${process.env.PACKAGE_VERSION}`,
-              body: 'Take a look at the assets to download and install this app.',
-              draft: true,
-              prerelease: false
-            })
-            return data.id
+          node-version: 16 # Utilisez la version de Node.js recommandée pour votre projet
 
-  build-tauri:
-    needs: create-release
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+      - name: Install dependencies
+        run: npm ci
 
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v2
+      - name: Build application
+        run: npm run build # Assurez-vous que ce script existe dans votre package.json
 
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - name: Create release directory
+        run: mkdir -p./release
 
-      - name: install pnpm
-        run: npm install -g pnpm
+      - name: Copy built files to release directory
+        run: cp -r dist/*./release/ # Modifiez 'dist/*' par le chemin vers vos fichiers de release si nécessaire
 
-      - name: install Rust stable
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: install frontend dependencies
-        run: pnpm install
-
-      - name: install platform-specific dependencies
+      - name: Commit and push changes
         run: |
-          if [[ "${{ matrix.platform }}" == "ubuntu-20.04" ]]; then
-            sudo apt-get update
-            sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-          fi
-
-      - name: build Tauri app
-        run: |
-          npm run tauri build -- --target=${{ matrix.platform }}
-
-  publish-release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-20.04
-    needs: [create-release, build-tauri]
-
-    steps:
-      - name: publish release
-        id: publish-release
-        uses: actions/github-script@v6
-        env:
-          release_id: ${{ needs.create-release.outputs.release_id }}
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: process.env.release_id,
-              draft: false,
-              prerelease: false
-            })
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Add release files" -m "Automated by GitHub Actions"
+          git push
