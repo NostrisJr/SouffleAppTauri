@@ -6,3 +6,7 @@ for instance, on mac intel (which triplet's is x86_64-apple-darwin) : arduino-cl
 
 find more on triplet on 
 https://doc.rust-lang.org/nightly/rustc/platform-support.html
+
+
+More on tauri binaries at 
+https://tauri.app/fr/v1/guides/building/sidecar/
