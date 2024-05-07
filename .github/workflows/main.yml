@@ -5,6 +5,12 @@ on:
     branches:
       - release
   workflow_dispatch:
+    inputs:
+      releaseTag:
+        description: "Release tag"
+        required: true
+        default: "v1.0.0"
+        type: string
 
 jobs:
   release:
