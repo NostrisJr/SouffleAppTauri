@@ -26,7 +26,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-        # node
       - name: install pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -34,45 +33,31 @@ jobs:
 
       - name: Node.js setup
         uses: actions/setup-node@v3
-        # NOTE: enterprise developers may hard code a version
         with:
           node-version: 20.x.x
-          # node-version-file: '.nvmrc'
 
       - name: Install Rust (Stable)
         run: curl https://sh.rustup.rs -sSf | sh -s -- -y
 
       - name: Install app dependencies and build web
-        # NOTE: include yarn build if frontend has build script
-        run: pnpm install --frozen-lockfile # && yarn build
+        run: pnpm install --frozen-lockfile
 
-      - name: Build app
-        run: pnpm build
-
-      - name: Check if release already exists
-        id: check_release
-        shell: bash
-        run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ inputs.releaseTag || github.ref_name }})
-          if [[ $response == 200 ]]; then
-            echo "release_exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "release_exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create release if it doesn't exist
-        uses: "marvinpinto/action-automatic-releases@latest"
-        if: steps.check_release.outputs.release_exists == 'false'
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          title: "Release ${{ inputs.releaseTag || github.ref_name }}"
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            client/src-tauri/target/release/bundle/msi/Windmill_1.0.0_x64_en-US.msi
+          tagName: ${{ github.event.inputs.releaseTag || github.ref_name }}
+          releaseName: "[Unaffiliated] Google Keep v${{ github.event.inputs.releaseTag || github.ref_name }}"
+          releaseDraft: true
+          prerelease: false
 
-      - name: Upload build to release if it exists
-        uses: svenstaro/upload-release-action@v2
-        if: steps.check_release.outputs.release_exists == 'true'
+      - name: Upload Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: client/src-tauri/target/release/bundle/msi/Windmill_1.0.0_x64_en-US.msi
-          tag: ${{ inputs.releaseTag || github.ref_name }}
+          upload_url: https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets
+          asset_path: D:\a\SouffleAppTauri\SouffleAppTauri\src-tauri\target\release\bundle\msi\Windmill_1.0.2_x64_en-US.msi
+          asset_name: artifact.msi
+          asset_content_type: application/octet-stream
