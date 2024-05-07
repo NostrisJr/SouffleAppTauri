@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: https://api.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets
-          asset_path: D:\a\SouffleAppTauri\SouffleAppTauri\src-tauri\target\release\bundle\msi\Windmill_1.0.2_x64_en-US.msi
+          asset_path: D:\a\SouffleAppTauri\SouffleAppTauri\src-tauri\target\release\bundle\msi\Windmill_${{github.event.inputs.releaseTag}}_x64_en-US.msi
           asset_name: artifact.msi
           asset_content_type: application/octet-stream
