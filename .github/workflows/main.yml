@@ -1,9 +1,16 @@
 name: App Builder
+
 on:
   push:
-    branches:
-      - release
+    tags:
+      - "v*"
   workflow_dispatch:
+    inputs:
+      releaseTag:
+        description: "Release tag"
+        required: true
+        default: "v1.0.0"
+        type: string
 
 jobs:
   release:
@@ -19,12 +26,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # for projects that use labels and PRs,
-      # try https://github.com/mikepenz/release-changelog-builder-action instead
-      # TODO: use API to collect commit messages
-      - name: Build Changelog
-        id: build_changelog
-        run: echo "changelog=- ADD CHANGELOG" >> $GITHUB_OUTPUT
         # node
       - name: install pnpm
         uses: pnpm/action-setup@v2
@@ -35,7 +36,7 @@ jobs:
         uses: actions/setup-node@v3
         # NOTE: enterprise developers may hard code a version
         with:
-          node-version: latest
+          node-version: 20.x.x
           # node-version-file: '.nvmrc'
 
       - name: Install Rust (Stable)
@@ -45,18 +46,33 @@ jobs:
         # NOTE: include yarn build if frontend has build script
         run: pnpm install --frozen-lockfile # && yarn build
 
-      - name: Build the app
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-          TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      - name: Build app
+        run: pnpm build
+
+      - name: Check if release already exists
+        id: check_release
+        shell: bash
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ inputs.releaseTag || github.ref_name }})
+          if [[ $response == 200 ]]; then
+            echo "release_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "release_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create release if it doesn't exist
+        uses: "marvinpinto/action-automatic-releases@latest"
+        if: steps.check_release.outputs.release_exists == 'false'
         with:
-          # tauri-action replaces \_\_VERSION\_\_ with the app version
-          tagName: ${{ github.ref_name }}
-          releaseName: "[Unaffiliated] Google Keep v__VERSION__"
-          releaseBody: |
-            ${{steps.build_changelog.outputs.changelog}}
-            See the assets to download this version and install.
-          releaseDraft: true
-          prerelease: false
+          title: "Release ${{ inputs.releaseTag || github.ref_name }}"
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            client/src-tauri/target/release/bundle/msi/Windmill_1.0.0_x64_en-US.msi
+
+      - name: Upload build to release if it exists
+        uses: svenstaro/upload-release-action@v2
+        if: steps.check_release.outputs.release_exists == 'true'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: client/src-tauri/target/release/bundle/msi/Windmill_1.0.0_x64_en-US.msi
+          tag: ${{ inputs.releaseTag || github.ref_name }}
