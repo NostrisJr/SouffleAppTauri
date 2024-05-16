@@ -150,6 +150,50 @@ function Home() {
       selectedDevice[1] === "No device found") &&
       !debuggingMode);
 
+  async function updateArduinoCliCore() {
+    await checkDataDirectory();
+    await checkResourcesDirectory({
+      setDisabled: setDisabledToResetResources,
+      forceReset: false,
+    });
+
+    logMessage("Begining to update arduino-cli core index...");
+
+    const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const dialog = await import("@tauri-apps/api/dialog");
+    const appDataPath = await path.appDataDir();
+    const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
+
+    const commandUpdate: Command = Command.sidecar("binaries/arduino-cli", [
+      "core",
+      "update-index",
+      "--config-file",
+      pathConfig,
+      "-v",
+    ]);
+
+    const updateOutput = await commandUpdate.execute();
+
+    if (updateOutput.code !== 0) {
+      dialog.message(
+        "An error has occurred while updating arduino-cli core index"
+      );
+
+      if (updateOutput.stdout.length >= 1) {
+        logMessage(updateOutput.stdout);
+      }
+      if (updateOutput.stderr.length >= 1) {
+        logError(updateOutput.stderr);
+      }
+
+      setDisabledToSend(false);
+      return;
+    } else {
+      dialog.message("Arduino-cli core index updated !");
+      logMessage(updateOutput.stdout);
+    }
+  }
+
   async function sendConfiguration() {
     setDisabledToSend(true);
 
@@ -229,6 +273,7 @@ function Home() {
       "list",
       "--config-file",
       pathConfig,
+      "-v",
     ]);
 
     const compileOutput = await commandCompile.execute();
@@ -423,6 +468,9 @@ function Home() {
         window.appWindow.listen("reset_resources", async () => {
           await checkDataDirectory();
           await resetResourcesDir();
+        });
+        window.appWindow.listen("update_arduino-cli_core", async () => {
+          await updateArduinoCliCore();
         });
       } catch (err) {
         logError("An error occurred while using menu functions : " + err);

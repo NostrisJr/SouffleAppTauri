@@ -54,6 +54,7 @@ fn create_app_menu() -> Menu {
             Menu::new()
                 .add_item(CustomMenuItem::new("debug_mode".to_string(), "Open/Close Debugging Mode").accelerator("CmdOrCtrl+O"))
                 .add_item(CustomMenuItem::new("reset_resources".to_string(), "Reset App Resources"))
+                .add_item(CustomMenuItem::new("update_arduino-cli_core".to_string(), "Update Arduino-cli Core"))
         ))
 }
 
