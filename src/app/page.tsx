@@ -38,7 +38,13 @@ function Home() {
   const [disabledToResetResources, setDisabledToResetResources] =
     useState(false);
 
-  let disabled = disabledToSave || disabledToSend || disabledToResetResources;
+  const [disabledToUpdateCore, setDisabledToUpdateCore] = useState(false);
+
+  let disabled =
+    disabledToSave ||
+    disabledToSend ||
+    disabledToResetResources ||
+    disabledToUpdateCore;
 
   const [debuggingMode, setDebuggingMode] = useState(false);
 
@@ -151,6 +157,9 @@ function Home() {
       !debuggingMode);
 
   async function updateArduinoCliCore() {
+    logMessage("Begining to update arduino-cli core index...");
+    setDisabledToUpdateCore(true);
+
     await checkDataDirectory();
     await checkResourcesDirectory({
       setDisabled: setDisabledToResetResources,
@@ -186,12 +195,13 @@ function Home() {
         logError(updateOutput.stderr);
       }
 
-      setDisabledToSend(false);
       return;
     } else {
       dialog.message("Arduino-cli core index updated !");
       logMessage(updateOutput.stdout);
     }
+
+    setDisabledToUpdateCore(false);
   }
 
   async function sendConfiguration() {
@@ -273,7 +283,6 @@ function Home() {
       "list",
       "--config-file",
       pathConfig,
-      "-v",
     ]);
 
     const compileOutput = await commandCompile.execute();
@@ -469,8 +478,9 @@ function Home() {
           await checkDataDirectory();
           await resetResourcesDir();
         });
-        window.appWindow.listen("update_arduino-cli_core", async () => {
+        window.appWindow.listen("update_arduino_cli_core", async () => {
           await updateArduinoCliCore();
+          logMessage("Arduino-cli core index updating !");
         });
       } catch (err) {
         logError("An error occurred while using menu functions : " + err);
@@ -494,6 +504,15 @@ function Home() {
         } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-50 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
         <p>Setting Resources folder right...</p>
+        <p>It should not take more than a few minutes !</p>
+      </div>
+
+      <div
+        className={`${
+          disabledToUpdateCore === false ? "hidden" : "flex flex-col"
+        } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-40 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
+      >
+        <p>Updating Arduino-cli core index...</p>
         <p>It should not take more than a few minutes !</p>
       </div>
 
