@@ -1,8 +1,8 @@
-//This is the default code for Brise controller
+//This is the default code for Brise controller DO NOT MODIFY THIS
 //It is inspired by the code of the Nerd Musician (https://www.musiconerd.com/)
 #include "MIDIUSB.h"
 
-// DO NOT REMOVE COMMENTARY - Next line is values
+// NEXT LINE MUST BE 5TH WHATEVER YOU MODIFY
 const int values[15][7] = {{1, 1, 7, 0, 127, 0, 0}, {2, 1, 16, 0, 127, 0, 0}, {3, 1, 17, 0, 127, 0, 0}, {4, 1, 19, 0, 127, 0, 0}, {5, 1, 11, 0, 127, 0, 0}, {6, 1, 1, 0, 127, 0, 0}, {7, 1, 21, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}, {-1, 1, 0, 0, 127, 0, 0}};
 
 const int NbInterfaces = 15;

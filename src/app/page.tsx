@@ -156,7 +156,7 @@ function Home() {
       selectedDevice[1] === "No device found") &&
       !debuggingMode);
 
-  async function updateArduinoCliCore() {
+  async function resetArduinoCliTools() {
     logMessage("Begining to update arduino-cli core index...");
     setDisabledToUpdateCore(true);
 
@@ -166,12 +166,49 @@ function Home() {
       forceReset: false,
     });
 
-    logMessage("Begining to update arduino-cli core index...");
+    logMessage("Begining to reset arduino-cli core tools...");
 
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog");
+    const fs = await import("@tauri-apps/api/fs");
+
     const appDataPath = await path.appDataDir();
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
+
+    const pathArduinoCore = `${appDataPath}Resources/Arduino15/packages/arduino`
+    const arduinoCoreExists = await fs.exists(pathArduinoCore)
+
+    if(arduinoCoreExists) {
+      const commandRemove: Command = Command.sidecar("binaries/arduino-cli", [
+        "core",
+        "uninstall",
+        "arduino:avr",
+        "--config-file",
+        pathConfig,
+        "-v",
+      ]);
+
+      const removeOutput = await commandRemove.execute();
+
+    if (removeOutput.code !== 0) {
+      dialog.message(
+        "An error has occurred while removing arduino-cli core arduino:avr"
+      );
+
+      if (removeOutput.stdout.length >= 1) {
+        logMessage(removeOutput.stdout);
+      }
+      if (removeOutput.stderr.length >= 1) {
+        logError(removeOutput.stderr);
+      }
+
+      return;
+    } else {
+      dialog.message("Arduino-cli core arduino:avr removed !");
+      logMessage(removeOutput.stdout);
+    }
+
+    }
 
     const commandUpdate: Command = Command.sidecar("binaries/arduino-cli", [
       "core",
@@ -201,6 +238,36 @@ function Home() {
       logMessage(updateOutput.stdout);
     }
 
+    const commandInstall: Command = Command.sidecar("binaries/arduino-cli", [
+      "core",
+      "install",
+      "arduino:avr",
+      "--config-file",
+      pathConfig,
+      "-v",
+    ]);
+
+    const installOutput = await commandInstall.execute();
+
+    if (installOutput.code !== 0) {
+      dialog.message(
+        "An error has occurred while installing arduino-cli core arduino:avr"
+      );
+
+      if (installOutput.stdout.length >= 1) {
+        logMessage(installOutput.stdout);
+      }
+      if (installOutput.stderr.length >= 1) {
+        logError(installOutput.stderr);
+      }
+
+      return;
+    } else {
+      dialog.message("Arduino-cli core arduino:avr installed !");
+      logMessage(installOutput.stdout);
+    }
+
+    logMessage("Arduino=cli core arduino:avr sucessfully reseted !")
     setDisabledToUpdateCore(false);
   }
 
@@ -478,9 +545,8 @@ function Home() {
           await checkDataDirectory();
           await resetResourcesDir();
         });
-        window.appWindow.listen("update_arduino_cli_core", async () => {
-          await updateArduinoCliCore();
-          logMessage("Arduino-cli core index updating !");
+        window.appWindow.listen("reset_arduino_cli_tools", async () => {
+          await resetArduinoCliTools();
         });
       } catch (err) {
         logError("An error occurred while using menu functions : " + err);

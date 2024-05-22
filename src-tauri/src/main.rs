@@ -54,7 +54,7 @@ fn create_app_menu() -> Menu {
             Menu::new()
                 .add_item(CustomMenuItem::new("debug_mode".to_string(), "Open/Close Debugging Mode").accelerator("CmdOrCtrl+O"))
                 .add_item(CustomMenuItem::new("reset_resources".to_string(), "Reset App Resources"))
-                .add_item(CustomMenuItem::new("update_arduino_cli_core".to_string(), "Update Arduino-cli Core"))
+                .add_item(CustomMenuItem::new("reset_arduino_cli_tools".to_string(), "Reset Arduino-cli Tools"))
         ))
 }
 
@@ -80,8 +80,8 @@ fn main() {
             "reset_resources" => {
                 event.window().emit("reset_resources", "").unwrap();
             }
-            "update_arduino_cli_core" => {
-                event.window().emit("update_arduino_cli_core", "").unwrap();
+            "reset_arduino_cli_tools" => {
+                event.window().emit("reset_arduino_cli_tools", "").unwrap();
             }
             _ => {}
         })

@@ -268,16 +268,15 @@ async function createCode(values: Array<Array<number>>) {
     const defaultCode = await fs.readTextFile(pathDefaultSketch);
     let splitedCode = defaultCode.split("\n");
 
-    //Go see the default code to understand/debug this
-    const index =
-      splitedCode.indexOf("// DO NOT REMOVE COMMENTARY - Next line is values") +
-      1;
-
+     const index = 5;
+    
     const valuesList =
       "const int values[15][7] = {" +
       values.map((item) => `{${item.join(", ")}}`).join(",") +
       "};";
     splitedCode[index] = valuesList;
+
+    console.log(splitedCode)
 
     let newCode = "";
 
@@ -285,6 +284,7 @@ async function createCode(values: Array<Array<number>>) {
       newCode = newCode + splitedCode[i] + "\n";
     }
     logMessage("Code created successfully !");
+    console.log(newCode)
     return newCode;
   } catch (err) {
     logError(
