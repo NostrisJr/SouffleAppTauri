@@ -17,7 +17,9 @@ jobs:
       matrix:
         node-version: [20.11.1] # Specify your Node.js version
         rust-version: [1.76.0] # Specify your Rust version
-        architecture: [x86_64, aarch64] # Specify both Intel and Apple Silicon architectures
+        target:
+          - x86_64-apple-darwin
+          - aarch64-apple-darwin
 
     steps:
       - name: Checkout repository
