@@ -10,14 +10,18 @@ on:
         type: string
 
 jobs:
-  build:
+  build-macos:
     runs-on: macos-latest
 
     strategy:
       matrix:
         node-version: [20.11.1] # Specify your Node.js version
         rust-version: [1.76.0] # Specify your Rust version
-        architecture: [x86_64] # Specify both Intel and Apple Silicon arm64
+        include:
+          - platform: "macos-latest"
+            args: "--target x86_64-apple-darwin" # Pour les Macs basés sur Intel
+          - platform: "macos-latest"
+            args: "--target aarch64-apple-darwin" # Pour les Macs basés sur Apple Silicon (M1 et supérieur)
 
     steps:
       - name: Checkout repository
