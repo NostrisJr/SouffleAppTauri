@@ -1,0 +1,54 @@
+name: AppBuilder Mac
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseTag:
+        description: "Release tag"
+        required: true
+        default: "v1.0.0"
+        type: string
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [20.11.1] # Specify your Node.js version
+        rust-version: [1.76.0] # Specify your Rust version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Set up Rust ${{ matrix.rust-version }}
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ matrix.rust-version }}
+          override: true
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Next.js app
+        run: pnpm build
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version ^1.0.0
+
+      - name: Build Tauri application
+        run: pnpm tauri build
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: tauri-build-macos
+          path: src-tauri/target/release/bundle/macos/

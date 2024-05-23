@@ -1,8 +1,5 @@
-name: App Builder
+name: App Builder Windows
 on:
-  push:
-    branches:
-      - release
   workflow_dispatch:
     inputs:
       releaseTag:
@@ -18,10 +15,6 @@ jobs:
       matrix:
         platform: [windows-latest]
         include:
-          - os: ubuntu-latest
-            rust_target: x86_64-unknown-linux-gnu
-          - os: macos-latest
-            rust_target: x86_64-apple-darwin
           - os: windows-latest
             rust_target: x86_64-pc-windows-msvc
     runs-on: ${{ matrix.platform }}
