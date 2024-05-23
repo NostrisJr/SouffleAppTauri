@@ -17,6 +17,7 @@ jobs:
       matrix:
         node-version: [20.11.1] # Specify your Node.js version
         rust-version: [1.76.0] # Specify your Rust version
+        architecture: [x86_64, arm64] # Specify both Intel and Apple Silicon
 
     steps:
       - name: Checkout repository
@@ -47,6 +48,9 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
+
+      - name: Set architecture for Tauri build
+        run: echo "ARCH=${{ matrix.architecture }}" >> $GITHUB_ENV
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
