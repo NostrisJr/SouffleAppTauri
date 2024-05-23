@@ -36,6 +36,9 @@ jobs:
           toolchain: ${{ matrix.rust-version }}
           override: true
 
+      - name: Add Rust target
+        run: rustup target add ${{ matrix.target }} # Assurez-vous que cette ligne est présente pour chaque cible
+
       - name: Install pnpm
         run: npm install -g pnpm
 
@@ -64,4 +67,4 @@ jobs:
             See the assets to download this version and install.
           releaseDraft: true
           prerelease: false
-          args: "--target ${{ matrix.target }}" # Ajout de l'argument de cible ici
+          args: "--target ${{ matrix.target }}"
