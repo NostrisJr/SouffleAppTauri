@@ -35,8 +35,9 @@ jobs:
         with:
           toolchain: ${{ matrix.rust-version }}
           override: true
-          components: rust-src
-          targets: ${{ matrix.target }}
+
+      - name: Add Rust target
+        run: rustup target add ${{ matrix.target }}
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -52,9 +53,6 @@ jobs:
 
       - name: Build Next.js app
         run: pnpm build
-
-      - name: Set target for Tauri build
-        run: echo "TARGET=${{ matrix.target }}" >> $GITHUB_ENV
 
       - name: Build the app
         run: yarn tauri build --target ${{ matrix.target }}
