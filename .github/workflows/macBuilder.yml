@@ -17,6 +17,7 @@ jobs:
       matrix:
         node-version: [20.11.1] # Specify your Node.js version
         rust-version: [1.76.0] # Specify your Rust version
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -35,8 +36,14 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Install libvips
+        run: brew install vips
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --ignore-scripts
+
+      - name: Rebuild sharp
+        run: pnpm rebuild sharp
 
       - name: Build Next.js app
         run: pnpm build
