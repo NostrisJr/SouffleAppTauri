@@ -160,6 +160,23 @@ function Home() {
       !debuggingMode);
 
   async function resetArduinoCliTools() {
+    const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
+    const dialog = await import("@tauri-apps/api/dialog");
+    const fs = await import("@tauri-apps/api/fs");
+
+    const internetConnection = await dialog.ask(
+      "Have you an Internet connection ?",
+      "Windmill"
+    );
+
+    if (!internetConnection) {
+      await dialog.message(
+        "Please connect you computer to the Internet before re-trying",
+        "Windmill"
+      );
+      return;
+    }
+
     setDisabledToResetTools(true);
 
     await checkDataDirectory();
@@ -167,10 +184,6 @@ function Home() {
       setDisabled: setDisabledToResetResources,
       forceReset: false,
     });
-
-    const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
-    const dialog = await import("@tauri-apps/api/dialog");
-    const fs = await import("@tauri-apps/api/fs");
 
     const appDataPath = await path.appDataDir();
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
