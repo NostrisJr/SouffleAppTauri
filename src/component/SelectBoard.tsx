@@ -44,7 +44,7 @@ function SelectBoard({
   }
 
   return (
-    <div className="relative z-10 p-2" onMouseLeave={() => setClicked(false)}>
+    <div className="relative z-0 p-2" onMouseLeave={() => setClicked(false)}>
       <button
         className="text-s-purple font-body text-lg flex justify-start gap-4 items-baseline"
         onClick={() => openMenu()}

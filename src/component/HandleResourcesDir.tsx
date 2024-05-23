@@ -71,7 +71,46 @@ async function formateArduinoCliConfig() {
   }
 }
 
-async function resetResourcesDir() {
+export async function modifyArduinoLeonardoName() {
+  const path = await import("@tauri-apps/api/path");
+  const fs = await import("@tauri-apps/api/fs");
+
+  const appDataPath = await path.appDataDir();
+  const boardsPath = `${appDataPath}Resources/Arduino15/packages/arduino/hardware/avr/1.8.6/boards.txt`;
+  const boardsExists = await fs.exists(boardsPath);
+
+  if (boardsExists) {
+    logMessage("Boards.txt found, modifying Arduino Leonardo usbName");
+    try {
+      const fileContent = await fs.readTextFile(boardsPath);
+
+      const updatedContent = fileContent
+        .split("\n")
+        .map((line) => {
+          if (line.includes('leonardo.build.usb_product="Arduino Leonardo"')) {
+            return 'leonardo.build.usb_product="Brise - Souffle Controller"';
+          }
+          if (line.includes("leonardo.name=Arduino Leonardo")) {
+            return "leonardo.name=Brise-Controller";
+          }
+          return line;
+        })
+        .join("\n");
+
+      await fs.removeFile(boardsPath);
+      await fs.writeFile({ path: boardsPath, contents: updatedContent });
+      logMessage("Arduino Leonardo usbName modified");
+    } catch (err) {
+      logError(
+        "An error occurred while modifying Arduino Leonardo usbName : " + err
+      );
+    }
+  } else {
+    logError("Boards.txt not found");
+  }
+}
+
+export async function resetResourcesDir() {
   const fs = await import("@tauri-apps/api/fs");
   const path = await import("@tauri-apps/api/path");
 

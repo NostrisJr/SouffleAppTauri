@@ -15,7 +15,10 @@ import {
 } from "@/component/HandleData";
 import { SelectPreset } from "@/component/SelectPreset";
 import { logError, logMessage } from "@/component/DebuggingMode";
-import { checkResourcesDirectory } from "@/component/HandleResourcesDir";
+import {
+  checkResourcesDirectory,
+  modifyArduinoLeonardoName,
+} from "@/component/HandleResourcesDir";
 import { DEFAULT_VALUES, NB_INTERFACES } from "@/component/Constants";
 
 type recolorProp = {
@@ -38,13 +41,13 @@ function Home() {
   const [disabledToResetResources, setDisabledToResetResources] =
     useState(false);
 
-  const [disabledToUpdateCore, setDisabledToUpdateCore] = useState(false);
+  const [disabledToResetTools, setDisabledToResetTools] = useState(false);
 
   let disabled =
     disabledToSave ||
     disabledToSend ||
     disabledToResetResources ||
-    disabledToUpdateCore;
+    disabledToResetTools;
 
   const [debuggingMode, setDebuggingMode] = useState(false);
 
@@ -157,16 +160,13 @@ function Home() {
       !debuggingMode);
 
   async function resetArduinoCliTools() {
-    logMessage("Begining to update arduino-cli core index...");
-    setDisabledToUpdateCore(true);
+    setDisabledToResetTools(true);
 
     await checkDataDirectory();
     await checkResourcesDirectory({
       setDisabled: setDisabledToResetResources,
       forceReset: false,
     });
-
-    logMessage("Begining to reset arduino-cli core tools...");
 
     const path = await import("@tauri-apps/api/path"); // dynamic import. Causes "navigator undefined" if static import
     const dialog = await import("@tauri-apps/api/dialog");
@@ -175,10 +175,11 @@ function Home() {
     const appDataPath = await path.appDataDir();
     const pathConfig = `${appDataPath}Resources/Arduino15/arduino-cli.yaml`;
 
-    const pathArduinoCore = `${appDataPath}Resources/Arduino15/packages/arduino`
-    const arduinoCoreExists = await fs.exists(pathArduinoCore)
+    const pathArduinoCore = `${appDataPath}Resources/Arduino15/packages/arduino`;
+    const arduinoCoreExists = await fs.exists(pathArduinoCore);
 
-    if(arduinoCoreExists) {
+    // let's remove the old core if it exists
+    if (arduinoCoreExists) {
       const commandRemove: Command = Command.sidecar("binaries/arduino-cli", [
         "core",
         "uninstall",
@@ -190,26 +191,26 @@ function Home() {
 
       const removeOutput = await commandRemove.execute();
 
-    if (removeOutput.code !== 0) {
-      dialog.message(
-        "An error has occurred while removing arduino-cli core arduino:avr"
-      );
+      if (removeOutput.code !== 0) {
+        dialog.message(
+          "An error has occurred while removing arduino-cli core arduino:avr"
+        );
 
-      if (removeOutput.stdout.length >= 1) {
+        if (removeOutput.stdout.length >= 1) {
+          logMessage(removeOutput.stdout);
+        }
+        if (removeOutput.stderr.length >= 1) {
+          logError(removeOutput.stderr);
+        }
+
+        return;
+      } else {
+        logMessage("Arduino-cli core arduino:avr removed !");
         logMessage(removeOutput.stdout);
       }
-      if (removeOutput.stderr.length >= 1) {
-        logError(removeOutput.stderr);
-      }
-
-      return;
-    } else {
-      dialog.message("Arduino-cli core arduino:avr removed !");
-      logMessage(removeOutput.stdout);
     }
 
-    }
-
+    // let's update the core index
     const commandUpdate: Command = Command.sidecar("binaries/arduino-cli", [
       "core",
       "update-index",
@@ -221,9 +222,7 @@ function Home() {
     const updateOutput = await commandUpdate.execute();
 
     if (updateOutput.code !== 0) {
-      dialog.message(
-        "An error has occurred while updating arduino-cli core index"
-      );
+      logError("An error has occurred while updating arduino-cli core index");
 
       if (updateOutput.stdout.length >= 1) {
         logMessage(updateOutput.stdout);
@@ -234,10 +233,11 @@ function Home() {
 
       return;
     } else {
-      dialog.message("Arduino-cli core index updated !");
+      logMessage("Arduino-cli core index updated !");
       logMessage(updateOutput.stdout);
     }
 
+    // let's install the new core
     const commandInstall: Command = Command.sidecar("binaries/arduino-cli", [
       "core",
       "install",
@@ -250,7 +250,7 @@ function Home() {
     const installOutput = await commandInstall.execute();
 
     if (installOutput.code !== 0) {
-      dialog.message(
+      logError(
         "An error has occurred while installing arduino-cli core arduino:avr"
       );
 
@@ -263,12 +263,22 @@ function Home() {
 
       return;
     } else {
-      dialog.message("Arduino-cli core arduino:avr installed !");
+      logMessage("Arduino-cli core arduino:avr installed !");
       logMessage(installOutput.stdout);
     }
 
-    logMessage("Arduino=cli core arduino:avr sucessfully reseted !")
-    setDisabledToUpdateCore(false);
+    try {
+      await modifyArduinoLeonardoName();
+    } catch (err) {
+      logError("An error occured while modifying boards.txt : " + err);
+    }
+
+    // let's run arduino-cli board list to install the needed discovery tools for the machine
+    await refreshDevices();
+
+    logMessage("Arduino-cli core arduino:avr sucessfully reseted !");
+    setDisabledToResetTools(false);
+    dialog.message("Arduino-cli core arduino:avr sucessfully reseted !");
   }
 
   async function sendConfiguration() {
@@ -443,6 +453,7 @@ function Home() {
       setDisabled: setDisabledToResetResources,
       forceReset: true,
     });
+    await resetArduinoCliTools();
   }
 
   //********************** *********************//
@@ -575,11 +586,18 @@ function Home() {
 
       <div
         className={`${
-          disabledToUpdateCore === false ? "hidden" : "flex flex-col"
+          disabledToResetTools === false ? "hidden" : "flex flex-col"
         } top-1/3 justify-self-center bg-s-bg-light absolute h-1/3 w-1/2 z-40 items-center justify-center rounded-xl border-s-purple border-2 shadow-xl text-xl font-body text-s-purple`}
       >
-        <p>Updating Arduino-cli core index...</p>
+        <p>Reseting Arduino-cli core tools...</p>
         <p>It should not take more than a few minutes !</p>
+        <p className="text-sm mt-4">
+          You need to have your computer connected to internet...
+        </p>
+        <p className="text-sm">
+          (If this stays more than 5 min, please quit Windmill and retry with
+          internet connexion)
+        </p>
       </div>
 
       <div
