@@ -15,8 +15,8 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.11.1] # Specify your Node.js version
-        rust-version: [1.76.0] # Specify your Rust version
+        node-version: [20.11.1]
+        rust-version: [1.76.0]
         target:
           - x86_64-apple-darwin
           - aarch64-apple-darwin
@@ -35,9 +35,6 @@ jobs:
         with:
           toolchain: ${{ matrix.rust-version }}
           override: true
-
-      - name: Add Rust target
-        run: rustup target add ${{ matrix.target }}
 
       - name: Install pnpm
         run: npm install -g pnpm
@@ -67,3 +64,4 @@ jobs:
             See the assets to download this version and install.
           releaseDraft: true
           prerelease: false
+          args: "--target ${{ matrix.target }}" # Ajout de l'argument de cible ici
